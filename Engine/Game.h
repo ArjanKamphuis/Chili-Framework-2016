@@ -29,6 +29,7 @@
 #include "Dude.h"
 #include "Goal.h"
 #include "Meter.h"
+#include "SoundEffect.h"
 
 class Game
 {
@@ -49,7 +50,6 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	std::random_device mRandomDevice;
 	std::mt19937 mRng;
 	std::unordered_map<std::wstring, std::uniform_int_distribution<int>> mRandoms;
 
@@ -60,5 +60,9 @@ private:
 	static constexpr int mNumPoos = 25;
 	Poo mPoos[mNumPoos] = {};
 	Goal mGoal = {};
+
+	SoundEffect mPickupSound = SoundEffect({ L"Sounds/coin.wav" });
+	Sound mTitleSound = Sound({ L"Sounds/title.wav" });
+	SoundEffect mFartSound = SoundEffect({ L"Sounds/fart1.wav", L"Sounds/fart2.wav" });
 	/********************************/
 };

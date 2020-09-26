@@ -23,7 +23,7 @@
 #include "SpriteCodex.h"
 
 Game::Game( MainWindow& wnd )
-	: wnd(wnd),	gfx(wnd), mRng(mRandomDevice()), mMeter(20, 20)
+	: wnd(wnd),	gfx(wnd), mRng(std::random_device()()), mMeter(20, 20)
 {
 	mRandoms[L"xDist"] = std::uniform_int_distribution<int>(0, gfx.ScreenWidth - mPoos->GetSize());
 	mRandoms[L"yDist"] = std::uniform_int_distribution<int>(0, gfx.ScreenHeight - mPoos->GetSize());
@@ -57,13 +57,17 @@ void Game::UpdateModel()
 			{
 				mMeter.IncreaseLevel();
 				mGoal.Respawn(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng));
+				mPickupSound.Play(mRng);
 			}
 
 			for (Poo& poo : mPoos)
 			{
 				poo.Update();
 				if (poo.OverlapTest(mDude))
+				{
 					mIsGameOver = true;
+					mFartSound.Play(mRng);
+				}
 			}
 		}
 	}
@@ -101,4 +105,7 @@ void Game::Restart()
 
 	for (Poo& poo : mPoos)
 		poo.Respawn(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng), mRandoms[L"speed"](mRng), mRandoms[L"speed"](mRng));
+
+	mTitleSound.StopAll();
+	mTitleSound.Play();
 }
