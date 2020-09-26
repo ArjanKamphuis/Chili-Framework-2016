@@ -24,6 +24,10 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Board.h"
+#include "Snake.h"
+#include "Goal.h"
+#include "Obstacle.h"
 
 class Game
 {
@@ -38,11 +42,30 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void Restart();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
+	
+	Board mBrd;
+	Snake mSnek;
+	Goal mGoal;
+	Location mDeltaLoc = { 1, 0 };
+
+	static constexpr int mSnekMovePeriodMin = 4;
+	int mSnekMovePeriod = 20;
+	int mSnekMoveCounter = 0;
+	static constexpr int mSnekSpeedupPeriod = 180;
+	int mSnekSpeedupCounter = 0;
+
+	static constexpr int mMaxObstacles = 100;
+	int mNumObstacles = 0;
+	Obstacle mObstacles[mMaxObstacles] = {};
+
+	bool mStarted = false;
+	bool mGameOver = false;
 	/********************************/
 };
