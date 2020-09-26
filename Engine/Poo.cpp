@@ -3,5 +3,5 @@
 
 void Poo::Draw(Graphics& gfx) const
 {
-	SpriteCodex::DrawPoo(mPosition.x, mPosition.y, gfx);
+	SpriteCodex::DrawPoo(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), gfx);
 }

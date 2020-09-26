@@ -51,13 +51,13 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
-	std::unordered_map<std::wstring, std::uniform_int_distribution<int>> mRandoms;
+	std::unordered_map<std::wstring, std::uniform_real_distribution<float>> mRandoms;
 
 	bool mIsStarted = false;
 	bool mIsGameOver = false;
 	Dude mDude = {};
 	Meter mMeter;
-	static constexpr int mNumPoos = 25;
+	static constexpr int mNumPoos = 10;
 	Poo mPoos[mNumPoos] = {};
 	Goal mGoal = {};
 

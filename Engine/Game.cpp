@@ -25,9 +25,9 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd),	gfx(wnd), mRng(std::random_device()()), mMeter(20, 20)
 {
-	mRandoms[L"xDist"] = std::uniform_int_distribution<int>(0, gfx.ScreenWidth - mPoos->GetSize());
-	mRandoms[L"yDist"] = std::uniform_int_distribution<int>(0, gfx.ScreenHeight - mPoos->GetSize());
-	mRandoms[L"speed"] = std::uniform_int_distribution<int>(-1, 1);
+	mRandoms[L"xDist"] = std::uniform_real_distribution<float>(0.0f, static_cast<float>(gfx.ScreenWidth) - mPoos->GetSize());
+	mRandoms[L"yDist"] = std::uniform_real_distribution<float>(0.0f, static_cast<float>(gfx.ScreenHeight) - mPoos->GetSize());
+	mRandoms[L"speed"] = std::uniform_real_distribution<float>(-2.5f, 2.5f);
 
 	Restart();
 }
@@ -99,7 +99,7 @@ void Game::Restart()
 {
 	mIsGameOver = false;
 
-	mDude.Respawn(400, 300);
+	mDude.Respawn(400.0f, 300.0f);
 	mGoal.Respawn(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng));
 	mMeter.ResetLevel();
 

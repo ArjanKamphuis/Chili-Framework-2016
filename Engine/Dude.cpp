@@ -14,30 +14,30 @@ void Dude::HandleInput(Keyboard& kbd)
 	if (mPlayStyle == PlayStyle::Position)
 	{
 		if (kbd.KeyIsDown(VK_LEFT))
-			mPosition.x -= mSpeed;
+			mPosition.X -= mSpeed;
 		if (kbd.KeyIsDown(VK_RIGHT))
-			mPosition.x += mSpeed;
+			mPosition.X += mSpeed;
 		if (kbd.KeyIsDown(VK_UP))
-			mPosition.y -= mSpeed;
+			mPosition.Y -= mSpeed;
 		if (kbd.KeyIsDown(VK_DOWN))
-			mPosition.y += mSpeed;
+			mPosition.Y += mSpeed;
 	}
 	else
 	{
 		if (kbd.KeyIsPressed(VK_LEFT))
-			mVelocity.x -= mSpeed;
+			mVelocity.X -= mSpeed;
 		if (kbd.KeyIsPressed(VK_RIGHT))
-			mVelocity.x += mSpeed;
+			mVelocity.X += mSpeed;
 		if (kbd.KeyIsPressed(VK_UP))
-			mVelocity.y -= mSpeed;
+			mVelocity.Y -= mSpeed;
 		if (kbd.KeyIsPressed(VK_DOWN))
-			mVelocity.y += mSpeed;
+			mVelocity.Y += mSpeed;
 	}
 }
 
 void Dude::Draw(Graphics& gfx) const
 {
-	SpriteCodex::DrawDude(mPosition.x, mPosition.y, gfx);
+	SpriteCodex::DrawDude(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), gfx);
 }
 
 void Dude::TogglePlayStyle()
@@ -45,12 +45,12 @@ void Dude::TogglePlayStyle()
 	if (mPlayStyle == PlayStyle::Position)
 	{
 		mPlayStyle = PlayStyle::Velocity;
-		mSpeed = 1;
+		mSpeed = mVelocitySpeed;
 	}
 	else
 	{
 		mPlayStyle = PlayStyle::Position;
-		mSpeed = 5;
+		mSpeed = mPositionSpeed;
 		mVelocity = {};
 	}
 }

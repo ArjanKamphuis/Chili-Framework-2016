@@ -2,35 +2,38 @@
 
 void GameObject::Update()
 {
-	mPosition.x += mVelocity.x;
-	mPosition.y += mVelocity.y;
+	mPosition.X += mVelocity.X;
+	mPosition.Y += mVelocity.Y;
 
-	if (mPosition.x < 0)
-	{
-		mPosition.x = 0;
-		mVelocity.x *= mBouncing ? -1 : 0;
+	float screenWidth = static_cast<float>(Graphics::ScreenWidth);
+	float screenHeight = static_cast<float>(Graphics::ScreenHeight);
 
-	}
-	else if (mPosition.x + mSize >= Graphics::ScreenWidth)
+	if (mPosition.X < 0.0f)
 	{
-		mPosition.x = Graphics::ScreenWidth - mSize - 1;
-		mVelocity.x *= mBouncing ? -1 : 0;
-	}
-
-	if (mPosition.y < 0)
-	{
-		mPosition.y = 0;
-		mVelocity.y *= mBouncing ? -1 : 0;
+		mPosition.X = 0.0f;
+		mVelocity.X *= mBouncing ? -1.0f : 0.0f;
 
 	}
-	else if (mPosition.y + mSize >= Graphics::ScreenHeight)
+	else if (mPosition.X + mSize >= screenWidth)
 	{
-		mPosition.y = Graphics::ScreenHeight - mSize - 1;
-		mVelocity.y *= mBouncing ? -1 : 0;
+		mPosition.X = screenWidth - mSize - 1.0f;
+		mVelocity.X *= mBouncing ? -1.0f : 0.0f;
+	}
+
+	if (mPosition.Y < 0.0f)
+	{
+		mPosition.Y = 0.0f;
+		mVelocity.Y *= mBouncing ? -1.0f : 0.0f;
+
+	}
+	else if (mPosition.Y + mSize >= screenHeight)
+	{
+		mPosition.Y = screenHeight - mSize - 1.0f;
+		mVelocity.Y *= mBouncing ? -1.0f : 0.0f;
 	}
 }
 
-void GameObject::Respawn(int x, int y, int vx, int vy)
+void GameObject::Respawn(float x, float y, float vx, float vy)
 {
 	mPosition = { x, y };
 	mVelocity = { vx, vy };
@@ -38,8 +41,8 @@ void GameObject::Respawn(int x, int y, int vx, int vy)
 
 bool GameObject::OverlapTest(const GameObject& rhs) const
 {
-	int range = (mSize + rhs.GetSize()) / 2;
-	return abs(mPosition.x - rhs.GetPosition().x) <= range && abs(mPosition.y - rhs.GetPosition().y) <= range;
+	float range = 0.5f * (mSize + rhs.GetSize());
+	return abs(mPosition.X - rhs.GetPosition().X) <= range && abs(mPosition.Y - rhs.GetPosition().Y) <= range;
 }
 
 GameObject::Point GameObject::GetPosition() const
@@ -47,12 +50,12 @@ GameObject::Point GameObject::GetPosition() const
 	return mPosition;
 }
 
-int GameObject::GetSize() const
+float GameObject::GetSize() const
 {
 	return mSize;
 }
 
-GameObject::GameObject(int size)
+GameObject::GameObject(float size)
 	: mSize(size)
 {
 }

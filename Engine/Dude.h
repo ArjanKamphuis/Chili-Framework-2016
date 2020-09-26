@@ -19,6 +19,9 @@ private:
 
 private:
 	PlayStyle mPlayStyle = PlayStyle::Position;
-	int mSpeed = 5;
+
+	static constexpr float mVelocitySpeed = 1.0f;
+	static constexpr float mPositionSpeed = 5.0f;
+	float mSpeed = mPositionSpeed;
 };
 

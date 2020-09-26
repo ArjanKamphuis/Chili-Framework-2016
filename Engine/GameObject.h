@@ -8,8 +8,8 @@ class GameObject
 public:
 	struct Point
 	{
-		int x = 0;
-		int y = 0;
+		float X = 0.0f;
+		float Y = 0.0f;
 	};
 
 public:
@@ -20,19 +20,19 @@ public:
 
 	virtual void Update();
 	virtual void Draw(Graphics& gfx) const = 0;
-	virtual void Respawn(int x, int y, int vx = 0, int vy = 0);
+	virtual void Respawn(float x, float y, float vx = 0.0f, float vy = 0.0f);
 	bool OverlapTest(const GameObject& rhs) const;
 
 	Point GetPosition() const;
-	int GetSize() const;
+	float GetSize() const;
 
 protected:
-	GameObject(int size);
+	GameObject(float size);
 
 protected:
 	Point mPosition = {};
 	Point mVelocity = {};
-	int mSize = 25;
+	float mSize = 25;
 	bool mBouncing = true;
 };
 

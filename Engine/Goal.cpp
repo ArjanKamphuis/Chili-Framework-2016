@@ -25,5 +25,6 @@ void Goal::Update()
 
 void Goal::Draw(Graphics& gfx) const
 {
-	gfx.DrawRectDim(mPosition.x, mPosition.y, mSize, mSize, Color(mR, mGB, mGB));
+	int size = static_cast<int>(mSize);
+	gfx.DrawRectDim(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), size, size, Color(mR, mGB, mGB));
 }

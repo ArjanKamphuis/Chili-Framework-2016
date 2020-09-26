@@ -161,8 +161,8 @@ private:
 private:
 	UINT32 nBytes = 0u;
 	bool looping = false;
-	unsigned int loopStart;
-	unsigned int loopEnd;
+	unsigned int loopStart = 0;
+	unsigned int loopEnd = 0;
 	std::unique_ptr<BYTE[]> pData;
 	std::mutex mutex;
 	std::condition_variable cvDeath;
