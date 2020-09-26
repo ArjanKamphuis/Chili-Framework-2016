@@ -21,9 +21,14 @@
 #pragma once
 
 #include <random>
+#include <unordered_map>
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Poo.h"
+#include "Dude.h"
+#include "Goal.h"
+#include "Meter.h"
 
 class Game
 {
@@ -37,12 +42,26 @@ private:
 	void ComposeFrame();
 	/********************************/
 	/*  User Functions              */
+	void Restart();
+
+	void DrawGameOver(int x, int y);
+	void DrawTitleScreen(int x, int y);
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	std::random_device mRandomDevice;
 	std::mt19937 mRng;
+	std::unordered_map<std::wstring, std::uniform_int_distribution<int>> mRandoms;
+
+	bool mIsStarted = false;
+	bool mIsGameOver = false;
+	Dude mDude = {};
+	Meter mMeter;
+	static constexpr int mNumPoos = 25;
+	Poo mPoos[mNumPoos] = {};
+	Goal mGoal = {};
 	/********************************/
 };
