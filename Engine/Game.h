@@ -43,9 +43,6 @@ private:
 	/********************************/
 	/*  User Functions              */
 	void Restart();
-
-	void DrawGameOver(int x, int y);
-	void DrawTitleScreen(int x, int y);
 	/********************************/
 private:
 	MainWindow& wnd;
