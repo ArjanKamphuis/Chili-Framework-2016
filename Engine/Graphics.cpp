@@ -244,8 +244,8 @@ void Graphics::DrawCircle(int xCenter, int yCenter, int radius, Color c, int inn
 {
 	assert(xCenter - radius >= 0);
 	assert(yCenter - radius >= 0);
-	assert(xCenter + radius < Graphics::ScreenWidth);
-	assert(yCenter + radius < Graphics::ScreenHeight);
+	assert(xCenter + radius < Graphics::ScreenWidth + 1);
+	assert(yCenter + radius < Graphics::ScreenHeight + 1);
 
 	const int radiusSquared = radius * radius;
 	const int innerRadiusSquared = innerRadius * innerRadius;
