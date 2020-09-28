@@ -42,6 +42,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = mFT.Mark();
+
 	if (mIsStarted)
 	{
 		if (wnd.kbd.KeyIsPressed('R'))

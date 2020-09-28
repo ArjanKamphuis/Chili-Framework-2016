@@ -30,6 +30,7 @@
 #include "Goal.h"
 #include "Meter.h"
 #include "SoundEffect.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -52,6 +53,8 @@ private:
 	/*  User Variables              */
 	std::mt19937 mRng;
 	std::unordered_map<std::wstring, std::uniform_real_distribution<float>> mRandoms;
+
+	FrameTimer mFT = {};
 
 	bool mIsStarted = false;
 	bool mIsGameOver = false;
