@@ -5,7 +5,7 @@ Goal::Goal()
 {
 }
 
-void Goal::Update()
+void Goal::Update(float dt)
 {
 	if (mColorIncrease)
 	{

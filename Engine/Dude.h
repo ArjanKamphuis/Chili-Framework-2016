@@ -11,7 +11,7 @@ public:
 	Dude();
 	~Dude() = default;
 
-	void HandleInput(Keyboard& kbd, float dt);
+	void HandleInput(Keyboard& kbd);
 	void Draw(Graphics& gfx) const;
 
 private:

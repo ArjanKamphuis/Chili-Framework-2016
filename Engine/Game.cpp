@@ -51,10 +51,10 @@ void Game::UpdateModel()
 		
 		if (!mIsGameOver)
 		{
-			mDude.HandleInput(wnd.kbd, dt);
+			mDude.HandleInput(wnd.kbd);
 			mDude.Update(dt);
 
-			mGoal.Update();
+			mGoal.Update(dt);
 			if (mGoal.OverlapTest(mDude))
 			{
 				mMeter.IncreaseLevel();

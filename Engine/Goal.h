@@ -9,7 +9,7 @@ public:
 	Goal();
 	~Goal() = default;
 
-	void Update();
+	void Update(float dt) override;
 	void Draw(Graphics& gfx) const;
 
 private:
