@@ -2,8 +2,9 @@
 
 #include "GameObject.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
-enum class PlayStyle { Position, Velocity };
+enum class PlayStyle { Position, Velocity, Mouse };
 
 class Dude : public GameObject
 {
@@ -11,11 +12,11 @@ public:
 	Dude();
 	~Dude() = default;
 
-	void HandleInput(Keyboard& kbd);
+	void HandleInput(Keyboard& kbd, const Mouse& mouse);
 	void Draw(Graphics& gfx) const;
 
 private:
-	void TogglePlayStyle();
+	void ChangePlayStyle(PlayStyle style);
 
 private:
 	PlayStyle mPlayStyle = PlayStyle::Position;

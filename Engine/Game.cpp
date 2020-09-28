@@ -51,7 +51,7 @@ void Game::UpdateModel()
 		
 		if (!mIsGameOver)
 		{
-			mDude.HandleInput(wnd.kbd);
+			mDude.HandleInput(wnd.kbd, wnd.mouse);
 			mDude.Update(dt);
 
 			mGoal.Update(dt);
