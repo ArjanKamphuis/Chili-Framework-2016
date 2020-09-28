@@ -24,6 +24,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "FrameTimer.h"
 #include "Board.h"
 #include "Snake.h"
 #include "Goal.h"
@@ -49,17 +50,22 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
+	FrameTimer mFT = {};
 	
 	Board mBrd;
 	Snake mSnek;
 	Goal mGoal;
 	Location mDeltaLoc = { 1, 0 };
 
-	static constexpr int mSnekMovePeriodMin = 4;
-	int mSnekMovePeriod = 20;
-	int mSnekMoveCounter = 0;
-	static constexpr int mSnekSpeedupPeriod = 180;
-	int mSnekSpeedupCounter = 0;
+	static constexpr float mSnekMovePeriodMin = 0.07f;
+	static constexpr float mSnekSpeedupFactor = 0.005f;
+	float mSnekMovePeriod = 0.4f;
+	float mSnekMoveCounter = 0.0f;
+
+	static constexpr float mObstacleSpawnPeriodMin = 2.0f;
+	static constexpr float mObstacleSpawnSpeedupFactor = 0.05f;
+	float mObstacleSpawnPeriod = 10.0f;
+	float mObstacleSpawnCounter = 0.0f;
 
 	static constexpr int mMaxObstacles = 100;
 	int mNumObstacles = 0;

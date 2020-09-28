@@ -37,6 +37,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = mFT.Mark();
+
 	if (!mStarted)
 	{
 		mStarted = wnd.kbd.KeyIsPressed(VK_RETURN);
@@ -59,10 +61,10 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		mDeltaLoc.SetLocation(0, 1);
 
-	++mSnekMoveCounter;
+	mSnekMoveCounter += dt;
 	if (mSnekMoveCounter >= mSnekMovePeriod)
 	{
-		mSnekMoveCounter = 0;
+		mSnekMoveCounter -= mSnekMovePeriod;
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
 
 		for (int i = 0; i < mNumObstacles; ++i)
@@ -87,14 +89,15 @@ void Game::UpdateModel()
 		}
 	}
 
-	++mSnekSpeedupCounter;
-	if (mSnekSpeedupCounter >= mSnekSpeedupPeriod)
+	mObstacleSpawnCounter += dt;
+	if (mObstacleSpawnCounter >= mObstacleSpawnPeriod)
 	{
-		mSnekSpeedupCounter = 0;
-		mSnekMovePeriod = std::max(mSnekMovePeriod - 1, mSnekMovePeriodMin);
-
+		mObstacleSpawnCounter -= mObstacleSpawnPeriod;
 		mObstacles[mNumObstacles++].Spawn(mRng, mBrd, mSnek, mGoal.GetLocation());
 	}
+
+	mSnekMovePeriod = std::max(mSnekMovePeriod - dt * mSnekSpeedupFactor, mSnekMovePeriodMin);
+	mObstacleSpawnPeriod = std::max(mObstacleSpawnPeriod - dt * mObstacleSpawnSpeedupFactor, mObstacleSpawnPeriodMin);
 }
 
 void Game::ComposeFrame()
@@ -120,9 +123,10 @@ void Game::ComposeFrame()
 void Game::Restart()
 {
 	mNumObstacles = 0;
-	mSnekMovePeriod = 20;
-	mSnekMoveCounter = 0;
-	mSnekSpeedupCounter = 0;
+	mSnekMovePeriod = 0.4f;
+	mSnekMoveCounter = 0.0f;
+	mObstacleSpawnPeriod = 10.0f;
+	mObstacleSpawnCounter = 0.0f;
 	mDeltaLoc = { 1, 0 };
 
 	mSnek.Reset(Location(2, 2));
