@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
-void GameObject::Update()
+void GameObject::Update(float dt)
 {
-	mPosition.X += mVelocity.X;
-	mPosition.Y += mVelocity.Y;
+	mPosition.X += mVelocity.X * dt;
+	mPosition.Y += mVelocity.Y * dt;
 
 	float screenWidth = static_cast<float>(Graphics::ScreenWidth);
 	float screenHeight = static_cast<float>(Graphics::ScreenHeight);

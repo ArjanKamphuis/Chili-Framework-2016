@@ -18,7 +18,7 @@ public:
 	GameObject& operator=(const GameObject& rhs) = delete;
 	virtual ~GameObject() = default;
 
-	virtual void Update();
+	virtual void Update(float dt);
 	virtual void Draw(Graphics& gfx) const = 0;
 	virtual void Respawn(float x, float y, float vx = 0.0f, float vy = 0.0f);
 	bool OverlapTest(const GameObject& rhs) const;

@@ -27,14 +27,14 @@ Game::Game( MainWindow& wnd )
 {
 	mRandoms[L"xDist"] = std::uniform_real_distribution<float>(0.0f, static_cast<float>(gfx.ScreenWidth) - mPoos->GetSize());
 	mRandoms[L"yDist"] = std::uniform_real_distribution<float>(0.0f, static_cast<float>(gfx.ScreenHeight) - mPoos->GetSize());
-	mRandoms[L"speed"] = std::uniform_real_distribution<float>(-2.5f, 2.5f);
+	mRandoms[L"speed"] = std::uniform_real_distribution<float>(-150.0f, 150.0f);
 
 	Restart();
 }
 
 void Game::Go()
 {
-	gfx.BeginFrame();	
+	gfx.BeginFrame();
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
@@ -51,8 +51,8 @@ void Game::UpdateModel()
 		
 		if (!mIsGameOver)
 		{
-			mDude.HandleInput(wnd.kbd);
-			mDude.Update();
+			mDude.HandleInput(wnd.kbd, dt);
+			mDude.Update(dt);
 
 			mGoal.Update();
 			if (mGoal.OverlapTest(mDude))
@@ -64,7 +64,7 @@ void Game::UpdateModel()
 
 			for (Poo& poo : mPoos)
 			{
-				poo.Update();
+				poo.Update(dt);
 				if (poo.OverlapTest(mDude))
 				{
 					mIsGameOver = true;

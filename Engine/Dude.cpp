@@ -6,7 +6,7 @@ Dude::Dude()
 {
 }
 
-void Dude::HandleInput(Keyboard& kbd)
+void Dude::HandleInput(Keyboard& kbd, float dt)
 {
 	if (kbd.KeyIsPressed('Z'))
 		TogglePlayStyle();
@@ -14,13 +14,13 @@ void Dude::HandleInput(Keyboard& kbd)
 	if (mPlayStyle == PlayStyle::Position)
 	{
 		if (kbd.KeyIsDown(VK_LEFT))
-			mPosition.X -= mSpeed;
+			mPosition.X -= mSpeed * dt;
 		if (kbd.KeyIsDown(VK_RIGHT))
-			mPosition.X += mSpeed;
+			mPosition.X += mSpeed * dt;
 		if (kbd.KeyIsDown(VK_UP))
-			mPosition.Y -= mSpeed;
+			mPosition.Y -= mSpeed * dt;
 		if (kbd.KeyIsDown(VK_DOWN))
-			mPosition.Y += mSpeed;
+			mPosition.Y += mSpeed * dt;
 	}
 	else
 	{

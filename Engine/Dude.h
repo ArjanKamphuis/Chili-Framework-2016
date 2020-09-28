@@ -11,7 +11,7 @@ public:
 	Dude();
 	~Dude() = default;
 
-	void HandleInput(Keyboard& kbd);
+	void HandleInput(Keyboard& kbd, float dt);
 	void Draw(Graphics& gfx) const;
 
 private:
@@ -20,8 +20,8 @@ private:
 private:
 	PlayStyle mPlayStyle = PlayStyle::Position;
 
-	static constexpr float mVelocitySpeed = 1.0f;
-	static constexpr float mPositionSpeed = 5.0f;
+	static constexpr float mVelocitySpeed = 60.0f;
+	static constexpr float mPositionSpeed = 300.0f;
 	float mSpeed = mPositionSpeed;
 };
 
