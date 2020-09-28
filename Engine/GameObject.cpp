@@ -2,8 +2,7 @@
 
 void GameObject::Update(float dt)
 {
-	mPosition.X += mVelocity.X * dt;
-	mPosition.Y += mVelocity.Y * dt;
+	mPosition += mVelocity * dt;
 
 	float screenWidth = static_cast<float>(Graphics::ScreenWidth);
 	float screenHeight = static_cast<float>(Graphics::ScreenHeight);
@@ -33,10 +32,10 @@ void GameObject::Update(float dt)
 	}
 }
 
-void GameObject::Respawn(float x, float y, float vx, float vy)
+void GameObject::Respawn(const Vec2& pos, const Vec2& vel)
 {
-	mPosition = { x, y };
-	mVelocity = { vx, vy };
+	mPosition = pos;
+	mVelocity = vel;
 }
 
 bool GameObject::OverlapTest(const GameObject& rhs) const
@@ -45,7 +44,7 @@ bool GameObject::OverlapTest(const GameObject& rhs) const
 	return abs(mPosition.X - rhs.GetPosition().X) <= range && abs(mPosition.Y - rhs.GetPosition().Y) <= range;
 }
 
-GameObject::Point GameObject::GetPosition() const
+Vec2 GameObject::GetPosition() const
 {
 	return mPosition;
 }

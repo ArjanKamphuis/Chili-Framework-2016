@@ -53,6 +53,5 @@ void Dude::TogglePlayStyle()
 	{
 		mPlayStyle = PlayStyle::Position;
 		mSpeed = mPositionSpeed;
-		mVelocity = {};
 	}
 }

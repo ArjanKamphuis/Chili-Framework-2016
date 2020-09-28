@@ -2,16 +2,10 @@
 
 #include <math.h>
 #include "Graphics.h"
+#include "Vec2.h"
 
 class GameObject
 {
-public:
-	struct Point
-	{
-		float X = 0.0f;
-		float Y = 0.0f;
-	};
-
 public:
 	GameObject() = default;
 	GameObject(const GameObject& rhs) = delete;
@@ -20,18 +14,18 @@ public:
 
 	virtual void Update(float dt);
 	virtual void Draw(Graphics& gfx) const = 0;
-	virtual void Respawn(float x, float y, float vx = 0.0f, float vy = 0.0f);
+	virtual void Respawn(const Vec2& pos, const Vec2& vel = {});
 	bool OverlapTest(const GameObject& rhs) const;
 
-	Point GetPosition() const;
+	Vec2 GetPosition() const;
 	float GetSize() const;
 
 protected:
 	GameObject(float size);
 
 protected:
-	Point mPosition = {};
-	Point mVelocity = {};
+	Vec2 mPosition = {};
+	Vec2 mVelocity = {};
 	float mSize = 25;
 	bool mBouncing = true;
 };

@@ -58,7 +58,7 @@ void Game::UpdateModel()
 			if (mGoal.OverlapTest(mDude))
 			{
 				mMeter.IncreaseLevel();
-				mGoal.Respawn(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng));
+				mGoal.Respawn(Vec2(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng)));
 				mPickupSound.Play(mRng);
 			}
 
@@ -101,12 +101,12 @@ void Game::Restart()
 {
 	mIsGameOver = false;
 
-	mDude.Respawn(400.0f, 300.0f);
-	mGoal.Respawn(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng));
+	mDude.Respawn(Vec2(400.0f, 300.0f));
+	mGoal.Respawn(Vec2(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng)));
 	mMeter.ResetLevel();
 
 	for (Poo& poo : mPoos)
-		poo.Respawn(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng), mRandoms[L"speed"](mRng), mRandoms[L"speed"](mRng));
+		poo.Respawn(Vec2(mRandoms[L"xDist"](mRng), mRandoms[L"yDist"](mRng)), Vec2(mRandoms[L"speed"](mRng), mRandoms[L"speed"](mRng)));
 
 	mTitleSound.StopAll();
 	mTitleSound.Play();
