@@ -12,7 +12,7 @@ public:
 	Vec2 operator*(float rhs) const;
 	Vec2& operator*=(float rhs);
 
-private:
-	float mX = 0.0f;
-	float mY = 0.0f;
+public:
+	float X = 0.0f;
+	float Y = 0.0f;
 };
