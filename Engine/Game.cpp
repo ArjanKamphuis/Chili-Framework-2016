@@ -84,8 +84,6 @@ void Game::ComposeFrame()
 		SpriteCodex::DrawTitle(325, 211, gfx);
 	else
 	{
-		gfx.DrawCircle(400, 300, 100, Colors::Blue, 50);
-
 		mGoal.Draw(gfx);
 		for (const Poo& poo : mPoos)
 			poo.Draw(gfx);
