@@ -10,7 +10,7 @@ class Brick
 public:
 	Brick(const RectF& rect, Color c);
 
-	void Draw(Graphics& gfx);
+	void Draw(Graphics& gfx) const;
 
 	bool DoBallCollision(Ball& ball);
 

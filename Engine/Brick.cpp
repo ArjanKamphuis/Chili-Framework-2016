@@ -6,7 +6,7 @@ Brick::Brick(const RectF& rect, Color c)
 	mColor = c;
 }
 
-void Brick::Draw(Graphics& gfx)
+void Brick::Draw(Graphics& gfx) const
 {
 	if (!mDestroyed)
 		gfx.DrawRect(mRect, mColor);
