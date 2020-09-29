@@ -26,6 +26,7 @@
 #include "Graphics.h"
 #include "FrameTimer.h"
 #include "Ball.h"
+#include "Sound.h"
 
 class Game
 {
@@ -50,5 +51,7 @@ private:
 
 	Ball mBall;
 	RectF mWalls;
+
+	Sound mPaddingSound;
 	/********************************/
 };
