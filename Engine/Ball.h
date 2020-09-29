@@ -11,6 +11,12 @@ public:
 	void Draw(Graphics& gfx);
 	void Update(float dt);
 
+	bool DoWallCollision(const RectF& walls);
+	void ReboundX();
+	void ReboundY();
+
+	RectF GetRect() const;
+
 private:
 	static constexpr float mRadius = 7.0f;
 	Vec2 mPosition;

@@ -22,7 +22,9 @@
 #include "Game.h"
 
 Game::Game( MainWindow& wnd )
-	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), ball(Vec2(100.0f, 100.0f), Vec2(100.0f, 100.0f))
+	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
+	, mBall(Vec2(100.0f, 100.0f), Vec2(300.0f, 300.0f))
+	, mWalls(0.0f, static_cast<float>(Graphics::ScreenWidth), 0.0f, static_cast<float>(Graphics::ScreenHeight))
 {
 }
 
@@ -37,10 +39,11 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	const float dt = mFT.Mark();
-	ball.Update(dt);
+	mBall.Update(dt);
+	mBall.DoWallCollision(mWalls);
 }
 
 void Game::ComposeFrame()
 {
-	ball.Draw(gfx);
+	mBall.Draw(gfx);
 }

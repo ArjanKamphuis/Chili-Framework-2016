@@ -48,6 +48,7 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFT = {};
 
-	Ball ball;
+	Ball mBall;
+	RectF mWalls;
 	/********************************/
 };
