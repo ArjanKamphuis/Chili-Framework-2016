@@ -25,6 +25,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
+#include "Ball.h"
 
 class Game
 {
@@ -45,6 +46,8 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
-	FrameTimer mFt = {};
+	FrameTimer mFT = {};
+
+	Ball ball;
 	/********************************/
 };

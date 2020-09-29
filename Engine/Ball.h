@@ -9,6 +9,7 @@ public:
 	Ball(const Vec2& pos, const Vec2& vel);
 
 	void Draw(Graphics& gfx);
+	void Update(float dt);
 
 private:
 	static constexpr float mRadius = 7.0f;
