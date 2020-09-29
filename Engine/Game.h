@@ -33,9 +33,9 @@
 class Game
 {
 public:
-	Game( class MainWindow& wnd );
-	Game( const Game& ) = delete;
-	Game& operator=( const Game& ) = delete;
+	Game(class MainWindow& wnd);
+	Game(const Game&) = delete;
+	Game& operator=(const Game&) = delete;
 	void Go();
 private:
 	void UpdateModel();
@@ -51,9 +51,15 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFT = {};
 
+	static constexpr float mBrickWidth = 40.0f;
+	static constexpr float mBrickHeight = 24.0f;
+	static constexpr int mNumBricksAcross = 12;
+	static constexpr int mNumBricksDown = 4;
+	static constexpr int mNumBricks = mNumBricksAcross * mNumBricksDown;
+
 	Ball mBall;
 	RectF mWalls;
-	Brick mBrick;
+	Brick mBricks[mNumBricks];
 	Paddle mPaddle;
 
 	Sound mSoundPad;
