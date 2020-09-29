@@ -7,7 +7,7 @@ Ball::Ball(const Vec2& pos, const Vec2& vel)
 {
 }
 
-void Ball::Draw(Graphics& gfx)
+void Ball::Draw(Graphics& gfx) const
 {
 	SpriteCodex::DrawBall(mPosition, gfx);
 }
@@ -63,4 +63,9 @@ void Ball::ReboundY()
 RectF Ball::GetRect() const
 {
 	return RectF::FromCenter(mPosition, mRadius, mRadius);
+}
+
+Vec2 Ball::GetVelocity() const
+{
+	return mVelocity;
 }
