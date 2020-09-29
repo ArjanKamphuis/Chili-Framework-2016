@@ -30,7 +30,7 @@ Game::Game( MainWindow& wnd )
 	, mSoundBrick(L"Sounds/arkbrick.wav")
 {
 	const Color colors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
-	const Vec2 topLeft;
+	const Vec2 topLeft(40.0f, 40.0f);
 
 	for (int y = 0; y < mNumBricksDown; ++y)
 	{

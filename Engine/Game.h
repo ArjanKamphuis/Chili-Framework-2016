@@ -49,11 +49,11 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
-	FrameTimer mFT = {};
+	FrameTimer mFT;
 
 	static constexpr float mBrickWidth = 40.0f;
 	static constexpr float mBrickHeight = 24.0f;
-	static constexpr int mNumBricksAcross = 12;
+	static constexpr int mNumBricksAcross = 18;
 	static constexpr int mNumBricksDown = 4;
 	static constexpr int mNumBricks = mNumBricksAcross * mNumBricksDown;
 
