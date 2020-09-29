@@ -23,9 +23,11 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mBall(Vec2(100.0f, 100.0f), Vec2(300.0f, 300.0f))
+	, mBall(Vec2(300.0f, 300.0f), Vec2(300.0f, 300.0f))
 	, mWalls(0.0f, static_cast<float>(Graphics::ScreenWidth), 0.0f, static_cast<float>(Graphics::ScreenHeight))
-	, mPaddingSound(L"Sounds/arkpad.wav")
+	, mBrick(RectF(450.0f, 550.0f, 485.0f, 515.0f), Colors::Red)
+	, mSoundPad(L"Sounds/arkpad.wav")
+	, mSoundBrick(L"Sounds/arkbrick.wav")
 {
 }
 
@@ -41,11 +43,18 @@ void Game::UpdateModel()
 {
 	const float dt = mFT.Mark();
 	mBall.Update(dt);
+
+	if (mBrick.DoBallCollision(mBall))
+	{
+		mSoundBrick.Play();
+	}
+
 	if (mBall.DoWallCollision(mWalls))
-		mPaddingSound.Play();
+		mSoundPad.Play();
 }
 
 void Game::ComposeFrame()
 {
 	mBall.Draw(gfx);
+	mBrick.Draw(gfx);
 }

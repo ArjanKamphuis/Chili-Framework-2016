@@ -25,8 +25,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
-#include "Ball.h"
 #include "Sound.h"
+#include "Ball.h"
+#include "Brick.h"
 
 class Game
 {
@@ -51,7 +52,9 @@ private:
 
 	Ball mBall;
 	RectF mWalls;
+	Brick mBrick;
 
-	Sound mPaddingSound;
+	Sound mSoundPad;
+	Sound mSoundBrick;
 	/********************************/
 };
