@@ -73,6 +73,7 @@ void Game::UpdateModel()
 
 	if (colIndex >= 0)
 	{
+		mPaddle.ResetCooldown();
 		mBricks[colIndex].ExecuteBallCollision(mBall);
 		mSoundBrick.Play();
 	}
@@ -81,7 +82,10 @@ void Game::UpdateModel()
 		mSoundPad.Play();
 
 	if (mBall.DoWallCollision(mWalls))
+	{
+		mPaddle.ResetCooldown();
 		mSoundPad.Play();
+	}
 }
 
 void Game::ComposeFrame()

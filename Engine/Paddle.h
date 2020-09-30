@@ -15,8 +15,9 @@ public:
 	void Draw(Graphics& gfx) const;
 	void Update(Keyboard& kbd, float dt);
 
-	bool DoBallCollision(Ball& ball) const;
+	bool DoBallCollision(Ball& ball);
 	void DoWallCollision(const RectF& walls);
+	void ResetCooldown();
 
 	RectF GetRect() const;
 
@@ -28,5 +29,6 @@ private:
 	float mHalfWidth;
 	float mHalfHeight;
 	Vec2 mPosition;
+	bool mIsOnCooldown = false;
 };
 

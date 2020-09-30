@@ -25,8 +25,11 @@ void Paddle::Update(Keyboard& kbd, float dt)
 		mPosition.X += mSpeed * dt;
 }
 
-bool Paddle::DoBallCollision(Ball& ball) const
+bool Paddle::DoBallCollision(Ball& ball)
 {
+	if (mIsOnCooldown)
+		return false;
+
 	const RectF rect = GetRect();
 	if (rect.IsOverlappingWith(ball.GetRect()))
 	{
@@ -37,6 +40,8 @@ bool Paddle::DoBallCollision(Ball& ball) const
 			ball.ReboundY();
 		else
 			ball.ReboundX();
+
+		mIsOnCooldown = true;
 		return true;
 	}
 	return false;
@@ -49,6 +54,11 @@ void Paddle::DoWallCollision(const RectF& walls)
 		mPosition.X += walls.Left - rect.Left;
 	else if (rect.Right > walls.Right)
 		mPosition.X -= rect.Right - walls.Right;
+}
+
+void Paddle::ResetCooldown()
+{
+	mIsOnCooldown = false;
 }
 
 RectF Paddle::GetRect() const
