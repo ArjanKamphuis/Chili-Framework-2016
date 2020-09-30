@@ -1,6 +1,7 @@
 #include "Brick.h"
 
 #include <assert.h>
+#include <cmath>
 
 Brick::Brick(const RectF& rect, Color c)
 {
@@ -25,7 +26,9 @@ void Brick::ExecuteBallCollision(Ball& ball)
 	assert(CheckBallCollision(ball));
 
 	const Vec2 ballPos = ball.GetPosition();
-	if (ballPos.X >= mRect.Left && ballPos.X <= mRect.Right)
+	if (std::signbit(ball.GetVelocity().X) == std::signbit((ballPos - GetCenter()).X))
+		ball.ReboundY();
+	else if (ballPos.X >= mRect.Left && ballPos.X <= mRect.Right)
 		ball.ReboundY();
 	else
 		ball.ReboundX();
