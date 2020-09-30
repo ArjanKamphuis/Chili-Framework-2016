@@ -23,7 +23,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mBall(Vec2(300.0f, 300.0f), Vec2(300.0f, 300.0f))
+	, mBall(Vec2(324.0f, 300.0f), Vec2(-300.0f, -300.0f))
 	, mWalls(0.0f, static_cast<float>(Graphics::ScreenWidth), 0.0f, static_cast<float>(Graphics::ScreenHeight))
 	, mPaddle(Vec2(400.0f, 500.0f), 50.0f, 15.0f)
 	, mSoundPad(L"Sounds/arkpad.wav")
@@ -56,13 +56,25 @@ void Game::UpdateModel()
 	mPaddle.DoWallCollision(mWalls);
 	mBall.Update(dt);
 
-	for (Brick& b : mBricks)
+	float colDistSq = FLT_MAX;
+	int colIndex = -1;
+	for (int i = 0; i < mNumBricks; ++i)
 	{
-		if (b.DoBallCollision(mBall))
+		if (mBricks[i].CheckBallCollision(mBall))
 		{
-			mSoundBrick.Play();
-			break;
+			const float distanceSq = (mBall.GetPosition() - mBricks[i].GetCenter()).GetLengthSq();
+			if (distanceSq < colDistSq)
+			{
+				colDistSq = distanceSq;
+				colIndex = i;
+			}
 		}
+	}
+
+	if (colIndex >= 0)
+	{
+		mBricks[colIndex].ExecuteBallCollision(mBall);
+		mSoundBrick.Play();
 	}
 
 	if (mPaddle.DoBallCollision(mBall))

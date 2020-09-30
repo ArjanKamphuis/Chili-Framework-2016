@@ -14,6 +14,7 @@ public:
 
 	bool IsOverlappingWith(const RectF& other) const;
 	RectF GetExpanded(float offset) const;
+	Vec2 GetCenter() const;
 
 public:
 	float Left = 0.0f;
