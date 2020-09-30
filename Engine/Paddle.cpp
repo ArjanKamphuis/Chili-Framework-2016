@@ -1,5 +1,7 @@
 #include "Paddle.h"
 
+#include <cmath>
+
 Paddle::Paddle(const Vec2& pos, float halfWidth, float halfHeight)
 	: mPosition(pos), mHalfWidth(halfWidth), mHalfHeight(halfHeight)
 {
@@ -25,9 +27,16 @@ void Paddle::Update(Keyboard& kbd, float dt)
 
 bool Paddle::DoBallCollision(Ball& ball) const
 {
-	if (ball.GetVelocity().Y > 0.0f && GetRect().IsOverlappingWith(ball.GetRect()))
+	const RectF rect = GetRect();
+	if (rect.IsOverlappingWith(ball.GetRect()))
 	{
-		ball.ReboundY();
+		const Vec2 ballPos = ball.GetPosition();
+		if (std::signbit(ball.GetVelocity().X) == std::signbit((ballPos - mPosition).X))
+			ball.ReboundY();
+		else if (ballPos.X >= rect.Left && ballPos.X <= rect.Right)
+			ball.ReboundY();
+		else
+			ball.ReboundX();
 		return true;
 	}
 	return false;
