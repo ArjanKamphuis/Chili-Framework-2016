@@ -22,5 +22,5 @@ private:
 	static constexpr float mPadding = 1.0f;
 	RectF mRect;
 	Color mColor;
-	bool mDestroyed = false;
+	bool mDestroyed = true;
 };

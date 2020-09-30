@@ -6,6 +6,7 @@ Brick::Brick(const RectF& rect, Color c)
 {
 	mRect = rect;
 	mColor = c;
+	mDestroyed = false;
 }
 
 void Brick::Draw(Graphics& gfx) const
