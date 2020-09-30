@@ -17,6 +17,7 @@ public:
 
 	RectF GetRect() const;
 	Vec2 GetVelocity() const;
+	Vec2 GetPosition() const;
 
 private:
 	static constexpr float mRadius = 7.0f;
