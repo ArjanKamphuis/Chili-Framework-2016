@@ -26,6 +26,11 @@ bool RectF::IsOverlappingWith(const RectF& other) const
 	return Right > other.Left && Left < other.Right && Bottom > other.Top && Top < other.Bottom;
 }
 
+bool RectF::IsContainedBy(const RectF& other) const
+{
+	return Left >= other.Left && Right <= other.Right && Top >= other.Top && Bottom <= other.Bottom;
+}
+
 RectF RectF::GetExpanded(float offset) const
 {
 	return RectF(Left - offset, Right + offset, Top - offset, Bottom + offset);
