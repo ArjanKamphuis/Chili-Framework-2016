@@ -17,37 +17,37 @@ void Ball::Update(float dt)
 	mPosition += mVelocity * dt;
 }
 
-bool Ball::DoWallCollision(const RectF& walls)
+int Ball::DoWallCollision(const RectF& walls)
 {
-	bool collided = false;
+	int collisionResult = 0;
 	const RectF rect = GetRect();
 
 	if (rect.Left < walls.Left)
 	{
 		mPosition.X += walls.Left - rect.Left;
 		ReboundX();
-		collided = true;
+		collisionResult = 1;
 	}
 	else if (rect.Right > walls.Right)
 	{
 		mPosition.X -= rect.Right - walls.Right;
 		ReboundX();
-		collided = true;
+		collisionResult = 1;
 	}
 	if (rect.Top < walls.Top)
 	{
 		mPosition.Y += walls.Top - rect.Top;
 		ReboundY();
-		collided = true;
+		collisionResult = 1;
 	}
 	else if (rect.Bottom > walls.Bottom)
 	{
 		mPosition.Y -= rect.Bottom - walls.Bottom;
 		ReboundY();
-		collided = true;
+		collisionResult = 2;
 	}
 
-	return collided;
+	return collisionResult;
 }
 
 void Ball::ReboundX()

@@ -63,6 +63,8 @@ private:
 	Brick mBricks[mNumBricks];
 	Paddle mPaddle;
 
+	bool mGameover = false;
+
 	std::unordered_map<std::wstring, Sound> mSounds;
 	/********************************/
 };

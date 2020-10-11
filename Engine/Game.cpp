@@ -58,6 +58,9 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
+	if (mGameover)
+		return;
+
 	mPaddle.Update(wnd.kbd, dt);
 	mPaddle.DoWallCollision(mWalls);
 	mBall.Update(dt);
@@ -87,17 +90,27 @@ void Game::UpdateModel(float dt)
 	if (mPaddle.DoBallCollision(mBall))
 		mSounds[L"pad"].Play();
 
-	if (mBall.DoWallCollision(mWalls))
+	const int ballWallCollisionResult = mBall.DoWallCollision(mWalls);
+	if (ballWallCollisionResult == 1)
 	{
 		mPaddle.ResetCooldown();
 		mSounds[L"pad"].Play();
+	}
+	else if (ballWallCollisionResult == 2)
+	{
+		mGameover = true;
+		mSounds[L"gameover"].Play();
 	}
 }
 
 void Game::ComposeFrame()
 {
-	mBall.Draw(gfx);
+	if (!mGameover)
+	{
+		mBall.Draw(gfx);
+		mPaddle.Draw(gfx);
+	}
+
 	for (const Brick& b : mBricks)
 		b.Draw(gfx);
-	mPaddle.Draw(gfx);
 }

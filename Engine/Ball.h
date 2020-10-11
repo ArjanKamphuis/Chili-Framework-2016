@@ -11,7 +11,9 @@ public:
 	void Draw(Graphics& gfx) const;
 	void Update(float dt);
 
-	bool DoWallCollision(const RectF& walls);
+	// 0-Nothing, 1-Wall, 2-Bottom
+	int DoWallCollision(const RectF& walls);
+
 	void ReboundX();
 	void ReboundY();
 
