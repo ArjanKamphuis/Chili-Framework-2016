@@ -22,12 +22,20 @@ public:
 	RectF GetRect() const;
 
 private:
+	static constexpr Color mWingColor = Colors::Red;
+	static constexpr Color mColor = Colors::White;
 	static constexpr float mWingWidth = 18.0f;
-	Color mWingColor = Colors::Red;
-	Color mColor = Colors::White;
-	float mSpeed = 300.0f;
+	static constexpr float mSpeed = 300.0f;
+	static constexpr float mMaxmimumExitRatio = 2.6f;
+	static constexpr float mFixedZoneWidthRatio = 0.2f;
+
 	float mHalfWidth;
 	float mHalfHeight;
+
+	float mExitXFactor;
+	float mFixedZoneHalfWidth;
+	float mFixedZoneExitX;
+
 	Vec2 mPosition;
 	bool mIsOnCooldown = false;
 };

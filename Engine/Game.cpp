@@ -23,7 +23,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mBall(Vec2(324.0f, 300.0f), Vec2(-300.0f, -300.0f))
+	, mBall(Vec2(324.0f, 300.0f), Vec2(-1.0f, -1.0f))
 	, mWalls(0.0f, static_cast<float>(Graphics::ScreenWidth), 0.0f, static_cast<float>(Graphics::ScreenHeight))
 	, mPaddle(Vec2(400.0f, 500.0f), 50.0f, 15.0f)
 {

@@ -4,6 +4,9 @@
 
 Paddle::Paddle(const Vec2& pos, float halfWidth, float halfHeight)
 	: mPosition(pos), mHalfWidth(halfWidth), mHalfHeight(halfHeight)
+	, mExitXFactor(mMaxmimumExitRatio / halfWidth)
+	, mFixedZoneHalfWidth(halfWidth * mFixedZoneWidthRatio)
+	, mFixedZoneExitX(mFixedZoneHalfWidth * mExitXFactor)
 {
 }
 
@@ -34,10 +37,23 @@ bool Paddle::DoBallCollision(Ball& ball)
 	if (rect.IsOverlappingWith(ball.GetRect()))
 	{
 		const Vec2 ballPos = ball.GetPosition();
-		if (std::signbit(ball.GetVelocity().X) == std::signbit((ballPos - mPosition).X))
-			ball.ReboundY();
-		else if (ballPos.X >= rect.Left && ballPos.X <= rect.Right)
-			ball.ReboundY();
+		if ((std::signbit(ball.GetVelocity().X) == std::signbit((ballPos - mPosition).X)) || (ballPos.X >= rect.Left && ballPos.X <= rect.Right))
+		{
+			Vec2 dir;
+			const float xDifference = ballPos.X - mPosition.X;
+
+			if (std::abs(xDifference) < mFixedZoneHalfWidth)
+			{
+				if (xDifference < 0.0f)
+					dir = Vec2(-mFixedZoneExitX, -1.0f);
+				else
+					dir = Vec2(mFixedZoneExitX, -1.0f);
+			}
+			else
+				dir = Vec2(xDifference * mExitXFactor, -1.0f);
+
+			ball.SetDirection(dir);
+		}
 		else
 			ball.ReboundX();
 

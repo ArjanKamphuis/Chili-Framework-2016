@@ -2,9 +2,10 @@
 
 #include "SpriteCodex.h"
 
-Ball::Ball(const Vec2& pos, const Vec2& vel)
-	: mPosition(pos), mVelocity(vel)
+Ball::Ball(const Vec2& pos, const Vec2& dir)
+	: mPosition(pos)
 {
+	SetDirection(dir);
 }
 
 void Ball::Draw(Graphics& gfx) const
@@ -58,6 +59,11 @@ void Ball::ReboundX()
 void Ball::ReboundY()
 {
 	mVelocity.Y = -mVelocity.Y;
+}
+
+void Ball::SetDirection(const Vec2& dir)
+{
+	mVelocity = dir.GetNormalized() * mSpeed;
 }
 
 RectF Ball::GetRect() const
