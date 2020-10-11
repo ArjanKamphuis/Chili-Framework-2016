@@ -262,6 +262,34 @@ void Graphics::DrawCircle(int xCenter, int yCenter, int radius, Color c, int inn
 	}
 }
 
+void Graphics::DrawIsoRightTriUL(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x; xLoop < x + size - (yLoop - y); ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
+void Graphics::DrawIsoRightTriUR(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x + (yLoop - y); xLoop < x + size; ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
+void Graphics::DrawIsoRightTriBL(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x; xLoop < x + (yLoop - y); ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
+void Graphics::DrawIsoRightTriBR(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x + size - (yLoop - y); xLoop < x + size; ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
 Graphics::~Graphics()
 {
 	// free sysbuffer memory (aligned free)
