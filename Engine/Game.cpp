@@ -24,7 +24,7 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
 	, mBall(Vec2(324.0f, 300.0f), Vec2(-1.0f, -1.0f))
-	, mWalls(0.0f, static_cast<float>(Graphics::ScreenWidth), 0.0f, static_cast<float>(Graphics::ScreenHeight))
+	, mWalls(Graphics::GetScreenRect().GetExpanded(-mWallThickness), mWallThickness, { 20, 60, 200 })
 	, mPaddle(Vec2(400.0f, 500.0f), 50.0f, 15.0f)
 {
 	const Color colors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
@@ -62,7 +62,7 @@ void Game::UpdateModel(float dt)
 		return;
 
 	mPaddle.Update(wnd.kbd, dt);
-	mPaddle.DoWallCollision(mWalls);
+	mPaddle.DoWallCollision(mWalls.GetInnerBounds());
 	mBall.Update(dt);
 
 	float colDistSq = FLT_MAX;
@@ -90,7 +90,7 @@ void Game::UpdateModel(float dt)
 	if (mPaddle.DoBallCollision(mBall))
 		mSounds[L"pad"].Play();
 
-	const int ballWallCollisionResult = mBall.DoWallCollision(mWalls);
+	const int ballWallCollisionResult = mBall.DoWallCollision(mWalls.GetInnerBounds());
 	if (ballWallCollisionResult == 1)
 	{
 		mPaddle.ResetCooldown();
@@ -113,4 +113,5 @@ void Game::ComposeFrame()
 
 	for (const Brick& b : mBricks)
 		b.Draw(gfx);
+	mWalls.Draw(gfx);
 }

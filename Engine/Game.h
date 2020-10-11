@@ -30,6 +30,7 @@
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
+#include "Walls.h"
 
 class Game
 {
@@ -57,9 +58,10 @@ private:
 	static constexpr int mNumBricksAcross = 18;
 	static constexpr int mNumBricksDown = 4;
 	static constexpr int mNumBricks = mNumBricksAcross * mNumBricksDown;
+	static constexpr float mWallThickness = 40.0f;
 
 	Ball mBall;
-	RectF mWalls;
+	Walls mWalls;
 	Brick mBricks[mNumBricks];
 	Paddle mPaddle;
 
