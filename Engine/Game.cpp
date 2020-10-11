@@ -26,8 +26,6 @@ Game::Game( MainWindow& wnd )
 	, mBall(Vec2(324.0f, 300.0f), Vec2(-300.0f, -300.0f))
 	, mWalls(0.0f, static_cast<float>(Graphics::ScreenWidth), 0.0f, static_cast<float>(Graphics::ScreenHeight))
 	, mPaddle(Vec2(400.0f, 500.0f), 50.0f, 15.0f)
-	, mSoundPad(L"Sounds/arkpad.wav")
-	, mSoundBrick(L"Sounds/arkbrick.wav")
 {
 	const Color colors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
 	const Vec2 topLeft(40.0f, 40.0f);
@@ -38,6 +36,10 @@ Game::Game( MainWindow& wnd )
 		for (int x = 0; x < mNumBricksAcross; ++x)
 			mBricks[(y * mNumBricksAcross) + x] = Brick(RectF(topLeft + Vec2(x * mBrickWidth, y * mBrickHeight), mBrickWidth, mBrickHeight), c);
 	}
+
+	mSounds[L"pad"] = Sound(L"Sounds/arkpad.wav");
+	mSounds[L"brick"] = Sound(L"Sounds/arkbrick.wav");
+	mSounds[L"gameover"] = Sound(L"Sounds/fart.wav");
 }
 
 void Game::Go()
@@ -79,16 +81,16 @@ void Game::UpdateModel(float dt)
 	{
 		mPaddle.ResetCooldown();
 		mBricks[colIndex].ExecuteBallCollision(mBall);
-		mSoundBrick.Play();
+		mSounds[L"brick"].Play();
 	}
 
 	if (mPaddle.DoBallCollision(mBall))
-		mSoundPad.Play();
+		mSounds[L"pad"].Play();
 
 	if (mBall.DoWallCollision(mWalls))
 	{
 		mPaddle.ResetCooldown();
-		mSoundPad.Play();
+		mSounds[L"pad"].Play();
 	}
 }
 

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <random>
+#include <unordered_map>
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
@@ -62,7 +63,6 @@ private:
 	Brick mBricks[mNumBricks];
 	Paddle mPaddle;
 
-	Sound mSoundPad;
-	Sound mSoundBrick;
+	std::unordered_map<std::wstring, Sound> mSounds;
 	/********************************/
 };
