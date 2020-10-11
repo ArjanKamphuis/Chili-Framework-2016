@@ -302,6 +302,11 @@ Graphics::~Graphics()
 	if( pImmediateContext ) pImmediateContext->ClearState();
 }
 
+RectF Graphics::GetScreenRect()
+{
+	return { 0.0f, static_cast<float>(ScreenWidth), 0.0f, static_cast<float>(ScreenHeight) };
+}
+
 void Graphics::EndFrame()
 {
 	HRESULT hr;
