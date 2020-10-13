@@ -23,7 +23,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mBall(Vec2(324.0f, 300.0f), Vec2(-1.0f, -1.0f))
+	, mBall(Graphics::GetScreenRect().GetCenter(), Vec2(-0.5f, -1.0f))
 	, mWalls(RectF::FromCenter(Graphics::GetScreenRect().GetCenter(), mFieldWidth * 0.5f, mFieldHeight * 0.5f), mWallThickness, mWallColor)
 	, mPaddle(Vec2(400.0f, 550.0f), 32.0f, 6.0f)
 {
