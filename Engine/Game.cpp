@@ -24,9 +24,9 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mBall(Graphics::GetScreenRect().GetCenter(), Vec2(-0.5f, -1.0f))
 	, mWalls(RectF::FromCenter(Graphics::GetScreenRect().GetCenter(), mFieldWidth * 0.5f, mFieldHeight * 0.5f), mWallThickness, mWallColor)
 	, mPaddle(Vec2(400.0f, 550.0f), 32.0f, 6.0f)
+	, mLifeCounter({ 30.0f, 30.0f }, 3)
 {
 	const Vec2 gridTopLeft(mWalls.GetInnerBounds().Left, mWalls.GetInnerBounds().Top + mTopSpace);
 	for (int y = 0; y < mNumBricksDown; ++y)
@@ -97,7 +97,7 @@ void Game::UpdateModel(float dt)
 		}
 		else if (ballWallCollisionResult == 2)
 		{
-			mGameState = GameStates::Gameover;
+			StartRound();
 			mSounds[L"gameover"].Play();
 		}
 	}
@@ -110,7 +110,11 @@ void Game::UpdateModel(float dt)
 void Game::ComposeFrame()
 {
 	if (mGameState == GameStates::Playing || mGameState == GameStates::GettingReady)
+	{
 		mPaddle.Draw(gfx);
+		mLifeCounter.Draw(gfx);
+	}
+	
 	if (mGameState == GameStates::Playing)
 		mBall.Draw(gfx);
 
@@ -132,7 +136,13 @@ void Game::ComposeFrame()
 
 void Game::StartRound()
 {
-	mCurrentWaitTime = 0.0f;
-	mSounds[L"getready"].Play();
-	mGameState = GameStates::GettingReady;
+	if (mLifeCounter.ConsumeLife())
+	{
+		mCurrentWaitTime = 0.0f;
+		mSounds[L"getready"].Play();
+		mGameState = GameStates::GettingReady;
+		mBall = Ball(Graphics::GetScreenRect().GetCenter(), Vec2(-0.5f, -1.0f));
+	}
+	else
+		mGameState = GameStates::Gameover;
 }

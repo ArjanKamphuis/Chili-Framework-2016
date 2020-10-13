@@ -31,6 +31,7 @@
 #include "Brick.h"
 #include "Paddle.h"
 #include "Walls.h"
+#include "LifeCounter.h"
 
 class Game
 {
@@ -70,6 +71,7 @@ private:
 	Walls mWalls;
 	Brick mBricks[mNumBricks];
 	Paddle mPaddle;
+	LifeCounter mLifeCounter;
 
 	enum class GameStates { NotStarted, GettingReady, Playing, Gameover };
 	GameStates mGameState = GameStates::NotStarted;
