@@ -4,15 +4,14 @@
 #include <cmath>
 
 Brick::Brick(const RectF& rect, Color c)
+	: mRect(rect), mBev(c)
 {
-	mRect = rect;
-	mColor = c;
 }
 
 void Brick::Draw(Graphics& gfx) const
 {
 	if (!mDestroyed)
-		gfx.DrawRect(mRect.GetExpanded(-mPadding), mColor);
+		mBev.DrawBeveledBrick(mRect.GetExpanded(-mPadding), mBevelSize, gfx);
 }
 
 bool Brick::CheckBallCollision(const Ball& ball) const

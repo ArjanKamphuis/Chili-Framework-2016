@@ -62,7 +62,7 @@ private:
 	static constexpr float mWallThickness = 12.0f;
 	static constexpr float mFieldWidth = static_cast<float>(mNumBricksAcross) * mBrickWidth;
 	static constexpr float mFieldHeight = static_cast<float>(Graphics::ScreenHeight) - mWallThickness * 2.0f;
-	static constexpr Color mBrickColors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
+	static constexpr Color mBrickColors[4] = { { 230, 0, 0 }, { 0, 230, 0 }, { 0, 0, 230 }, { 0, 230, 230 } };
 	static constexpr Color mWallColor = { 20, 60, 200 };
 
 	Ball mBall;
