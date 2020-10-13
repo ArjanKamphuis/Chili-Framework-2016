@@ -92,7 +92,8 @@ void Game::UpdateModel(float dt)
 		const int ballWallCollisionResult = mBall.DoWallCollision(mWalls.GetInnerBounds());
 		if (ballWallCollisionResult == 1)
 		{
-			mPaddle.ResetCooldown();
+			if (!mPaddle.GetRect().IsOverlappingWith(mBall.GetRect()))
+				mPaddle.ResetCooldown();
 			mSounds[L"pad"].Play();
 		}
 		else if (ballWallCollisionResult == 2)
@@ -130,8 +131,7 @@ void Game::ComposeFrame()
 	else if (mGameState == GameStates::Gameover)
 		SpriteCodex::DrawGameOver(Graphics::GetScreenRect().GetCenter(), gfx);
 	else if (mGameState == GameStates::GettingReady)
-		SpriteCodex::DrawReady(Graphics::GetScreenRect().GetCenter(), gfx);
-	
+		SpriteCodex::DrawReady(Graphics::GetScreenRect().GetCenter(), gfx);	
 }
 
 void Game::StartRound()
@@ -141,7 +141,7 @@ void Game::StartRound()
 		mCurrentWaitTime = 0.0f;
 		mSounds[L"getready"].Play();
 		mGameState = GameStates::GettingReady;
-		mBall = Ball(Graphics::GetScreenRect().GetCenter(), Vec2(-0.5f, -1.0f));
+		mBall = Ball(Graphics::GetScreenRect().GetCenter(), Vec2(-0.55f, -1.0f));
 	}
 	else
 		mGameState = GameStates::Gameover;
