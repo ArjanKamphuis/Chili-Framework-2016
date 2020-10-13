@@ -45,6 +45,7 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void StartRound();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -70,7 +71,10 @@ private:
 	Brick mBricks[mNumBricks];
 	Paddle mPaddle;
 
-	bool mGameover = false;
+	enum class GameStates { NotStarted, GettingReady, Playing, Gameover };
+	GameStates mGameState = GameStates::NotStarted;
+	static constexpr float mReadyWaitTime = 4.3f;
+	float mCurrentWaitTime = 0.0f;
 
 	std::unordered_map<std::wstring, Sound> mSounds;
 	/********************************/

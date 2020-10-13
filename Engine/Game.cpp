@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
@@ -38,6 +39,7 @@ Game::Game( MainWindow& wnd )
 	mSounds[L"pad"] = Sound(L"Sounds/arkpad.wav");
 	mSounds[L"brick"] = Sound(L"Sounds/arkbrick.wav");
 	mSounds[L"gameover"] = Sound(L"Sounds/fart.wav");
+	mSounds[L"getready"] = Sound(L"Sounds/ready.wav");
 }
 
 void Game::Go()
@@ -56,60 +58,81 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-	if (mGameover)
-		return;
-
-	mPaddle.Update(wnd.kbd, dt);
-	mPaddle.DoWallCollision(mWalls.GetInnerBounds());
-	mBall.Update(dt);
-
-	float colDistSq = FLT_MAX;
-	int colIndex = -1;
-	for (int i = 0; i < mNumBricks; ++i)
+	if (mGameState == GameStates::Playing)
 	{
-		if (mBricks[i].CheckBallCollision(mBall))
+		mPaddle.Update(wnd.kbd, dt);
+		mPaddle.DoWallCollision(mWalls.GetInnerBounds());
+		mBall.Update(dt);
+
+		float colDistSq = FLT_MAX;
+		int colIndex = -1;
+		for (int i = 0; i < mNumBricks; ++i)
 		{
-			const float distanceSq = (mBall.GetPosition() - mBricks[i].GetCenter()).GetLengthSq();
-			if (distanceSq < colDistSq)
+			if (mBricks[i].CheckBallCollision(mBall))
 			{
-				colDistSq = distanceSq;
-				colIndex = i;
+				const float distanceSq = (mBall.GetPosition() - mBricks[i].GetCenter()).GetLengthSq();
+				if (distanceSq < colDistSq)
+				{
+					colDistSq = distanceSq;
+					colIndex = i;
+				}
 			}
 		}
-	}
 
-	if (colIndex >= 0)
-	{
-		mPaddle.ResetCooldown();
-		mBricks[colIndex].ExecuteBallCollision(mBall);
-		mSounds[L"brick"].Play();
-	}
+		if (colIndex >= 0)
+		{
+			mPaddle.ResetCooldown();
+			mBricks[colIndex].ExecuteBallCollision(mBall);
+			mSounds[L"brick"].Play();
+		}
 
-	if (mPaddle.DoBallCollision(mBall))
-		mSounds[L"pad"].Play();
+		if (mPaddle.DoBallCollision(mBall))
+			mSounds[L"pad"].Play();
 
-	const int ballWallCollisionResult = mBall.DoWallCollision(mWalls.GetInnerBounds());
-	if (ballWallCollisionResult == 1)
-	{
-		mPaddle.ResetCooldown();
-		mSounds[L"pad"].Play();
+		const int ballWallCollisionResult = mBall.DoWallCollision(mWalls.GetInnerBounds());
+		if (ballWallCollisionResult == 1)
+		{
+			mPaddle.ResetCooldown();
+			mSounds[L"pad"].Play();
+		}
+		else if (ballWallCollisionResult == 2)
+		{
+			mGameState = GameStates::Gameover;
+			mSounds[L"gameover"].Play();
+		}
 	}
-	else if (ballWallCollisionResult == 2)
-	{
-		mGameover = true;
-		mSounds[L"gameover"].Play();
-	}
+	else if (mGameState == GameStates::NotStarted && wnd.kbd.KeyIsPressed(VK_RETURN))
+		StartRound();
+	else if (mGameState == GameStates::GettingReady && ((mCurrentWaitTime += dt) > mReadyWaitTime))
+		mGameState = GameStates::Playing;
 }
 
 void Game::ComposeFrame()
 {
-	if (!mGameover)
-	{
-		mBall.Draw(gfx);
+	if (mGameState == GameStates::Playing || mGameState == GameStates::GettingReady)
 		mPaddle.Draw(gfx);
-	}
+	if (mGameState == GameStates::Playing)
+		mBall.Draw(gfx);
 
-	for (const Brick& b : mBricks)
-		b.Draw(gfx);
-	mWalls.Draw(gfx);
+	if (mGameState != GameStates::NotStarted)
+	{
+		for (const Brick& b : mBricks)
+			b.Draw(gfx);
+		mWalls.Draw(gfx);
+	}
+	
+	if (mGameState == GameStates::NotStarted)
+		SpriteCodex::DrawTitle(Graphics::GetScreenRect().GetCenter(), gfx);
+	else if (mGameState == GameStates::Gameover)
+		SpriteCodex::DrawGameOver(Graphics::GetScreenRect().GetCenter(), gfx);
+	else if (mGameState == GameStates::GettingReady)
+		SpriteCodex::DrawReady(Graphics::GetScreenRect().GetCenter(), gfx);
+	
+}
+
+void Game::StartRound()
+{
+	mCurrentWaitTime = 0.0f;
+	mSounds[L"getready"].Play();
+	mGameState = GameStates::GettingReady;
 }
