@@ -24,17 +24,15 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
 	, mBall(Vec2(324.0f, 300.0f), Vec2(-1.0f, -1.0f))
-	, mWalls(Graphics::GetScreenRect().GetExpanded(-mWallThickness), mWallThickness, { 20, 60, 200 })
-	, mPaddle(Vec2(400.0f, 500.0f), 50.0f, 15.0f)
+	, mWalls(RectF::FromCenter(Graphics::GetScreenRect().GetCenter(), mFieldWidth * 0.5f, mFieldHeight * 0.5f), mWallThickness, mWallColor)
+	, mPaddle(Vec2(400.0f, 550.0f), 32.0f, 6.0f)
 {
-	const Color colors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
-	const Vec2 topLeft(40.0f, 40.0f);
-
+	const Vec2 gridTopLeft(mWalls.GetInnerBounds().Left, mWalls.GetInnerBounds().Top + mTopSpace);
 	for (int y = 0; y < mNumBricksDown; ++y)
 	{
-		const Color c = colors[y];
+		const Color c = mBrickColors[y];
 		for (int x = 0; x < mNumBricksAcross; ++x)
-			mBricks[(y * mNumBricksAcross) + x] = Brick(RectF(topLeft + Vec2(x * mBrickWidth, y * mBrickHeight), mBrickWidth, mBrickHeight), c);
+			mBricks[(y * mNumBricksAcross) + x] = Brick(RectF(gridTopLeft + Vec2(x * mBrickWidth, y * mBrickHeight), mBrickWidth, mBrickHeight), c);
 	}
 
 	mSounds[L"pad"] = Sound(L"Sounds/arkpad.wav");

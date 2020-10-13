@@ -54,11 +54,16 @@ private:
 	FrameTimer mFT;
 
 	static constexpr float mBrickWidth = 40.0f;
-	static constexpr float mBrickHeight = 24.0f;
-	static constexpr int mNumBricksAcross = 18;
+	static constexpr float mBrickHeight = 22.0f;
+	static constexpr int mNumBricksAcross = 12;
 	static constexpr int mNumBricksDown = 4;
 	static constexpr int mNumBricks = mNumBricksAcross * mNumBricksDown;
-	static constexpr float mWallThickness = 40.0f;
+	static constexpr float mTopSpace = mBrickHeight * 1.6f;
+	static constexpr float mWallThickness = 12.0f;
+	static constexpr float mFieldWidth = static_cast<float>(mNumBricksAcross) * mBrickWidth;
+	static constexpr float mFieldHeight = static_cast<float>(Graphics::ScreenHeight) - mWallThickness * 2.0f;
+	static constexpr Color mBrickColors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
+	static constexpr Color mWallColor = { 20, 60, 200 };
 
 	Ball mBall;
 	Walls mWalls;
