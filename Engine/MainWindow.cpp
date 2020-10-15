@@ -157,11 +157,10 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 		// ************ MOUSE MESSAGES ************ //
 	case WM_MOUSEMOVE:
 	{
-		int x = LOWORD( lParam );
-		int y = HIWORD( lParam );
-		if( x > 0 && x < Graphics::ScreenWidth && y > 0 && y < Graphics::ScreenHeight )
+		POINTS pts = MAKEPOINTS(lParam);
+		if( pts.x > 0 && pts.x < Graphics::ScreenWidth && pts.y > 0 && pts.y < Graphics::ScreenHeight )
 		{
-			mouse.OnMouseMove( x,y );
+			mouse.OnMouseMove(pts.x, pts.y );
 			if( !mouse.IsInWindow() )
 			{
 				SetCapture( hWnd );
@@ -172,61 +171,56 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 		{
 			if( wParam & (MK_LBUTTON | MK_RBUTTON) )
 			{
-				x = std::max( 0,x );
-				x = std::min( int( Graphics::ScreenWidth ) - 1,x );
-				y = std::max( 0,y );
-				y = std::min( int( Graphics::ScreenHeight ) - 1,y );
-				mouse.OnMouseMove( x,y );
+				pts.x = std::max( short(0), pts.x );
+				pts.x = std::min( short( Graphics::ScreenWidth  - 1), pts.x );
+				pts.y = std::max( short(0), pts.y );
+				pts.y = std::min( short( Graphics::ScreenHeight  - 1), pts.y );
+				mouse.OnMouseMove(pts.x, pts.y );
 			}
 			else
 			{
 				ReleaseCapture();
 				mouse.OnMouseLeave();
-				mouse.OnLeftReleased( x,y );
-				mouse.OnRightReleased( x,y );
+				mouse.OnLeftReleased(pts.x, pts.y );
+				mouse.OnRightReleased(pts.x, pts.y );
 			}
 		}
 		break;
 	}
 	case WM_LBUTTONDOWN:
 	{
-		int x = LOWORD( lParam );
-		int y = HIWORD( lParam );
-		mouse.OnLeftPressed( x,y );
+		POINTS pts = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(pts.x, pts.y );
 		break;
 	}
 	case WM_RBUTTONDOWN:
 	{
-		int x = LOWORD( lParam );
-		int y = HIWORD( lParam );
-		mouse.OnRightPressed( x,y );
+		POINTS pts = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(pts.x, pts.y );
 		break;
 	}
 	case WM_LBUTTONUP:
 	{
-		int x = LOWORD( lParam );
-		int y = HIWORD( lParam );
-		mouse.OnLeftReleased( x,y );
+		POINTS pts = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(pts.x, pts.y );
 		break;
 	}
 	case WM_RBUTTONUP:
 	{
-		int x = LOWORD( lParam );
-		int y = HIWORD( lParam );
-		mouse.OnRightReleased( x,y );
+		POINTS pts = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(pts.x, pts.y );
 		break;
 	}
 	case WM_MOUSEWHEEL:
 	{
-		int x = LOWORD( lParam );
-		int y = HIWORD( lParam );
+		POINTS pts = MAKEPOINTS(lParam);
 		if( GET_WHEEL_DELTA_WPARAM( wParam ) > 0 )
 		{
-			mouse.OnWheelUp( x,y );
+			mouse.OnWheelUp( pts.x,pts.y );
 		}
 		else if( GET_WHEEL_DELTA_WPARAM( wParam ) < 0 )
 		{
-			mouse.OnWheelDown( x,y );
+			mouse.OnWheelDown(pts.x, pts.y );
 		}
 		break;
 	}

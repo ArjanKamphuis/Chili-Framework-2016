@@ -240,6 +240,56 @@ Graphics::Graphics( HWNDKey& key )
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
 }
 
+void Graphics::DrawCircle(int xCenter, int yCenter, int radius, Color c, int innerRadius)
+{
+	assert(xCenter - radius >= 0);
+	assert(yCenter - radius >= 0);
+	assert(xCenter + radius < Graphics::ScreenWidth + 1);
+	assert(yCenter + radius < Graphics::ScreenHeight + 1);
+
+	const int radiusSquared = radius * radius;
+	const int innerRadiusSquared = innerRadius * innerRadius;
+	for (int y = yCenter - radius; y < yCenter + radius + 1; ++y)
+	{
+		for (int x = xCenter - radius; x < xCenter + radius + 1; ++x)
+		{
+			const int xDiff = x - xCenter;
+			const int yDiff = y - yCenter;
+			const int xySquared = xDiff * xDiff + yDiff * yDiff;
+			if (xySquared <= radiusSquared && xySquared >= innerRadiusSquared)
+				PutPixel(x, y, c);
+		}
+	}
+}
+
+void Graphics::DrawIsoRightTriUL(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x; xLoop < x + size - (yLoop - y); ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
+void Graphics::DrawIsoRightTriUR(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x + (yLoop - y); xLoop < x + size; ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
+void Graphics::DrawIsoRightTriBL(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x; xLoop < x + (yLoop - y); ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
+void Graphics::DrawIsoRightTriBR(int x, int y, int size, Color c)
+{
+	for (int yLoop = y; yLoop < y + size; ++yLoop)
+		for (int xLoop = x + size - (yLoop - y); xLoop < x + size; ++xLoop)
+			PutPixel(xLoop, yLoop, c);
+}
+
 Graphics::~Graphics()
 {
 	// free sysbuffer memory (aligned free)
@@ -250,6 +300,11 @@ Graphics::~Graphics()
 	}
 	// clear the state of the device context before destruction
 	if( pImmediateContext ) pImmediateContext->ClearState();
+}
+
+RectF Graphics::GetScreenRect()
+{
+	return { 0.0f, static_cast<float>(ScreenWidth), 0.0f, static_cast<float>(ScreenHeight) };
 }
 
 void Graphics::EndFrame()
