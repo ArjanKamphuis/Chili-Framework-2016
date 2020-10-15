@@ -11,11 +11,8 @@ public:
 
 	void SetLocation(int x, int y);
 
-	int GetX() const;
-	int GetY() const;
-
-private:
-	int mX = 0;
-	int mY = 0;
+public:
+	int X = 0;
+	int Y = 0;
 };
 

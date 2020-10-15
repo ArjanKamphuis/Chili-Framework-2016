@@ -1,7 +1,7 @@
 #include "Location.h"
 
 Location::Location(int x, int y)
-	: mX(x), mY(y)
+	: X(x), Y(y)
 {
 }
 
@@ -14,28 +14,18 @@ const Location Location::operator+(const Location& rhs) const
 
 Location& Location::operator+=(const Location& rhs)
 {
-	mX += rhs.mX;
-	mY += rhs.mY;
+	X += rhs.X;
+	Y += rhs.Y;
 	return *this;
 }
 
 bool Location::operator==(const Location& rhs) const
 {
-	return mX == rhs.mX && mY == rhs.mY;
+	return X == rhs.X && Y == rhs.Y;
 }
 
 void Location::SetLocation(int x, int y)
 {
-	mX = x;
-	mY = y;
-}
-
-int Location::GetX() const
-{
-	return mX;
-}
-
-int Location::GetY() const
-{
-	return mY;
+	X = x;
+	Y = y;
 }

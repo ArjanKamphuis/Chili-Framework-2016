@@ -19,7 +19,7 @@ void Snake::Segment::Follow(const Segment& next)
 
 void Snake::Segment::MoveBy(const Location& delta)
 {
-	assert(abs(delta.GetX()) + abs(delta.GetY()) == 1);
+	assert(abs(delta.X) + abs(delta.Y) == 1);
 	mLoc += delta;
 }
 

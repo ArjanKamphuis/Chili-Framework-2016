@@ -7,8 +7,8 @@ Board::Board(Graphics& gfx)
 
 void Board::DrawCell(const Location& loc, Color c) const
 {
-	const int x = loc.GetX();
-	const int y = loc.GetY();
+	const int x = loc.X;
+	const int y = loc.Y;
 
 	assert(x >= 0.0f);
 	assert(x < mWidth);
@@ -46,8 +46,8 @@ int Board::GetGridHeight() const
 
 bool Board::IsInsideBoard(const Location& loc) const
 {
-	int x = loc.GetX();
-	int y = loc.GetY();
+	int x = loc.X;
+	int y = loc.Y;
 
 	return x >= 0 && x < mWidth && y >= 0 && y < mHeight;
 }
