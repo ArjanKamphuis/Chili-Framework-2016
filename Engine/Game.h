@@ -56,7 +56,10 @@ private:
 	Snake mSnek;
 	Location mDeltaLoc = { 1, 0 };
 
-	ObjectCounter mSnekCounter = ObjectCounter(0.06f, 0.4f, 0.005f, 0.15f);
+	static constexpr int mNumPoison = 240;
+	static constexpr int mNumFood = 12;
+
+	ObjectCounter mSnekCounter = ObjectCounter(0.04f, 0.4f, 0.9f, 0.15f);
 
 	bool mStarted = false;
 	bool mGameOver = false;
@@ -65,6 +68,6 @@ private:
 	SoundEffect mSfxSlither = SoundEffect({ L"data/slither0.wav", L"data/slither1.wav", L"data/slither2.wav" });
 	Sound mSndMusic = Sound(L"data/music_loop.wav", Sound::LoopType::AutoFullSound);
 	Sound mSndTitle = Sound(L"data/title.wav");
-	Sound mSndGameOver = Sound(L"data/fart.wav");
+	Sound mSndFart = Sound(L"data/fart.wav");
 	/********************************/
 };

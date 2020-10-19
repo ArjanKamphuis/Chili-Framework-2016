@@ -6,6 +6,7 @@ public:
 	ObjectCounter(float min, float start, float factor, float speedy = 0.0f);
 
 	bool Tick(float dt, bool speedup = false);
+	void Speedup();
 	void Reset();
 
 private:

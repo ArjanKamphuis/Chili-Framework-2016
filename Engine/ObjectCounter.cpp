@@ -13,8 +13,12 @@ bool ObjectCounter::Tick(float dt, bool speedup)
 	if (ticked)
 		mCounter = 0.0f;
 
-	mPeriod = std::max(mPeriod - dt * mFactor, mMin);
 	return ticked;
+}
+
+void ObjectCounter::Speedup()
+{
+	mPeriod = std::max(mPeriod * mFactor, mMin);
 }
 
 void ObjectCounter::Reset()

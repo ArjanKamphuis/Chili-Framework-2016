@@ -25,7 +25,11 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx), mSnek(Location(2, 2))
 {
-	mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
+	for (int i = 0; i < mNumFood; ++i)
+		mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
+	for (int i = 0; i < mNumPoison; ++i)
+		mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Poison);
+
 	mSndTitle.Play();
 }
 
@@ -75,22 +79,32 @@ void Game::UpdateModel()
 		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || content == Board::ContentType::Obstacle)
 		{
 			mGameOver = true;
-			mSndGameOver.Play();
+			mSndFart.Play();
 			mSndMusic.StopAll();
 		}
 		else
 		{
-			if (content == Board::ContentType::Food)
+			switch (content)
 			{
+			case Board::ContentType::Food:
 				mSnek.GrowAndMoveBy(mDeltaLoc);
 				mBrd.ConsumeContent(next);
 				mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
 				mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Obstacle);
 				mSfxEat.Play(mRng, 0.8f);
-			}
-			else
+				break;
+			case Board::ContentType::Poison:
 				mSnek.MoveBy(mDeltaLoc);
-			mSfxSlither.Play(mRng, 0.08f);
+				mBrd.ConsumeContent(next);
+				mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Poison);
+				mSnekCounter.Speedup();
+				mSndFart.Play();
+				break;
+			case Board::ContentType::Empty:
+				mSnek.MoveBy(mDeltaLoc);
+				mSfxSlither.Play(mRng, 0.08f);
+				break;
+			}				
 		}
 	}
 }

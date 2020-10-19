@@ -51,6 +51,9 @@ void Board::DrawCells() const
 			case ContentType::Obstacle:
 				DrawCell({ x, y }, mObstacleColor);
 				break;
+			case ContentType::Poison:
+				DrawCell({ x, y }, mPoisonColor);
+				break;
 			}
 		}
 	}
@@ -81,7 +84,8 @@ Board::ContentType Board::GetContent(const Location& loc) const
 
 void Board::ConsumeContent(const Location& loc)
 {
-	assert(GetContent(loc) == ContentType::Food);
+	const ContentType content = GetContent(loc);
+	assert(content == ContentType::Food || content == ContentType::Poison);
 	mContents[loc.Y * mWidth + loc.X] = ContentType::Empty;
 }
 

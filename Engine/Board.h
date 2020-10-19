@@ -7,7 +7,7 @@
 class Board
 {
 public:
-	enum class ContentType { Empty, Obstacle, Food, Speedup };
+	enum class ContentType { Empty, Obstacle, Food, Poison };
 
 public:
 	Board(Graphics& gfx);
@@ -34,6 +34,7 @@ private:
 	static constexpr Color mBorderColor = Colors::Blue;
 	static constexpr Color mObstacleColor = Colors::Gray;
 	static constexpr Color mFoodColor = Colors::Red;
+	static constexpr Color mPoisonColor = Colors::Magenta;
 	static constexpr int mDimension = 20;
 	static constexpr int mCellPadding = 1;
 	static constexpr int mWidth = 32;
