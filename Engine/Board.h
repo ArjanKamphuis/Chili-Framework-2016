@@ -44,7 +44,7 @@ private:
 	static constexpr int mX = 70;
 	static constexpr int mY = 50;
 
-	ContentType mContents[mWidth * mHeight] = {};
+	ContentType mContents[mWidth * mHeight] = { ContentType::Empty };
 
 	Graphics& mGfx;
 
