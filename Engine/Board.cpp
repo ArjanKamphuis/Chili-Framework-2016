@@ -1,7 +1,7 @@
 #include "Board.h"
 
+#include <assert.h>
 #include "Snake.h"
-#include "Goal.h"
 
 Board::Board(Graphics& gfx)
 	: mGfx(gfx), mRandomX(0, mWidth - 1), mRandomY(0, mHeight - 1)
@@ -37,12 +37,23 @@ void Board::DrawBorder() const
 	mGfx.DrawRect(left, bottom - mBorderWidth, right, bottom, mBorderColor);
 }
 
-void Board::DrawObstacles() const
+void Board::DrawCells() const
 {
 	for (int y = 0; y < mHeight; ++y)
+	{
 		for (int x = 0; x < mWidth; ++x)
-			if (CheckForObstacle({ x, y }))
+		{
+			switch (mContents[y * mWidth + x])
+			{
+			case ContentType::Food:
+				DrawCell({ x, y }, mFoodColor);
+				break;
+			case ContentType::Obstacle:
 				DrawCell({ x, y }, mObstacleColor);
+				break;
+			}
+		}
+	}
 }
 
 int Board::GetGridWidth() const
@@ -63,26 +74,32 @@ bool Board::IsInsideBoard(const Location& loc) const
 	return x >= 0 && x < mWidth && y >= 0 && y < mHeight;
 }
 
-bool Board::CheckForObstacle(const Location& loc) const
+Board::ContentType Board::GetContent(const Location& loc) const
 {
-	return mhasObstacle[loc.Y * mWidth + loc.X];
+	return mContents[loc.Y * mWidth + loc.X];
 }
 
-void Board::SpawnObstacle(std::mt19937& rng, const Snake& snake, const Goal& goal)
+void Board::ConsumeContent(const Location& loc)
+{
+	assert(GetContent(loc) == ContentType::Food);
+	mContents[loc.Y * mWidth + loc.X] = ContentType::Empty;
+}
+
+void Board::SpawnContent(std::mt19937& rng, const Snake& snake, ContentType content)
 {
 	Location newLoc;
 	do
 	{
 		newLoc.X = mRandomX(rng);
 		newLoc.Y = mRandomY(rng);
-	} while (snake.IsInTile(newLoc)|| CheckForObstacle(newLoc) || goal.GetLocation() == newLoc);
+	} while (snake.IsInTile(newLoc) || GetContent(newLoc) != ContentType::Empty);
 
-	mhasObstacle[newLoc.Y * mWidth + newLoc.X] = true;
+	mContents[newLoc.Y * mWidth + newLoc.X] = content;
 }
 
-void Board::ClearObstacles()
+void Board::ClearBoard()
 {
 	for (int y = 0; y < mHeight; ++y)
 		for (int x = 0; x < mWidth; ++x)
-			mhasObstacle[y * mWidth + x] = false;
+			mContents[y * mWidth + x] = ContentType::Empty;
 }

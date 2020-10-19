@@ -27,7 +27,6 @@
 #include "FrameTimer.h"
 #include "Board.h"
 #include "Snake.h"
-#include "Goal.h"
 #include "SoundEffect.h"
 #include "ObjectCounter.h"
 
@@ -55,7 +54,6 @@ private:
 	
 	Board mBrd;
 	Snake mSnek;
-	Goal mGoal;
 	Location mDeltaLoc = { 1, 0 };
 
 	ObjectCounter mSnekCounter = ObjectCounter(0.06f, 0.4f, 0.005f, 0.15f);

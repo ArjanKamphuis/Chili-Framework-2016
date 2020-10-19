@@ -23,8 +23,9 @@
 #include "SpriteCodex.h"
 
 Game::Game( MainWindow& wnd )
-	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx), mSnek(Location(2, 2)), mGoal(mRng, mBrd, mSnek)
+	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx), mSnek(Location(2, 2))
 {
+	mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
 	mSndTitle.Play();
 }
 
@@ -69,8 +70,9 @@ void Game::UpdateModel()
 	if (mSnekCounter.Tick(dt, wnd.kbd.KeyIsDown(VK_CONTROL)))
 	{
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
+		const Board::ContentType content = mBrd.GetContent(next);
 
-		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || mBrd.CheckForObstacle(next))
+		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || content == Board::ContentType::Obstacle)
 		{
 			mGameOver = true;
 			mSndGameOver.Play();
@@ -78,11 +80,12 @@ void Game::UpdateModel()
 		}
 		else
 		{
-			if (next == mGoal.GetLocation())
+			if (content == Board::ContentType::Food)
 			{
 				mSnek.GrowAndMoveBy(mDeltaLoc);
-				mBrd.SpawnObstacle(mRng, mSnek, mGoal);
-				mGoal.Respawn(mRng, mBrd, mSnek);
+				mBrd.ConsumeContent(next);
+				mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
+				mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Obstacle);
 				mSfxEat.Play(mRng, 0.8f);
 			}
 			else
@@ -97,13 +100,11 @@ void Game::ComposeFrame()
 	if (mStarted)
 	{
 		mSnek.Draw(mBrd);
-		mGoal.Draw(mBrd);
+		mBrd.DrawBorder();
+		mBrd.DrawCells();
 
 		if (mGameOver)
 			SpriteCodex::DrawGameOver(350, 265, gfx);
-
-		mBrd.DrawBorder();
-		mBrd.DrawObstacles();
 	}
 	else
 		SpriteCodex::DrawTitle(290, 225, gfx);
@@ -115,9 +116,9 @@ void Game::Restart()
 	mSnekCounter.Reset();
 	mDeltaLoc = { 1, 0 };
 
-	mBrd.ClearObstacles();
+	mBrd.ClearBoard();
+	mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
 	mSnek.Reset(Location(2, 2));
-	mGoal.Respawn(mRng, mBrd, mSnek);
 	mGameOver = false;
 
 	mSndMusic.Play(1.0f, 0.6f);
