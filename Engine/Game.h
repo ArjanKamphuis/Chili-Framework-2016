@@ -29,6 +29,7 @@
 #include "Snake.h"
 #include "Goal.h"
 #include "SoundEffect.h"
+#include "ObjectCounter.h"
 
 class Game
 {
@@ -57,17 +58,8 @@ private:
 	Goal mGoal;
 	Location mDeltaLoc = { 1, 0 };
 
-	static constexpr float mSnekMovePeriodMin = 0.07f;
-	static constexpr float mSnekMovePeriodStart = 0.4f;
-	static constexpr float mSnekSpeedupFactor = 0.005f;
-	float mSnekMovePeriod = mSnekMovePeriodStart;
-	float mSnekMoveCounter = 0.0f;
-
-	static constexpr float mObstacleSpawnPeriodMin = 2.0f;
-	static constexpr float mObstacleSpawnPeriodStart = 10.0f;
-	static constexpr float mObstacleSpawnSpeedupFactor = 0.05f;
-	float mObstacleSpawnPeriod = mObstacleSpawnPeriodStart;
-	float mObstacleSpawnCounter = 0.0f;
+	ObjectCounter mSnekCounter = ObjectCounter(0.07f, 0.4f, 0.005f);
+	ObjectCounter mObstacleCounter = ObjectCounter(2.0f, 10.0f, 0.05f);
 
 	bool mStarted = false;
 	bool mGameOver = false;

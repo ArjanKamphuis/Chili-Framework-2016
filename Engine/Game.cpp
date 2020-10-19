@@ -38,6 +38,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = mFT.Mark();
+
 	if (!mStarted)
 	{
 		if (wnd.kbd.KeyIsPressed(VK_RETURN))
@@ -64,12 +66,8 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		mDeltaLoc.SetLocation(0, 1);
 
-	const float dt = mFT.Mark();
-
-	mSnekMoveCounter += dt;
-	if (mSnekMoveCounter >= mSnekMovePeriod)
+	if (mSnekCounter.Tick(dt))
 	{
-		mSnekMoveCounter -= mSnekMovePeriod;
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
 
 		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || mBrd.CheckForObstacle(next))
@@ -92,15 +90,8 @@ void Game::UpdateModel()
 		}
 	}
 
-	mObstacleSpawnCounter += dt;
-	if (mObstacleSpawnCounter >= mObstacleSpawnPeriod)
-	{
-		mObstacleSpawnCounter -= mObstacleSpawnPeriod;
+	if (mObstacleCounter.Tick(dt))
 		mBrd.SpawnObstacle(mRng, mSnek, mGoal);
-	}
-
-	mSnekMovePeriod = std::max(mSnekMovePeriod - dt * mSnekSpeedupFactor, mSnekMovePeriodMin);
-	mObstacleSpawnPeriod = std::max(mObstacleSpawnPeriod - dt * mObstacleSpawnSpeedupFactor, mObstacleSpawnPeriodMin);
 }
 
 void Game::ComposeFrame()
@@ -123,10 +114,8 @@ void Game::ComposeFrame()
 
 void Game::Restart()
 {
-	mSnekMovePeriod = mSnekMovePeriodStart;
-	mSnekMoveCounter = 0.0f;
-	mObstacleSpawnPeriod = mObstacleSpawnPeriodStart;
-	mObstacleSpawnCounter = 0.0f;
+	mSnekCounter.Reset();
+	mObstacleCounter.Reset();
 	mDeltaLoc = { 1, 0 };
 
 	mBrd.ClearObstacles();
