@@ -81,6 +81,7 @@ void Game::UpdateModel()
 			if (next == mGoal.GetLocation())
 			{
 				mSnek.GrowAndMoveBy(mDeltaLoc);
+				mBrd.SpawnObstacle(mRng, mSnek, mGoal);
 				mGoal.Respawn(mRng, mBrd, mSnek);
 				mSfxEat.Play(mRng, 0.8f);
 			}
@@ -89,9 +90,6 @@ void Game::UpdateModel()
 			mSfxSlither.Play(mRng, 0.08f);
 		}
 	}
-
-	if (mObstacleCounter.Tick(dt))
-		mBrd.SpawnObstacle(mRng, mSnek, mGoal);
 }
 
 void Game::ComposeFrame()
@@ -115,7 +113,6 @@ void Game::ComposeFrame()
 void Game::Restart()
 {
 	mSnekCounter.Reset();
-	mObstacleCounter.Reset();
 	mDeltaLoc = { 1, 0 };
 
 	mBrd.ClearObstacles();

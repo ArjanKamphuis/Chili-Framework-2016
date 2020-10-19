@@ -59,7 +59,6 @@ private:
 	Location mDeltaLoc = { 1, 0 };
 
 	ObjectCounter mSnekCounter = ObjectCounter(0.07f, 0.4f, 0.005f);
-	ObjectCounter mObstacleCounter = ObjectCounter(2.0f, 10.0f, 0.05f);
 
 	bool mStarted = false;
 	bool mGameOver = false;
