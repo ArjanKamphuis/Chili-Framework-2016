@@ -34,7 +34,7 @@ private:
 	static constexpr Color mBorderColor = Colors::Blue;
 	static constexpr Color mObstacleColor = Colors::Gray;
 	static constexpr Color mFoodColor = Colors::Red;
-	static constexpr Color mPoisonColor = Colors::Magenta;
+	static constexpr Color mPoisonColor = { 64, 8, 64 };
 	static constexpr int mDimension = 20;
 	static constexpr int mCellPadding = 1;
 	static constexpr int mWidth = 32;

@@ -59,15 +59,15 @@ private:
 	static constexpr int mNumPoison = 240;
 	static constexpr int mNumFood = 12;
 
-	ObjectCounter mSnekCounter = ObjectCounter(0.04f, 0.4f, 0.9f, 0.15f);
+	ObjectCounter mSnekCounter = ObjectCounter(0.04f, 0.4f, 0.93f, 0.15f);
 
 	bool mStarted = false;
 	bool mGameOver = false;
 
 	SoundEffect mSfxEat = SoundEffect({ L"data/eat.wav" });
+	SoundEffect mSfxFart = SoundEffect({ L"data/fart.wav" });
 	SoundEffect mSfxSlither = SoundEffect({ L"data/slither0.wav", L"data/slither1.wav", L"data/slither2.wav" });
 	Sound mSndMusic = Sound(L"data/music_loop.wav", Sound::LoopType::AutoFullSound);
 	Sound mSndTitle = Sound(L"data/title.wav");
-	Sound mSndFart = Sound(L"data/fart.wav");
 	/********************************/
 };

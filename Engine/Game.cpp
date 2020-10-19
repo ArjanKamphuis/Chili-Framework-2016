@@ -79,7 +79,7 @@ void Game::UpdateModel()
 		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || content == Board::ContentType::Obstacle)
 		{
 			mGameOver = true;
-			mSndFart.Play();
+			mSfxFart.Play(mRng, 1.2f);
 			mSndMusic.StopAll();
 		}
 		else
@@ -98,7 +98,7 @@ void Game::UpdateModel()
 				mBrd.ConsumeContent(next);
 				mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Poison);
 				mSnekCounter.Speedup();
-				mSndFart.Play();
+				mSfxFart.Play(mRng, 0.6f);
 				break;
 			case Board::ContentType::Empty:
 				mSnek.MoveBy(mDeltaLoc);
