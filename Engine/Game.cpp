@@ -25,6 +25,7 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx), mSnek(Location(2, 2)), mGoal(mRng, mBrd, mSnek)
 {
+	mSndTitle.Play();
 }
 
 void Game::Go()
@@ -37,11 +38,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dt = mFT.Mark();
-
 	if (!mStarted)
 	{
-		mStarted = wnd.kbd.KeyIsPressed(VK_RETURN);
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			mStarted = true;
+			mSndMusic.Play(1.0f, 0.6f);
+		}
 		return;
 	}
 
@@ -61,6 +64,8 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		mDeltaLoc.SetLocation(0, 1);
 
+	const float dt = mFT.Mark();
+
 	mSnekMoveCounter += dt;
 	if (mSnekMoveCounter >= mSnekMovePeriod)
 	{
@@ -68,16 +73,22 @@ void Game::UpdateModel()
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
 
 		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || mBrd.CheckForObstacle(next))
+		{
 			mGameOver = true;
+			mSndGameOver.Play();
+			mSndMusic.StopAll();
+		}
 		else
 		{
 			if (next == mGoal.GetLocation())
 			{
 				mSnek.GrowAndMoveBy(mDeltaLoc);
 				mGoal.Respawn(mRng, mBrd, mSnek);
+				mSfxEat.Play(mRng, 0.8f);
 			}
 			else
 				mSnek.MoveBy(mDeltaLoc);
+			mSfxSlither.Play(mRng, 0.08f);
 		}
 	}
 
@@ -122,4 +133,6 @@ void Game::Restart()
 	mSnek.Reset(Location(2, 2));
 	mGoal.Respawn(mRng, mBrd, mSnek);
 	mGameOver = false;
+
+	mSndMusic.Play(1.0f, 0.6f);
 }

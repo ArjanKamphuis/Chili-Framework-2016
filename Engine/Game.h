@@ -28,6 +28,7 @@
 #include "Board.h"
 #include "Snake.h"
 #include "Goal.h"
+#include "SoundEffect.h"
 
 class Game
 {
@@ -70,5 +71,11 @@ private:
 
 	bool mStarted = false;
 	bool mGameOver = false;
+
+	SoundEffect mSfxEat = SoundEffect({ L"data/eat.wav" });
+	SoundEffect mSfxSlither = SoundEffect({ L"data/slither0.wav", L"data/slither1.wav", L"data/slither2.wav" });
+	Sound mSndMusic = Sound(L"data/music_loop.wav", Sound::LoopType::AutoFullSound);
+	Sound mSndTitle = Sound(L"data/title.wav");
+	Sound mSndGameOver = Sound(L"data/fart.wav");
 	/********************************/
 };
