@@ -67,16 +67,7 @@ void Game::UpdateModel()
 		mSnekMoveCounter -= mSnekMovePeriod;
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
 
-		for (int i = 0; i < mNumObstacles; ++i)
-		{
-			if (mObstacles[i].GetLocation() == next)
-			{
-				mGameOver = true;
-				return;
-			}
-		}
-
-		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true))
+		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || mBrd.CheckForObstacle(next))
 			mGameOver = true;
 		else
 		{
@@ -85,7 +76,7 @@ void Game::UpdateModel()
 				mSnek.Grow();
 			mSnek.MoveBy(mDeltaLoc);
 			if (eating)
-				mGoal.Respawn(mRng, mSnek, mObstacles, mNumObstacles);
+				mGoal.Respawn(mRng, mBrd, mSnek);
 		}
 	}
 
@@ -93,7 +84,7 @@ void Game::UpdateModel()
 	if (mObstacleSpawnCounter >= mObstacleSpawnPeriod)
 	{
 		mObstacleSpawnCounter -= mObstacleSpawnPeriod;
-		mObstacles[mNumObstacles++].Spawn(mRng, mBrd, mSnek, mGoal.GetLocation());
+		mBrd.SpawnObstacle(mRng, mSnek, mGoal);
 	}
 
 	mSnekMovePeriod = std::max(mSnekMovePeriod - dt * mSnekSpeedupFactor, mSnekMovePeriodMin);
@@ -107,13 +98,11 @@ void Game::ComposeFrame()
 		mSnek.Draw(mBrd);
 		mGoal.Draw(mBrd);
 
-		for (int i = 0; i < mNumObstacles; ++i)
-			mObstacles[i].Draw(mBrd);
-
 		if (mGameOver)
 			SpriteCodex::DrawGameOver(350, 265, gfx);
 
 		mBrd.DrawBorder();
+		mBrd.DrawObstacles();
 	}
 	else
 		SpriteCodex::DrawTitle(290, 225, gfx);
@@ -122,14 +111,14 @@ void Game::ComposeFrame()
 
 void Game::Restart()
 {
-	mNumObstacles = 0;
-	mSnekMovePeriod = 0.4f;
+	mSnekMovePeriod = mSnekMovePeriodStart;
 	mSnekMoveCounter = 0.0f;
-	mObstacleSpawnPeriod = 10.0f;
+	mObstacleSpawnPeriod = mObstacleSpawnPeriodStart;
 	mObstacleSpawnCounter = 0.0f;
 	mDeltaLoc = { 1, 0 };
 
+	mBrd.ClearObstacles();
 	mSnek.Reset(Location(2, 2));
-	mGoal.Respawn(mRng, mSnek, mObstacles, mNumObstacles);
+	mGoal.Respawn(mRng, mBrd, mSnek);
 	mGameOver = false;
 }

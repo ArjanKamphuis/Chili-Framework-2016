@@ -28,7 +28,6 @@
 #include "Board.h"
 #include "Snake.h"
 #include "Goal.h"
-#include "Obstacle.h"
 
 class Game
 {
@@ -50,7 +49,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
-	FrameTimer mFT = {};
+	FrameTimer mFT;
 	
 	Board mBrd;
 	Snake mSnek;
@@ -58,18 +57,16 @@ private:
 	Location mDeltaLoc = { 1, 0 };
 
 	static constexpr float mSnekMovePeriodMin = 0.07f;
+	static constexpr float mSnekMovePeriodStart = 0.4f;
 	static constexpr float mSnekSpeedupFactor = 0.005f;
-	float mSnekMovePeriod = 0.4f;
+	float mSnekMovePeriod = mSnekMovePeriodStart;
 	float mSnekMoveCounter = 0.0f;
 
 	static constexpr float mObstacleSpawnPeriodMin = 2.0f;
+	static constexpr float mObstacleSpawnPeriodStart = 10.0f;
 	static constexpr float mObstacleSpawnSpeedupFactor = 0.05f;
-	float mObstacleSpawnPeriod = 10.0f;
+	float mObstacleSpawnPeriod = mObstacleSpawnPeriodStart;
 	float mObstacleSpawnCounter = 0.0f;
-
-	static constexpr int mMaxObstacles = 100;
-	int mNumObstacles = 0;
-	Obstacle mObstacles[mMaxObstacles] = {};
 
 	bool mStarted = false;
 	bool mGameOver = false;
