@@ -34,7 +34,7 @@ public:
 	~Snake() = default;
 
 	void MoveBy(const Location& delta);
-	void Grow();
+	void GrowAndMoveBy(const Location& delta);
 	void Draw(const Board& brd) const;
 
 	void Reset(const Location& loc);

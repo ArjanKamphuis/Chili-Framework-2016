@@ -71,12 +71,13 @@ void Game::UpdateModel()
 			mGameOver = true;
 		else
 		{
-			const bool eating = next == mGoal.GetLocation();
-			if (eating)
-				mSnek.Grow();
-			mSnek.MoveBy(mDeltaLoc);
-			if (eating)
+			if (next == mGoal.GetLocation())
+			{
+				mSnek.GrowAndMoveBy(mDeltaLoc);
 				mGoal.Respawn(mRng, mBrd, mSnek);
+			}
+			else
+				mSnek.MoveBy(mDeltaLoc);
 		}
 	}
 

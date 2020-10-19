@@ -51,10 +51,11 @@ void Snake::MoveBy(const Location& delta)
 	mSegments[0].MoveBy(delta);
 }
 
-void Snake::Grow()
+void Snake::GrowAndMoveBy(const Location& delta)
 {
 	if (mNumSegments < mMaxSegments)
 		++mNumSegments;
+	MoveBy(delta);
 }
 
 void Snake::Draw(const Board& brd) const
