@@ -66,7 +66,7 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		mDeltaLoc.SetLocation(0, 1);
 
-	if (mSnekCounter.Tick(dt))
+	if (mSnekCounter.Tick(dt, wnd.kbd.KeyIsDown(VK_CONTROL)))
 	{
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
 

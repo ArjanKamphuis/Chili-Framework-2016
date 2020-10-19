@@ -58,7 +58,7 @@ private:
 	Goal mGoal;
 	Location mDeltaLoc = { 1, 0 };
 
-	ObjectCounter mSnekCounter = ObjectCounter(0.07f, 0.4f, 0.005f);
+	ObjectCounter mSnekCounter = ObjectCounter(0.06f, 0.4f, 0.005f, 0.15f);
 
 	bool mStarted = false;
 	bool mGameOver = false;
