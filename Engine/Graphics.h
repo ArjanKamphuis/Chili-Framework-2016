@@ -23,7 +23,7 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
-#include "RectF.h"
+#include "RectI.h"
 
 class Graphics
 {
@@ -68,7 +68,7 @@ public:
 	void DrawIsoRightTriBL(int x, int y, int size, Color c);
 	void DrawIsoRightTriBR(int x, int y, int size, Color c);
 	~Graphics();
-	static RectF GetScreenRect();
+	static RectI GetScreenRect();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device>				pDevice;
