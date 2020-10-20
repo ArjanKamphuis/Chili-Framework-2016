@@ -43,8 +43,18 @@ void MemeField::OnRevealClick(const Vec2I& screenPos)
 	assert(gridPos.X >= 0 && gridPos.X < mWidth && gridPos.Y >= 0 && gridPos.Y < mHeight);
 
 	Tile& tile = TileAt(gridPos);
-	if (!tile.IsRevealed())
+	if (!tile.IsRevealed() && !tile.IsFlagged())
 		tile.Reveal();
+}
+
+void MemeField::OnFlagClick(const Vec2I& screenPos)
+{
+	const Vec2I gridPos = ScreenToGrid(screenPos);
+	assert(gridPos.X >= 0 && gridPos.X < mWidth&& gridPos.Y >= 0 && gridPos.Y < mHeight);
+
+	Tile& tile = TileAt(gridPos);
+	if (!tile.IsRevealed())
+		tile.ToggleFlag();
 }
 
 MemeField::Tile& MemeField::TileAt(const Vec2I& gridpos)
@@ -102,4 +112,15 @@ void MemeField::Tile::Reveal()
 bool MemeField::Tile::IsRevealed() const
 {
 	return mState == State::Revealed;
+}
+
+void MemeField::Tile::ToggleFlag()
+{
+	assert(!IsRevealed());
+	mState = mState == State::Hidden ? State::Flagged : State::Hidden;
+}
+
+bool MemeField::Tile::IsFlagged() const
+{
+	return mState == State::Flagged;
 }

@@ -20,23 +20,7 @@
  ******************************************************************************************/
 #include "Keyboard.h"
 
-bool Keyboard::KeyIsPressed( unsigned char keycode )
-{
-	if (keystates[keycode])
-	{
-		if (!mKeyDowns[keycode])
-		{
-			mKeyDowns[keycode] = true;
-			return true;
-		}
-	}
-	else
-		mKeyDowns[keycode] = false;
-
-	return false;
-}
-
-bool Keyboard::KeyIsDown(unsigned char keycode) const
+bool Keyboard::KeyIsPressed(unsigned char keycode) const
 {
 	return keystates[keycode];
 }
