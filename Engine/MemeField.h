@@ -14,6 +14,8 @@ private:
 		void SpawnMeme();
 		bool HasMeme() const;
 		void Draw(const Vec2I& screenPos, Graphics& gfx) const;
+		void Reveal();
+		bool IsRevealed() const;
 
 	private:
 		State mState = State::Hidden;
@@ -25,10 +27,12 @@ public:
 
 	void Draw(Graphics& gfx) const;
 	RectI GetRect() const;
+	void OnRevealClick(const Vec2I& screenPos);
 
 private:
 	Tile& TileAt(const Vec2I& gridpos);
 	const Tile& TileAt(const Vec2I& gridpos) const;
+	Vec2I ScreenToGrid(const Vec2I& screenPos);
 
 private:
 	static constexpr int mWidth = 20;
