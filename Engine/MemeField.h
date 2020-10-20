@@ -14,7 +14,7 @@ private:
 		void SpawnMeme();
 		bool HasMeme() const;
 
-		void Draw(const Vec2I& screenPos, Graphics& gfx) const;
+		void Draw(const Vec2I& screenPos, bool gameover, Graphics& gfx) const;
 
 		void Reveal();
 		bool IsRevealed() const;
@@ -49,5 +49,6 @@ private:
 private:
 	static constexpr int mWidth = 20;
 	static constexpr int mHeight = 16;
+	bool mGameOver = false;
 	Tile mField[mWidth * mHeight] = {};
 };
