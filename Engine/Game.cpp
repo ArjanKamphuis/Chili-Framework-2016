@@ -23,6 +23,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
+	, mField(20)
 {
 }
 
@@ -41,5 +42,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	
+	mField.Draw(gfx);
 }
