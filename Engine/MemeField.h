@@ -22,9 +22,12 @@ private:
 		void ToggleFlag();
 		bool IsFlagged() const;
 
+		void SetNeighborMemeCount(int memeCount);
+
 	private:
 		State mState = State::Hidden;
 		bool mHasMeme = false;
+		int mNumNeighborMemes = -1;
 	};
 
 public:
@@ -40,6 +43,8 @@ private:
 	Tile& TileAt(const Vec2I& gridpos);
 	const Tile& TileAt(const Vec2I& gridpos) const;
 	Vec2I ScreenToGrid(const Vec2I& screenPos);
+
+	int CountNeighborMemes(const Vec2I& gridPos) const;
 
 private:
 	static constexpr int mWidth = 20;

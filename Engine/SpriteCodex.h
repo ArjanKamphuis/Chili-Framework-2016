@@ -25,4 +25,6 @@ public:
 	static void DrawTileFlag( const Vec2I& pos,Graphics& gfx );
 	static void DrawTileBomb( const Vec2I& pos,Graphics& gfx );
 	static void DrawTileBombRed( const Vec2I& pos,Graphics& gfx );
+	// Title selector function valid input 0-8
+	static void DrawTileNumber(const Vec2I& pos, int n, Graphics& gfx);
 };

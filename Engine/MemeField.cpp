@@ -22,14 +22,18 @@ MemeField::MemeField(int nMemes)
 
 		TileAt(spawnPos).SpawnMeme();
 	}
+
+	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
+		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)
+			TileAt(gridPos).SetNeighborMemeCount(CountNeighborMemes(gridPos));
 }
 
 void MemeField::Draw(Graphics& gfx) const
 {
 	gfx.DrawRect(GetRect(), SpriteCodex::baseColor);
-	for (Vec2I gridpos = { 0, 0 }; gridpos.Y < mHeight; ++gridpos.Y)
-		for (gridpos.X = 0; gridpos.X < mWidth; ++gridpos.X)
-			TileAt(gridpos).Draw(gridpos * SpriteCodex::tileSize, gfx);
+	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
+		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)
+			TileAt(gridPos).Draw(gridPos * SpriteCodex::tileSize, gfx);
 }
 
 RectI MemeField::GetRect() const
@@ -72,6 +76,21 @@ Vec2I MemeField::ScreenToGrid(const Vec2I& screenPos)
 	return screenPos / SpriteCodex::tileSize;
 }
 
+int MemeField::CountNeighborMemes(const Vec2I& gridPos) const
+{
+	const int xStart = std::max(0, gridPos.X - 1);
+	const int yStart = std::max(0, gridPos.Y - 1);
+	const int xEnd = std::min(mWidth - 1, gridPos.X + 1);
+	const int yEnd = std::min(mHeight - 1, gridPos.Y + 1);
+
+	int count = 0;
+	for (Vec2I gridPos = { xStart, yStart }; gridPos.Y <= yEnd; ++gridPos.Y)
+		for (gridPos.X = xStart; gridPos.X <= xEnd; ++gridPos.X)
+			if (TileAt(gridPos).HasMeme())
+				++count;
+	return count;
+}
+
 void MemeField::Tile::SpawnMeme()
 {
 	assert(!mHasMeme);
@@ -98,7 +117,7 @@ void MemeField::Tile::Draw(const Vec2I& screenPos, Graphics& gfx) const
 		if (mHasMeme)
 			SpriteCodex::DrawTileBomb(screenPos, gfx);
 		else
-			SpriteCodex::DrawTile0(screenPos, gfx);
+			SpriteCodex::DrawTileNumber(screenPos, mNumNeighborMemes, gfx);
 		break;
 	}
 }
@@ -123,4 +142,10 @@ void MemeField::Tile::ToggleFlag()
 bool MemeField::Tile::IsFlagged() const
 {
 	return mState == State::Flagged;
+}
+
+void MemeField::Tile::SetNeighborMemeCount(int memeCount)
+{
+	assert(mNumNeighborMemes == -1);
+	mNumNeighborMemes = memeCount;
 }
