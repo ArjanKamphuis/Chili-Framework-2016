@@ -44,6 +44,7 @@ private:
 	/*  User Functions              */
 	/********************************/
 	void Restart();
+	void FillBoard();
 private:
 	MainWindow& wnd;
 	Graphics gfx;

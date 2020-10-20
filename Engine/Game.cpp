@@ -25,11 +25,7 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx), mSnek(Location(2, 2))
 {
-	for (int i = 0; i < mNumFood; ++i)
-		mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
-	for (int i = 0; i < mNumPoison; ++i)
-		mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Poison);
-
+	FillBoard();
 	mSndTitle.Play();
 }
 
@@ -128,12 +124,20 @@ void Game::ComposeFrame()
 void Game::Restart()
 {
 	mSnekCounter.Reset();
+	mSnek.Reset(Location(2, 2));
 	mDeltaLoc = { 1, 0 };
 
 	mBrd.ClearBoard();
-	mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
-	mSnek.Reset(Location(2, 2));
-	mGameOver = false;
+	FillBoard();
 
+	mGameOver = false;
 	mSndMusic.Play(1.0f, 0.6f);
+}
+
+void Game::FillBoard()
+{
+	for (int i = 0; i < mNumFood; ++i)
+		mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Food);
+	for (int i = 0; i < mNumPoison; ++i)
+		mBrd.SpawnContent(mRng, mSnek, Board::ContentType::Poison);
 }
