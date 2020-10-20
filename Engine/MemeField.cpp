@@ -52,7 +52,9 @@ void MemeField::OnRevealClick(const Vec2I& screenPos)
 		if (!tile.IsRevealed() && !tile.IsFlagged())
 		{
 			tile.Reveal();
-			if (tile.HasMeme())
+			if (tile.GetNeighborMemeCount() == 0)
+				OnEmptyTileClick(gridPos);
+			else if (tile.HasMeme())
 				mGameOver = true;
 		}
 	}
@@ -99,6 +101,28 @@ int MemeField::CountNeighborMemes(const Vec2I& gridPos) const
 			if (TileAt(gridPos).HasMeme())
 				++count;
 	return count;
+}
+
+void MemeField::OnEmptyTileClick(const Vec2I& gridPos)
+{
+	const int xStart = std::max(0, gridPos.X - 1);
+	const int yStart = std::max(0, gridPos.Y - 1);
+	const int xEnd = std::min(mWidth - 1, gridPos.X + 1);
+	const int yEnd = std::min(mHeight - 1, gridPos.Y + 1);
+
+	for (Vec2I gridPos = { xStart, yStart }; gridPos.Y <= yEnd; ++gridPos.Y)
+	{
+		for (gridPos.X = xStart; gridPos.X <= xEnd; ++gridPos.X)
+		{
+			Tile& tile = TileAt(gridPos);
+			if (!tile.IsRevealed())
+			{
+				tile.Reveal();
+				if (tile.GetNeighborMemeCount() == 0)
+					OnEmptyTileClick(gridPos);
+			}
+		}
+	}
 }
 
 void MemeField::Tile::SpawnMeme()
@@ -191,4 +215,9 @@ void MemeField::Tile::SetNeighborMemeCount(int memeCount)
 {
 	assert(mNumNeighborMemes == -1);
 	mNumNeighborMemes = memeCount;
+}
+
+int MemeField::Tile::GetNeighborMemeCount() const
+{
+	return mNumNeighborMemes;
 }

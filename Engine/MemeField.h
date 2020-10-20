@@ -23,6 +23,7 @@ private:
 		bool IsFlagged() const;
 
 		void SetNeighborMemeCount(int memeCount);
+		int GetNeighborMemeCount() const;
 
 	private:
 		State mState = State::Hidden;
@@ -45,6 +46,8 @@ private:
 	Vec2I ScreenToGrid(const Vec2I& screenPos);
 
 	int CountNeighborMemes(const Vec2I& gridPos) const;
+
+	void OnEmptyTileClick(const Vec2I& gridPos);
 
 private:
 	static constexpr int mWidth = 20;
