@@ -45,6 +45,6 @@ private:
 	/********************************/
 	/*  User Variables              */
 	std::mt19937 mRng;
-	FrameTimer mFt = {};
+	FrameTimer mFt;
 	/********************************/
 };
