@@ -20,10 +20,11 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mField(Graphics::GetScreenRect().GetCenter(), 20)
+	, mField(Graphics::GetScreenRect().GetCenter(), 4)
 {
 }
 
@@ -37,6 +38,9 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (mField.GameIsWon())
+		return;
+
 	while (!wnd.mouse.IsEmpty())
 	{
 		const Mouse::Event e = wnd.mouse.Read();
@@ -58,4 +62,6 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	mField.Draw(gfx);
+	if (mField.GameIsWon())
+		SpriteCodex::DrawWin(gfx.GetScreenRect().GetCenter(), gfx);
 }

@@ -57,7 +57,10 @@ void MemeField::OnRevealClick(const Vec2I& screenPos)
 			if (tile.GetNeighborMemeCount() == 0)
 				OnEmptyTileClick(gridPos);
 			else if (tile.HasMeme())
+			{
 				mGameOver = true;
+				mSndLose.Play();
+			}
 		}
 	}
 }
@@ -73,6 +76,19 @@ void MemeField::OnFlagClick(const Vec2I& screenPos)
 		if (!tile.IsRevealed())
 			tile.ToggleFlag();
 	}
+}
+
+bool MemeField::GameIsWon() const
+{
+	for (const Tile& t : mField)
+		if ((t.HasMeme() && !t.IsFlagged()) || (!t.HasMeme() && !t.IsRevealed()))
+			return false;
+	return true;
+}
+
+bool MemeField::GameIsLost() const
+{
+	return mGameOver;
 }
 
 MemeField::Tile& MemeField::TileAt(const Vec2I& gridpos)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graphics.h"
+#include "Sound.h"
 
 class MemeField
 {
@@ -41,6 +42,9 @@ public:
 	void OnRevealClick(const Vec2I& screenPos);
 	void OnFlagClick(const Vec2I& screenPos);
 
+	bool GameIsWon() const;
+	bool GameIsLost() const;
+
 private:
 	Tile& TileAt(const Vec2I& gridpos);
 	const Tile& TileAt(const Vec2I& gridpos) const;
@@ -59,4 +63,6 @@ private:
 	Vec2I mTopLeft;
 	bool mGameOver = false;
 	Tile mField[mWidth * mHeight];
+
+	Sound mSndLose = Sound(L"data/spayed.wav");
 };
