@@ -383,6 +383,11 @@ void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
 			PutPixel(x, y, c);
 }
 
+void Graphics::DrawRect(const RectI& rect, Color c)
+{
+	DrawRect(rect.Left, rect.Top, rect.Right, rect.Bottom, c);
+}
+
 //////////////////////////////////////////////////
 //           Graphics Exception
 Graphics::Exception::Exception( HRESULT hr,const std::wstring& note,const wchar_t* file,unsigned int line )
