@@ -31,6 +31,7 @@ MemeField::MemeField(const Vec2I& center, int nMemes)
 
 void MemeField::Draw(Graphics& gfx) const
 {
+	gfx.DrawRect(GetRect().GetExpanded(mBorderThickness), mBorderColor);
 	gfx.DrawRect(GetRect(), SpriteCodex::baseColor);
 	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
 		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)

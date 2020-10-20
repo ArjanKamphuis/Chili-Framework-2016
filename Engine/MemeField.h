@@ -35,6 +35,7 @@ public:
 	MemeField(const Vec2I& center, int nMemes);
 
 	void Draw(Graphics& gfx) const;
+
 	RectI GetRect() const;
 
 	void OnRevealClick(const Vec2I& screenPos);
@@ -52,6 +53,9 @@ private:
 private:
 	static constexpr int mWidth = 20;
 	static constexpr int mHeight = 16;
+	static constexpr int mBorderThickness = 10;
+	static constexpr Color mBorderColor = Colors::Blue;
+
 	Vec2I mTopLeft;
 	bool mGameOver = false;
 	Tile mField[mWidth * mHeight];
