@@ -23,7 +23,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mField(20)
+	, mField(Graphics::GetScreenRect().GetCenter(), 20)
 {
 }
 

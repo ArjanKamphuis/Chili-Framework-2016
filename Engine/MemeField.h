@@ -32,7 +32,7 @@ private:
 	};
 
 public:
-	MemeField(int nMemes);
+	MemeField(const Vec2I& center, int nMemes);
 
 	void Draw(Graphics& gfx) const;
 	RectI GetRect() const;
@@ -52,6 +52,7 @@ private:
 private:
 	static constexpr int mWidth = 20;
 	static constexpr int mHeight = 16;
+	Vec2I mTopLeft;
 	bool mGameOver = false;
-	Tile mField[mWidth * mHeight] = {};
+	Tile mField[mWidth * mHeight];
 };

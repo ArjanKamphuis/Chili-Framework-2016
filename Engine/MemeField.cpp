@@ -5,7 +5,8 @@
 #include "Vec2I.h"
 #include "SpriteCodex.h"
 
-MemeField::MemeField(int nMemes)
+MemeField::MemeField(const Vec2I& center, int nMemes)
+	: mTopLeft(center - Vec2I(mWidth, mHeight) * SpriteCodex::tileSize / 2)
 {
 	assert(nMemes > 0 && nMemes < mWidth* mHeight);
 
@@ -33,12 +34,12 @@ void MemeField::Draw(Graphics& gfx) const
 	gfx.DrawRect(GetRect(), SpriteCodex::baseColor);
 	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
 		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)
-			TileAt(gridPos).Draw(gridPos * SpriteCodex::tileSize, mGameOver, gfx);
+			TileAt(gridPos).Draw(mTopLeft + gridPos * SpriteCodex::tileSize, mGameOver, gfx);
 }
 
 RectI MemeField::GetRect() const
 {
-	return { 0, mWidth * SpriteCodex::tileSize, 0, mHeight * SpriteCodex::tileSize };
+	return { mTopLeft, mWidth * SpriteCodex::tileSize, mHeight * SpriteCodex::tileSize };
 }
 
 void MemeField::OnRevealClick(const Vec2I& screenPos)
@@ -46,7 +47,7 @@ void MemeField::OnRevealClick(const Vec2I& screenPos)
 	if (!mGameOver)
 	{
 		const Vec2I gridPos = ScreenToGrid(screenPos);
-		assert(gridPos.X >= 0 && gridPos.X < mWidth&& gridPos.Y >= 0 && gridPos.Y < mHeight);
+		assert(gridPos.X >= 0 && gridPos.X < mWidth && gridPos.Y >= 0 && gridPos.Y < mHeight);
 
 		Tile& tile = TileAt(gridPos);
 		if (!tile.IsRevealed() && !tile.IsFlagged())
@@ -65,7 +66,7 @@ void MemeField::OnFlagClick(const Vec2I& screenPos)
 	if (!mGameOver)
 	{
 		const Vec2I gridPos = ScreenToGrid(screenPos);
-		assert(gridPos.X >= 0 && gridPos.X < mWidth&& gridPos.Y >= 0 && gridPos.Y < mHeight);
+		assert(gridPos.X >= 0 && gridPos.X < mWidth && gridPos.Y >= 0 && gridPos.Y < mHeight);
 
 		Tile& tile = TileAt(gridPos);
 		if (!tile.IsRevealed())
@@ -85,7 +86,7 @@ const MemeField::Tile& MemeField::TileAt(const Vec2I& gridpos) const
 
 Vec2I MemeField::ScreenToGrid(const Vec2I& screenPos)
 {
-	return screenPos / SpriteCodex::tileSize;
+	return (screenPos - mTopLeft) / SpriteCodex::tileSize;
 }
 
 int MemeField::CountNeighborMemes(const Vec2I& gridPos) const
