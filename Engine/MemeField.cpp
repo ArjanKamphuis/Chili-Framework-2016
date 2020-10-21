@@ -5,28 +5,10 @@
 #include "Vec2I.h"
 #include "SpriteCodex.h"
 
-MemeField::MemeField(const Vec2I& center, int nMemes)
+MemeField::MemeField(const Vec2I& center)
 	: mTopLeft(center - Vec2I(mWidth, mHeight) * SpriteCodex::tileSize / 2)
 {
-	assert(nMemes > 0 && nMemes < mWidth* mHeight);
-
-	std::mt19937 rng = std::mt19937(std::random_device()());
-	std::uniform_int_distribution<int> xDist(0, mWidth - 1);
-	std::uniform_int_distribution<int> yDist(0, mHeight - 1);
-
-	for (int i = 0; i < nMemes; ++i)
-	{
-		Vec2I spawnPos;
-		do
-			spawnPos = { xDist(rng), yDist(rng) };
-		while (TileAt(spawnPos).HasMeme());
-
-		TileAt(spawnPos).SpawnMeme();
-	}
-
-	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
-		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)
-			TileAt(gridPos).SetNeighborMemeCount(CountNeighborMemes(gridPos));
+	SpawnMemes();
 }
 
 void MemeField::Draw(Graphics& gfx) const
@@ -35,7 +17,7 @@ void MemeField::Draw(Graphics& gfx) const
 	gfx.DrawRect(GetRect(), SpriteCodex::baseColor);
 	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
 		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)
-			TileAt(gridPos).Draw(mTopLeft + gridPos * SpriteCodex::tileSize, mGameOver, gfx);
+			TileAt(gridPos).Draw(mTopLeft + gridPos * SpriteCodex::tileSize, mState, gfx);
 }
 
 RectI MemeField::GetRect() const
@@ -43,9 +25,14 @@ RectI MemeField::GetRect() const
 	return { mTopLeft, mWidth * SpriteCodex::tileSize, mHeight * SpriteCodex::tileSize };
 }
 
+MemeField::State MemeField::GetState() const
+{
+	return mState;
+}
+
 void MemeField::OnRevealClick(const Vec2I& screenPos)
 {
-	if (!mGameOver)
+	if (mState == State::Playing)
 	{
 		const Vec2I gridPos = ScreenToGrid(screenPos);
 		assert(gridPos.X >= 0 && gridPos.X < mWidth && gridPos.Y >= 0 && gridPos.Y < mHeight);
@@ -54,12 +41,17 @@ void MemeField::OnRevealClick(const Vec2I& screenPos)
 		if (!tile.IsRevealed() && !tile.IsFlagged())
 		{
 			tile.Reveal();
-			if (tile.GetNeighborMemeCount() == 0)
-				OnEmptyTileClick(gridPos);
-			else if (tile.HasMeme())
+			if (tile.HasMeme())
 			{
-				mGameOver = true;
+				mState = State::Lost;
 				mSndLose.Play();
+			}
+			else
+			{
+				if (tile.GetNeighborMemeCount() == 0)
+					OnEmptyTileClick(gridPos);
+				if (GameIsWon())
+					mState = State::Won;
 			}
 		}
 	}
@@ -67,7 +59,7 @@ void MemeField::OnRevealClick(const Vec2I& screenPos)
 
 void MemeField::OnFlagClick(const Vec2I& screenPos)
 {
-	if (!mGameOver)
+	if (mState == State::Playing)
 	{
 		const Vec2I gridPos = ScreenToGrid(screenPos);
 		assert(gridPos.X >= 0 && gridPos.X < mWidth && gridPos.Y >= 0 && gridPos.Y < mHeight);
@@ -75,20 +67,19 @@ void MemeField::OnFlagClick(const Vec2I& screenPos)
 		Tile& tile = TileAt(gridPos);
 		if (!tile.IsRevealed())
 			tile.ToggleFlag();
+		if (GameIsWon())
+			mState = State::Won;
 	}
 }
 
-bool MemeField::GameIsWon() const
+void MemeField::Restart()
 {
-	for (const Tile& t : mField)
-		if ((t.HasMeme() && !t.IsFlagged()) || (!t.HasMeme() && !t.IsRevealed()))
-			return false;
-	return true;
-}
+	for (int y = 0; y < mHeight; ++y)
+		for (int x = 0; x < mWidth; ++x)
+			mField[y * mWidth + x] = Tile();
 
-bool MemeField::GameIsLost() const
-{
-	return mGameOver;
+	SpawnMemes();
+	mState = State::Playing;
 }
 
 MemeField::Tile& MemeField::TileAt(const Vec2I& gridpos)
@@ -143,6 +134,35 @@ void MemeField::OnEmptyTileClick(const Vec2I& gridPos)
 	}
 }
 
+bool MemeField::GameIsWon() const
+{
+	for (const Tile& t : mField)
+		if ((t.HasMeme() && !t.IsFlagged()) || (!t.HasMeme() && !t.IsRevealed()))
+			return false;
+	return true;
+}
+
+void MemeField::SpawnMemes()
+{
+	std::mt19937 rng = std::mt19937(std::random_device()());
+	std::uniform_int_distribution<int> xDist(0, mWidth - 1);
+	std::uniform_int_distribution<int> yDist(0, mHeight - 1);
+
+	for (int i = 0; i < mMemeCount; ++i)
+	{
+		Vec2I spawnPos;
+		do
+			spawnPos = { xDist(rng), yDist(rng) };
+		while (TileAt(spawnPos).HasMeme());
+
+		TileAt(spawnPos).SpawnMeme();
+	}
+
+	for (Vec2I gridPos = { 0, 0 }; gridPos.Y < mHeight; ++gridPos.Y)
+		for (gridPos.X = 0; gridPos.X < mWidth; ++gridPos.X)
+			TileAt(gridPos).SetNeighborMemeCount(CountNeighborMemes(gridPos));
+}
+
 void MemeField::Tile::SpawnMeme()
 {
 	assert(!mHasMeme);
@@ -154,9 +174,9 @@ bool MemeField::Tile::HasMeme() const
 	return mHasMeme;
 }
 
-void MemeField::Tile::Draw(const Vec2I& screenPos, bool gameover, Graphics& gfx) const
+void MemeField::Tile::Draw(const Vec2I& screenPos, MemeField::State state, Graphics& gfx) const
 {
-	if (gameover)
+	if (state == MemeField::State::Lost)
 	{
 		switch (mState)
 		{

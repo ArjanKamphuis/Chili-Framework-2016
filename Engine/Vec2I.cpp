@@ -49,7 +49,7 @@ Vec2I& Vec2I::operator/=(int rhs)
 
 int Vec2I::GetLength() const
 {
-	return std::sqrt(GetLengthSq());
+	return static_cast<int>(std::sqrt(GetLengthSq()));
 }
 
 int Vec2I::GetLengthSq() const

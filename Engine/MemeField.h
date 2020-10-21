@@ -5,6 +5,9 @@
 
 class MemeField
 {
+public:
+	enum class State { Won, Lost, Playing };
+
 private:
 	class Tile
 	{
@@ -15,7 +18,7 @@ private:
 		void SpawnMeme();
 		bool HasMeme() const;
 
-		void Draw(const Vec2I& screenPos, bool gameover, Graphics& gfx) const;
+		void Draw(const Vec2I& screenPos, MemeField::State state, Graphics& gfx) const;
 
 		void Reveal();
 		bool IsRevealed() const;
@@ -33,17 +36,17 @@ private:
 	};
 
 public:
-	MemeField(const Vec2I& center, int nMemes);
+	MemeField(const Vec2I& center);
 
 	void Draw(Graphics& gfx) const;
 
 	RectI GetRect() const;
+	State GetState() const;
 
 	void OnRevealClick(const Vec2I& screenPos);
 	void OnFlagClick(const Vec2I& screenPos);
 
-	bool GameIsWon() const;
-	bool GameIsLost() const;
+	void Restart();
 
 private:
 	Tile& TileAt(const Vec2I& gridpos);
@@ -53,15 +56,20 @@ private:
 	int CountNeighborMemes(const Vec2I& gridPos) const;
 
 	void OnEmptyTileClick(const Vec2I& gridPos);
+	
+	bool GameIsWon() const;
+
+	void SpawnMemes();
 
 private:
 	static constexpr int mWidth = 20;
 	static constexpr int mHeight = 16;
+	static constexpr int mMemeCount = mWidth * mHeight / 5;
 	static constexpr int mBorderThickness = 10;
 	static constexpr Color mBorderColor = Colors::Blue;
 
 	Vec2I mTopLeft;
-	bool mGameOver = false;
+	State mState = State::Playing;
 	Tile mField[mWidth * mHeight];
 
 	Sound mSndLose = Sound(L"data/spayed.wav");

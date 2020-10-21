@@ -24,7 +24,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
-	, mField(Graphics::GetScreenRect().GetCenter(), 4)
+	, mField(Graphics::GetScreenRect().GetCenter())
 {
 }
 
@@ -38,30 +38,34 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (mField.GameIsWon())
-		return;
-
 	while (!wnd.mouse.IsEmpty())
 	{
 		const Mouse::Event e = wnd.mouse.Read();
-		if (e.GetType() == Mouse::Event::Type::LPress)
+
+		if (mField.GetState() == MemeField::State::Playing)
 		{
-			const Vec2I mousePos = e.GetPos();
-			if (mField.GetRect().Contains(mousePos))
-				mField.OnRevealClick(mousePos);
-		}
-		else if (e.GetType() == Mouse::Event::Type::RPress)
-		{
-			const Vec2I mousePos = e.GetPos();
-			if (mField.GetRect().Contains(mousePos))
-				mField.OnFlagClick(mousePos);
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				const Vec2I mousePos = e.GetPos();
+				if (mField.GetRect().Contains(mousePos))
+					mField.OnRevealClick(mousePos);
+			}
+			else if (e.GetType() == Mouse::Event::Type::RPress)
+			{
+				const Vec2I mousePos = e.GetPos();
+				if (mField.GetRect().Contains(mousePos))
+					mField.OnFlagClick(mousePos);
+			}
 		}
 	}
+
+	if (mField.GetState() != MemeField::State::Playing && wnd.kbd.KeyIsPressed(VK_RETURN))
+		mField.Restart();
 }
 
 void Game::ComposeFrame()
 {
 	mField.Draw(gfx);
-	if (mField.GameIsWon())
+	if (mField.GetState() == MemeField::State::Won)
 		SpriteCodex::DrawWin(gfx.GetScreenRect().GetCenter(), gfx);
 }
