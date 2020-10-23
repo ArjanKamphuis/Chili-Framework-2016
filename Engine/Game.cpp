@@ -38,6 +38,12 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (mField.GetState() == MemeField::State::Playing && wnd.mouse.LeftIsPressed() && wnd.mouse.RightIsPressed())
+	{
+		mField.OnClearNeighbors(wnd.mouse.GetPos());
+		return;
+	}
+
 	while (!wnd.mouse.IsEmpty())
 	{
 		const Mouse::Event e = wnd.mouse.Read();

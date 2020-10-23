@@ -72,6 +72,52 @@ void MemeField::OnFlagClick(const Vec2I& screenPos)
 	}
 }
 
+void MemeField::OnClearNeighbors(const Vec2I& screenPos)
+{
+	if (mState == State::Playing)
+	{
+		const Vec2I gridPos = ScreenToGrid(screenPos);
+		assert(gridPos.X >= 0 && gridPos.X < mWidth&& gridPos.Y >= 0 && gridPos.Y < mHeight);
+
+		const int xStart = std::max(0, gridPos.X - 1);
+		const int yStart = std::max(0, gridPos.Y - 1);
+		const int xEnd = std::min(mWidth - 1, gridPos.X + 1);
+		const int yEnd = std::min(mHeight - 1, gridPos.Y + 1);
+
+		int numFlags = 0;
+		Tile tile = TileAt(gridPos);
+		for (Vec2I gridPos = { xStart, yStart }; gridPos.Y <= yEnd; ++gridPos.Y)
+			for (gridPos.X = xStart; gridPos.X <= xEnd; ++gridPos.X)
+				if (TileAt(gridPos).IsFlagged())
+					++numFlags;
+
+		if (numFlags == tile.GetNeighborMemeCount())
+		{
+			for (Vec2I gridPos = { xStart, yStart }; gridPos.Y <= yEnd; ++gridPos.Y)
+			{
+				for (gridPos.X = xStart; gridPos.X <= xEnd; ++gridPos.X)
+				{
+					Tile& t = TileAt(gridPos);
+					if (!t.IsRevealed() && !t.IsFlagged())
+					{
+						t.Reveal();
+						if (t.HasMeme())
+						{
+							mState = State::Lost;
+							mSndLose.Play();
+						}
+						else if (t.GetNeighborMemeCount() == 0)
+							OnEmptyTileClick(gridPos);
+					}
+				}
+			}
+		}
+
+		if (GameIsWon())
+			mState = State::Won;
+	}
+}
+
 void MemeField::Restart()
 {
 	for (int y = 0; y < mHeight; ++y)

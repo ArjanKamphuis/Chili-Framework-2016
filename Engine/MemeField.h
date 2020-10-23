@@ -45,6 +45,7 @@ public:
 
 	void OnRevealClick(const Vec2I& screenPos);
 	void OnFlagClick(const Vec2I& screenPos);
+	void OnClearNeighbors(const Vec2I& screenPos);
 
 	void Restart();
 
