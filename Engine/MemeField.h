@@ -52,11 +52,11 @@ public:
 private:
 	Tile& TileAt(const Vec2I& gridpos);
 	const Tile& TileAt(const Vec2I& gridpos) const;
-	Vec2I ScreenToGrid(const Vec2I& screenPos);
+	Vec2I ScreenToGrid(const Vec2I& screenPos) const;
 
 	int CountNeighborMemes(const Vec2I& gridPos) const;
 
-	void OnEmptyTileClick(const Vec2I& gridPos);
+	void RevealTile(const Vec2I& gridPos);
 	
 	bool GameIsWon() const;
 
