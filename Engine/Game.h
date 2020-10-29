@@ -26,9 +26,12 @@
 #include "Graphics.h"
 #include "FrameTimer.h"
 #include "MemeField.h"
+#include "SelectionMenu.h"
 
 class Game
 {
+private:
+	enum class State { SelectionMenu, MemeSweeper };
 public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
@@ -40,6 +43,8 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void UpdateMenu();
+	void UpdateGame();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -49,5 +54,7 @@ private:
 	FrameTimer mFt;
 
 	MemeField mField;
+	SelectionMenu mMenu;
+	State mState = State::SelectionMenu;
 	/********************************/
 };

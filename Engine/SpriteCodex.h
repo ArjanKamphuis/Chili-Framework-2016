@@ -28,4 +28,11 @@ public:
 	// Title selector function valid input 0-8
 	static void DrawTileNumber(const Vec2I& pos, int n, Graphics& gfx);// Win Screen 254x192 center origin
 	static void DrawWin(const Vec2I& pos, Graphics& gfx);
+
+	// Text for size selection (center origin)
+	static constexpr int sizeselWidth = 240;
+	static constexpr int sizeselHeight = 56;
+	static void DrawSmall(const Vec2I& pos, Graphics& gfx);
+	static void DrawMedium(const Vec2I& pos, Graphics& gfx);
+	static void DrawLarge(const Vec2I& pos, Graphics& gfx);
 };

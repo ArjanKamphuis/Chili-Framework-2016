@@ -24,6 +24,7 @@
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
+	, mMenu({ gfx.GetScreenRect().GetCenter().X, 200 })
 	, mField(Graphics::GetScreenRect().GetCenter())
 {
 }
@@ -37,6 +38,41 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
+{
+	if (mState == State::SelectionMenu)
+		UpdateMenu();
+	else
+		UpdateGame();
+}
+
+void Game::ComposeFrame()
+{
+	if (mState == State::SelectionMenu)
+		mMenu.Draw(gfx);
+	else
+	{
+		mField.Draw(gfx);
+		if (mField.GetState() == MemeField::State::Won)
+			SpriteCodex::DrawWin(gfx.GetScreenRect().GetCenter(), gfx);
+	}
+}
+
+void Game::UpdateMenu()
+{
+	while (!wnd.mouse.IsEmpty())
+	{
+		switch (mMenu.ProcessMouse(wnd.mouse.Read()))
+		{
+		case SelectionMenu::Size::Small:
+		case SelectionMenu::Size::Medium:
+		case SelectionMenu::Size::Large:
+			mState = State::MemeSweeper;
+			break;
+		}
+	}
+}
+
+void Game::UpdateGame()
 {
 	if (mField.GetState() == MemeField::State::Playing && wnd.mouse.LeftIsPressed() && wnd.mouse.RightIsPressed())
 	{
@@ -67,11 +103,4 @@ void Game::UpdateModel()
 
 	if (mField.GetState() != MemeField::State::Playing && wnd.kbd.KeyIsPressed(VK_RETURN))
 		mField.Restart();
-}
-
-void Game::ComposeFrame()
-{
-	mField.Draw(gfx);
-	if (mField.GetState() == MemeField::State::Won)
-		SpriteCodex::DrawWin(gfx.GetScreenRect().GetCenter(), gfx);
 }
