@@ -36,7 +36,8 @@ private:
 	};
 
 public:
-	MemeField(const Vec2I& center);
+	MemeField(const Vec2I& center, int width, int height);
+	~MemeField();
 
 	void Draw(Graphics& gfx) const;
 
@@ -63,15 +64,16 @@ private:
 	void SpawnMemes();
 
 private:
-	static constexpr int mWidth = 20;
-	static constexpr int mHeight = 16;
-	static constexpr int mMemeCount = mWidth * mHeight / 5;
 	static constexpr int mBorderThickness = 10;
 	static constexpr Color mBorderColor = Colors::Blue;
 
+	int mWidth;
+	int mHeight;
+	int mMemeCount;
+
 	Vec2I mTopLeft;
 	State mState = State::Playing;
-	Tile mField[mWidth * mHeight];
+	Tile* mField = nullptr;
 
 	Sound mSndLose = Sound(L"data/spayed.wav");
 };

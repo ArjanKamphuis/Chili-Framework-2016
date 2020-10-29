@@ -36,6 +36,7 @@ public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
+	~Game();
 	void Go();
 private:
 	void UpdateModel();
@@ -43,6 +44,7 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void CreateMemeField(int width, int height);
 	void UpdateMenu();
 	void UpdateGame();
 private:
@@ -53,7 +55,7 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFt;
 
-	MemeField mField;
+	MemeField* mField = nullptr;
 	SelectionMenu mMenu;
 	State mState = State::SelectionMenu;
 	/********************************/

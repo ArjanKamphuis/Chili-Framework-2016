@@ -25,8 +25,13 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
 	, mMenu({ gfx.GetScreenRect().GetCenter().X, 200 })
-	, mField(Graphics::GetScreenRect().GetCenter())
 {
+}
+
+Game::~Game()
+{
+	delete mField;
+	mField = nullptr;
 }
 
 void Game::Go()
@@ -51,10 +56,17 @@ void Game::ComposeFrame()
 		mMenu.Draw(gfx);
 	else
 	{
-		mField.Draw(gfx);
-		if (mField.GetState() == MemeField::State::Won)
+		mField->Draw(gfx);
+		if (mField->GetState() == MemeField::State::Won)
 			SpriteCodex::DrawWin(gfx.GetScreenRect().GetCenter(), gfx);
 	}
+}
+
+void Game::CreateMemeField(int width, int height)
+{
+	if (mField)
+		delete mField;
+	mField = new MemeField(gfx.GetScreenRect().GetCenter(), width, height);
 }
 
 void Game::UpdateMenu()
@@ -64,8 +76,15 @@ void Game::UpdateMenu()
 		switch (mMenu.ProcessMouse(wnd.mouse.Read()))
 		{
 		case SelectionMenu::Size::Small:
+			CreateMemeField(8, 4);
+			mState = State::MemeSweeper;
+			break;
 		case SelectionMenu::Size::Medium:
+			CreateMemeField(14, 7);
+			mState = State::MemeSweeper;
+			break;
 		case SelectionMenu::Size::Large:
+			CreateMemeField(24, 16);
 			mState = State::MemeSweeper;
 			break;
 		}
@@ -74,9 +93,9 @@ void Game::UpdateMenu()
 
 void Game::UpdateGame()
 {
-	if (mField.GetState() == MemeField::State::Playing && wnd.mouse.LeftIsPressed() && wnd.mouse.RightIsPressed())
+	if (mField->GetState() == MemeField::State::Playing && wnd.mouse.LeftIsPressed() && wnd.mouse.RightIsPressed())
 	{
-		mField.OnClearNeighbors(wnd.mouse.GetPos());
+		mField->OnClearNeighbors(wnd.mouse.GetPos());
 		return;
 	}
 
@@ -84,23 +103,25 @@ void Game::UpdateGame()
 	{
 		const Mouse::Event e = wnd.mouse.Read();
 
-		if (mField.GetState() == MemeField::State::Playing)
+		if (mField->GetState() == MemeField::State::Playing)
 		{
 			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
 				const Vec2I mousePos = e.GetPos();
-				if (mField.GetRect().Contains(mousePos))
-					mField.OnRevealClick(mousePos);
+				if (mField->GetRect().Contains(mousePos))
+					mField->OnRevealClick(mousePos);
 			}
 			else if (e.GetType() == Mouse::Event::Type::RPress)
 			{
 				const Vec2I mousePos = e.GetPos();
-				if (mField.GetRect().Contains(mousePos))
-					mField.OnFlagClick(mousePos);
+				if (mField->GetRect().Contains(mousePos))
+					mField->OnFlagClick(mousePos);
 			}
 		}
+		else
+		{
+			if (e.GetType() == Mouse::Event::Type::LPress)
+				mState = State::SelectionMenu;
+		}
 	}
-
-	if (mField.GetState() != MemeField::State::Playing && wnd.kbd.KeyIsPressed(VK_RETURN))
-		mField.Restart();
 }

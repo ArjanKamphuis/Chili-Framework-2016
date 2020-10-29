@@ -5,10 +5,18 @@
 #include "Vec2I.h"
 #include "SpriteCodex.h"
 
-MemeField::MemeField(const Vec2I& center)
-	: mTopLeft(center - Vec2I(mWidth, mHeight) * SpriteCodex::tileSize / 2)
+MemeField::MemeField(const Vec2I& center, int width, int height)
+	: mWidth(width), mHeight(height), mMemeCount(width* height / 5)
+	, mTopLeft(center - Vec2I(mWidth, mHeight) * SpriteCodex::tileSize / 2)
 {
+	mField = new Tile[static_cast<long long>(width) * height];
 	SpawnMemes();
+}
+
+MemeField::~MemeField()
+{
+	delete[] mField;
+	mField = nullptr;
 }
 
 void MemeField::Draw(Graphics& gfx) const
@@ -157,9 +165,15 @@ void MemeField::RevealTile(const Vec2I& gridPos)
 
 bool MemeField::GameIsWon() const
 {
-	for (const Tile& t : mField)
-		if ((t.HasMeme() && !t.IsFlagged()) || (!t.HasMeme() && !t.IsRevealed()))
-			return false;
+	for (int y = 0; y < mHeight; ++y)
+	{
+		for (int x = 0; x < mWidth; ++x)
+		{
+			const Tile& t = TileAt({ x, y });
+			if ((t.HasMeme() && !t.IsFlagged()) || (!t.HasMeme() && !t.IsRevealed()))
+				return false;
+		}
+	}
 	return true;
 }
 
