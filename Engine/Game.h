@@ -20,6 +20,10 @@
  ******************************************************************************************/
 #pragma once
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#endif
+
 #include <random>
 #include "Keyboard.h"
 #include "Mouse.h"
