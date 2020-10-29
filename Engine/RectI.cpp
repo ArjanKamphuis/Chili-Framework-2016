@@ -31,7 +31,7 @@ bool RectI::IsContainedBy(const RectI& other) const
 	return Left >= other.Left && Right <= other.Right && Top >= other.Top && Bottom <= other.Bottom;
 }
 
-bool RectI::Contains(const Vec2I& point)
+bool RectI::Contains(const Vec2I& point) const
 {
 	return point.X >= Left && point.X < Right && point.Y >= Top && point.Y < Bottom;
 }
