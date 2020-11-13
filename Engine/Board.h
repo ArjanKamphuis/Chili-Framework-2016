@@ -3,6 +3,7 @@
 #include <random>
 #include "Graphics.h"
 #include "Location.h"
+#include "GameSettings.h"
 
 class Board
 {
@@ -10,10 +11,10 @@ public:
 	enum class ContentType { Empty, Obstacle, Food, Poison };
 
 public:
-	Board(Graphics& gfx);
+	Board(Graphics& gfx, const GameSettings& settings);
 	Board(const Board& rhs) = delete;
 	Board& operator=(const Board& rhs) = delete;
-	~Board() = default;
+	~Board();
 
 	void DrawCell(const Location& loc, Color c) const;
 	void DrawBorder() const;
@@ -35,16 +36,17 @@ private:
 	static constexpr Color mObstacleColor = Colors::Gray;
 	static constexpr Color mFoodColor = Colors::Red;
 	static constexpr Color mPoisonColor = { 64, 8, 64 };
-	static constexpr int mDimension = 20;
 	static constexpr int mCellPadding = 1;
-	static constexpr int mWidth = 32;
-	static constexpr int mHeight = 24;
 	static constexpr int mBorderWidth = 4;
 	static constexpr int mBorderPadding = 2;
-	static constexpr int mX = 70;
-	static constexpr int mY = 50;
 
-	ContentType mContents[mWidth * mHeight] = { ContentType::Empty };
+	int mWidth;
+	int mHeight;
+	int mDimension;
+	int mX;
+	int mY;
+
+	ContentType* mContents = nullptr;
 
 	Graphics& mGfx;
 

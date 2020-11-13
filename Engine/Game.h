@@ -29,6 +29,7 @@
 #include "Snake.h"
 #include "SoundEffect.h"
 #include "ObjectCounter.h"
+#include "GameSettings.h"
 
 class Game
 {
@@ -52,15 +53,17 @@ private:
 	/*  User Variables              */
 	std::mt19937 mRng;
 	FrameTimer mFT;
+
+	GameSettings mSettings = "settings.txt";
 	
 	Board mBrd;
 	Snake mSnek;
 	Location mDeltaLoc = { 1, 0 };
 
-	static constexpr int mNumPoison = 240;
-	static constexpr int mNumFood = 12;
+	int mNumPoison;
+	int mNumFood;
 
-	ObjectCounter mSnekCounter = ObjectCounter(0.04f, 0.4f, 0.93f, 0.15f);
+	ObjectCounter mSnekCounter;
 
 	bool mStarted = false;
 	bool mGameOver = false;

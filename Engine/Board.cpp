@@ -3,9 +3,19 @@
 #include <assert.h>
 #include "Snake.h"
 
-Board::Board(Graphics& gfx)
-	: mGfx(gfx), mRandomX(0, mWidth - 1), mRandomY(0, mHeight - 1)
+Board::Board(Graphics& gfx, const GameSettings& settings)
+	: mGfx(gfx), mDimension(settings.GetTileSize()), mWidth(settings.GetBoardWidth()), mHeight(settings.GetBoardHeight())
+	, mContents(new ContentType[mWidth * mHeight]{ ContentType::Empty })
+	, mRandomX(0, mWidth - 1), mRandomY(0, mHeight - 1)
+	, mX(gfx.GetScreenRect().GetCenter().X - (mWidth * mDimension / 2))
+	, mY(gfx.GetScreenRect().GetCenter().Y - (mHeight * mDimension / 2))
 {
+}
+
+Board::~Board()
+{
+	delete[] mContents;
+	mContents = nullptr;
 }
 
 void Board::DrawCell(const Location& loc, Color c) const

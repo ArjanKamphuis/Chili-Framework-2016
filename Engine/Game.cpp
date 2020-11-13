@@ -22,9 +22,19 @@
 #include "Game.h"
 #include "SpriteCodex.h"
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#endif
+
 Game::Game( MainWindow& wnd )
-	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx), mSnek(Location(2, 2))
+	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx, mSettings), mSnek({ 2, 2 })
+	, mNumFood(mSettings.GetFoodAmount()), mNumPoison(mSettings.GetPoisonAmount())
+	, mSnekCounter(0.04f, 0.4f, mSettings.GetSpeedupRate(), 0.15f)
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	FillBoard();
 	mSndTitle.Play();
 }
