@@ -24,6 +24,16 @@ bool Location::operator==(const Location& rhs) const
 	return X == rhs.X && Y == rhs.Y;
 }
 
+bool Location::operator!=(const Location& rhs) const
+{
+	return !(*this == rhs);
+}
+
+Location Location::operator-() const
+{
+	return { -X, -Y };
+}
+
 void Location::SetLocation(int x, int y)
 {
 	X = x;

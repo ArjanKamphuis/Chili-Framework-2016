@@ -60,14 +60,18 @@ void Game::UpdateModel()
 		return;
 	}
 
+	Location newDeltaLoc{ 0, 0 };
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-		mDeltaLoc.SetLocation(-1, 0);
+		newDeltaLoc.SetLocation(-1, 0);
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-		mDeltaLoc.SetLocation(1, 0);
+		newDeltaLoc.SetLocation(1, 0);
 	if (wnd.kbd.KeyIsPressed(VK_UP))
-		mDeltaLoc.SetLocation(0, -1);
+		newDeltaLoc.SetLocation(0, -1);
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-		mDeltaLoc.SetLocation(0, 1);
+		newDeltaLoc.SetLocation(0, 1);
+
+	if ((newDeltaLoc.X != 0 || newDeltaLoc.Y != 0) && (newDeltaLoc != -mDeltaLoc || mSnek.GetLength() <= 2))
+		mDeltaLoc = newDeltaLoc;
 
 	if (mSnekCounter.Tick(dt, wnd.kbd.KeyIsDown(VK_CONTROL)))
 	{

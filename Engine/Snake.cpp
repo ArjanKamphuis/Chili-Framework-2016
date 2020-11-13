@@ -77,3 +77,8 @@ Location Snake::GetNextHeadLocation(const Location& delta) const
 {
 	return mSegments.front().GetLocation() + delta;
 }
+
+int Snake::GetLength() const
+{
+	return static_cast<int>(mSegments.size());
+}

@@ -38,6 +38,7 @@ public:
 	bool IsInTile(const Location& tile, bool exceptEnd = false) const;
 
 	Location GetNextHeadLocation(const Location& delta) const;
+	int GetLength() const;
 
 private:
 	static constexpr int mNumBodyColors = 4;

@@ -8,6 +8,8 @@ public:
 	const Location operator+(const Location& rhs) const;
 	Location& operator+=(const Location& rhs);
 	bool operator==(const Location& rhs) const;
+	bool operator!=(const Location& rhs) const;
+	Location operator-() const;
 
 	void SetLocation(int x, int y);
 
