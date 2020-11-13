@@ -22,19 +22,11 @@
 #include "Game.h"
 #include "SpriteCodex.h"
 
-#ifdef _DEBUG
-#include <crtdbg.h>
-#endif
-
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()()), mBrd(gfx, mSettings), mSnek({ 2, 2 })
 	, mNumFood(mSettings.GetFoodAmount()), mNumPoison(mSettings.GetPoisonAmount())
 	, mSnekCounter(0.04f, 0.4f, mSettings.GetSpeedupRate(), 0.15f)
 {
-#ifdef _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif
-
 	FillBoard();
 	mSndTitle.Play();
 }
@@ -80,7 +72,7 @@ void Game::UpdateModel()
 	if (mSnekCounter.Tick(dt, wnd.kbd.KeyIsDown(VK_CONTROL)))
 	{
 		const Location next = mSnek.GetNextHeadLocation(mDeltaLoc);
-		const Board::ContentType content = mBrd.GetContent(next);
+		const Board::ContentType content = mBrd.IsInsideBoard(next) ? mBrd.GetContent(next) : Board::ContentType::Empty;
 
 		if (!mBrd.IsInsideBoard(next) || mSnek.IsInTile(next, true) || content == Board::ContentType::Obstacle)
 		{

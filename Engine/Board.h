@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <vector>
 #include "Graphics.h"
 #include "Location.h"
 #include "GameSettings.h"
@@ -12,9 +13,6 @@ public:
 
 public:
 	Board(Graphics& gfx, const GameSettings& settings);
-	Board(const Board& rhs) = delete;
-	Board& operator=(const Board& rhs) = delete;
-	~Board();
 
 	void DrawCell(const Location& loc, Color c) const;
 	void DrawBorder() const;
@@ -46,7 +44,7 @@ private:
 	int mX;
 	int mY;
 
-	ContentType* mContents = nullptr;
+	std::vector<ContentType> mContents;
 
 	Graphics& mGfx;
 
