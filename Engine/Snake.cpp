@@ -1,13 +1,13 @@
 #include "Snake.h"
 #include <assert.h>
 
-void Snake::Segment::InitHead(const Location& loc)
+Snake::Segment::Segment(const Location& loc)
 {
 	mLoc = loc;
 	mColor = Snake::mHeadColor;
 }
 
-void Snake::Segment::InitBody(Color c)
+Snake::Segment::Segment(Color c)
 {
 	mColor = c;
 }
@@ -35,46 +35,39 @@ const Location& Snake::Segment::GetLocation() const
 
 Snake::Snake(const Location& loc)
 {
-	static constexpr int numBodyColors = 4;
-	static constexpr Color bodyColors[numBodyColors] = { { 10, 100, 32 }, { 10, 130, 48 }, { 18, 160, 48 }, { 10, 130, 148 } };
-
-	for (int i = 0; i < mMaxSegments; ++i)
-		mSegments[i].InitBody(bodyColors[i % numBodyColors]);
-
-	mSegments[0].InitHead(loc);
+	mSegments.emplace_back(loc);
 }
 
 void Snake::MoveBy(const Location& delta)
 {
-	for (int i = mNumSegments - 1; i > 0; --i)
+	for (size_t i = mSegments.size() - 1; i > 0; --i)
 		mSegments[i].Follow(mSegments[i - 1]);
-	mSegments[0].MoveBy(delta);
+	mSegments.front().MoveBy(delta);
 }
 
 void Snake::GrowAndMoveBy(const Location& delta)
 {
-	if (mNumSegments < mMaxSegments)
-		++mNumSegments;
+	mSegments.emplace_back(mBodyColors[mSegments.size() % mNumBodyColors]);
 	MoveBy(delta);
 }
 
 void Snake::Draw(const Board& brd) const
 {
-	for (int i = 0; i < mNumSegments; ++i)
-		mSegments[i].Draw(brd);
+	for (const Segment& s : mSegments)
+		s.Draw(brd);
 }
 
 void Snake::Reset(const Location& loc)
 {
-	mNumSegments = 1;
-	mSegments[0].InitHead(loc);
+	mSegments.clear();
+	mSegments.emplace_back(loc);
 }
 
 bool Snake::IsInTile(const Location& tile, bool exceptEnd) const
 {
-	int snakeLength = exceptEnd ? mNumSegments - 1 : mNumSegments;
+	size_t snakeLength = exceptEnd ? mSegments.size() - 1 : mSegments.size();
 
-	for (int i = 0; i < snakeLength; ++i)
+	for (size_t i = 0; i < snakeLength; ++i)
 		if (mSegments[i].GetLocation() == tile)
 			return true;
 	return false;
@@ -82,5 +75,5 @@ bool Snake::IsInTile(const Location& tile, bool exceptEnd) const
 
 Location Snake::GetNextHeadLocation(const Location& delta) const
 {
-	return mSegments[0].GetLocation() + delta;
+	return mSegments.front().GetLocation() + delta;
 }

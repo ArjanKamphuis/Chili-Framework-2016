@@ -16,6 +16,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{8b6c92a8-f65d-451e-80e3-d65773602b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Configs">
+      <UniqueIdentifier>{c98585de-6750-438f-8523-bcdd2a641666}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -152,5 +155,10 @@
     <Image Include="Chili.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Settings.txt">
+      <Filter>Configs</Filter>
+    </Text>
   </ItemGroup>
 </Project>

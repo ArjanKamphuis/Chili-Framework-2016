@@ -2,13 +2,13 @@
 10
 
 [Board Dimensions]
-30 30
+60 40
 
 [Poison Amount]
-240
+1000
 
 [Food Amount]
-12
+6
 
 [Speedup Rate]
 0.93
