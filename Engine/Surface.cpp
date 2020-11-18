@@ -1,6 +1,6 @@
 #include "Surface.h"
 
-#include <assert.h>
+#include <cassert>
 #include <fstream>
 #include "ChiliWin.h"
 
@@ -15,17 +15,34 @@ Surface::Surface(const std::string& filename)
 	BITMAPINFOHEADER bmInfoHeader;
 	fin.read(reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader));
 
-	assert(bmInfoHeader.biBitCount == 24);
+	assert(bmInfoHeader.biBitCount == 24 || bmInfoHeader.biBitCount == 32);
 	assert(bmInfoHeader.biCompression == BI_RGB);
 
 	mWidth = bmInfoHeader.biWidth;
-	mHeight = bmInfoHeader.biHeight;
+
+	int yStart, yEnd, dy;
+	if (bmInfoHeader.biHeight < 0)
+	{
+		mHeight = -bmInfoHeader.biHeight;
+		yStart = 0;
+		yEnd = mHeight;
+		dy = 1;
+	}
+	else
+	{
+		mHeight = bmInfoHeader.biHeight;
+		yStart = mHeight - 1;
+		yEnd = -1;
+		dy = -1;
+	}
+
 	mPixels = new Color[mWidth * mHeight];
 
 	fin.seekg(bmFileHeader.bfOffBits, std::ios_base::beg);
+	const bool is32b = bmInfoHeader.biBitCount == 32;
 	const int padding = (4 - (mWidth * 3) % 4) % 4;
 
-	for (int y = mHeight - 1; y >= 0; --y)
+	for (int y = yStart; y != yEnd; y += dy)
 	{
 		for (int x = 0; x < mWidth; ++x)
 		{
@@ -33,8 +50,12 @@ Surface::Surface(const std::string& filename)
 			const unsigned char g = fin.get();
 			const unsigned char r = fin.get();
 			PutPixel(x, y, { r, g, b });
+
+			if (is32b)
+				fin.seekg(1, std::ios_base::cur);
 		}
-		fin.seekg(padding, std::ios_base::cur);
+		if (!is32b)
+			fin.seekg(padding, std::ios_base::cur);
 	}
 }
 
