@@ -151,12 +151,15 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="ObjectCounter.h" />
     <ClInclude Include="RectF.h" />
+    <ClInclude Include="RectI.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="SpriteCodex.h" />
+    <ClInclude Include="Surface.h" />
     <ClInclude Include="Vec2.h" />
+    <ClInclude Include="Vec2I.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
@@ -172,10 +175,13 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="ObjectCounter.cpp" />
     <ClCompile Include="RectF.cpp" />
+    <ClCompile Include="RectI.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpriteCodex.cpp" />
+    <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="Vec2I.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">

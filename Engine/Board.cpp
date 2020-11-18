@@ -7,8 +7,8 @@ Board::Board(Graphics& gfx, const GameSettings& settings)
 	: mGfx(gfx), mDimension(settings.GetTileSize()), mWidth(settings.GetBoardWidth()), mHeight(settings.GetBoardHeight())
 	, mContents(mWidth * mHeight, ContentType::Empty)
 	, mRandomX(0, mWidth - 1), mRandomY(0, mHeight - 1)
-	, mX(static_cast<int>(gfx.GetScreenRect().GetCenter().X) - (mWidth * mDimension / 2))
-	, mY(static_cast<int>(gfx.GetScreenRect().GetCenter().Y) - (mHeight * mDimension / 2))
+	, mX(gfx.GetScreenRectI().GetCenter().X - (mWidth * mDimension / 2))
+	, mY(gfx.GetScreenRectI().GetCenter().Y - (mHeight * mDimension / 2))
 {
 }
 
