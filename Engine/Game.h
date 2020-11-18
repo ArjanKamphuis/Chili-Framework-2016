@@ -25,6 +25,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
+#include "Surface.h"
 
 class Game
 {
@@ -46,5 +47,7 @@ private:
 	/*  User Variables              */
 	std::mt19937 mRng;
 	FrameTimer mFt;
+
+	Surface mSurface = Surface(100, 100);
 	/********************************/
 };
