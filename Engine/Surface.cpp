@@ -1,6 +1,42 @@
 #include "Surface.h"
 
 #include <assert.h>
+#include <fstream>
+#include "ChiliWin.h"
+
+Surface::Surface(const std::string& filename)
+{
+	std::ifstream fin(filename, std::ios::binary);
+	assert(fin);
+
+	BITMAPFILEHEADER bmFileHeader;
+	fin.read(reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader));
+
+	BITMAPINFOHEADER bmInfoHeader;
+	fin.read(reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader));
+
+	assert(bmInfoHeader.biBitCount == 24);
+	assert(bmInfoHeader.biCompression == BI_RGB);
+
+	mWidth = bmInfoHeader.biWidth;
+	mHeight = bmInfoHeader.biHeight;
+	mPixels = new Color[mWidth * mHeight];
+
+	fin.seekg(bmFileHeader.bfOffBits, std::ios_base::beg);
+	const int padding = (4 - (mWidth * 3) % 4) % 4;
+
+	for (int y = mHeight - 1; y >= 0; --y)
+	{
+		for (int x = 0; x < mWidth; ++x)
+		{
+			const unsigned char b = fin.get();
+			const unsigned char g = fin.get();
+			const unsigned char r = fin.get();
+			PutPixel(x, y, { r, g, b });
+		}
+		fin.seekg(padding, std::ios_base::cur);
+	}
+}
 
 Surface::Surface(int width, int height)
 	: mWidth(width), mHeight(height), mPixels(new Color[width * height])

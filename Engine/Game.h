@@ -48,6 +48,6 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFt;
 
-	Surface mSurface = Surface(100, 100);
+	Surface mSurface = Surface("data/dib.bmp");
 	/********************************/
 };
