@@ -18,6 +18,8 @@ public:
 
 	RectI GetExpanded(int offset) const;
 	Vec2I GetCenter() const;
+	int GetWidth() const;
+	int GetHeight() const;
 
 public:
 	int Left = 0;

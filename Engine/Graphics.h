@@ -61,6 +61,7 @@ public:
 	void PutPixel( int x,int y,Color c );
 	void DrawSprite(int x, int y, const Surface& s);
 	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s);
+	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s);
 	void DrawRect(int x0, int y0, int x1, int y1, Color c);
 	void DrawRectDim(int x, int y, int width, int height, Color c)
 	{
@@ -72,7 +73,8 @@ public:
 	void DrawIsoRightTriBL(int x, int y, int size, Color c);
 	void DrawIsoRightTriBR(int x, int y, int size, Color c);
 	~Graphics();
-	static RectF GetScreenRect();
+	static RectF GetScreenRectF();
+	static RectI GetScreenRectI();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device>				pDevice;

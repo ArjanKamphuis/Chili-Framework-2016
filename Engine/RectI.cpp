@@ -45,3 +45,13 @@ Vec2I RectI::GetCenter() const
 {
 	return Vec2I((Left + Right) >> 1, (Top + Bottom) >> 1);
 }
+
+int RectI::GetWidth() const
+{
+	return Right - Left;
+}
+
+int RectI::GetHeight() const
+{
+	return Bottom - Top;
+}
