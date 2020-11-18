@@ -376,17 +376,60 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
-void Graphics::DrawSprite(int x, int y, const Surface& s)
+void Graphics::DrawSprite(int x, int y, const Surface& s, Color chroma)
 {
-	DrawSprite(x, y, s.GetRect(), s);
+	DrawSprite(x, y, s.GetRect(), s, chroma);
 }
 
-void Graphics::DrawSprite(int x, int y, const RectI& srcRect, const Surface& s)
+void Graphics::DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, Color chroma)
 {
-	DrawSprite(x, y, srcRect, GetScreenRectI(), s);
+	DrawSprite(x, y, srcRect, GetScreenRectI(), s, chroma);
 }
 
-void Graphics::DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s)
+void Graphics::DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, Color chroma)
+{
+	assert(srcRect.Left >= 0);
+	assert(srcRect.Right <= s.GetWidth());
+	assert(srcRect.Top >= 0);
+	assert(srcRect.Bottom <= s.GetHeight());
+
+	if (x < clip.Left)
+	{
+		srcRect.Left += clip.Left - x;
+		x = clip.Left;
+	}
+	if (y < clip.Top)
+	{
+		srcRect.Top += clip.Top - y;
+		y = clip.Top;
+	}
+	if (x + srcRect.GetWidth() > clip.Right)
+		srcRect.Right -= x + srcRect.GetWidth() - clip.Right;
+	if (y + srcRect.GetHeight() > clip.Bottom)
+		srcRect.Bottom -= y + srcRect.GetHeight() - clip.Bottom;
+
+	for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
+	{
+		for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
+		{
+			const Color srcPixel = s.GetPixel(sx, sy);
+			if (srcPixel != chroma)
+				PutPixel(x + sx - srcRect.Left, y + sy - srcRect.Top, s.GetPixel(sx, sy));
+		}
+	}
+}
+
+void Graphics::DrawSpriteNonChroma(int x, int y, const Surface& s)
+{
+	DrawSpriteNonChroma(x, y, s.GetRect(), s);
+}
+
+void Graphics::DrawSpriteNonChroma(int x, int y, const RectI& srcRect, const Surface& s)
+{
+	DrawSpriteNonChroma(x, y, srcRect, GetScreenRectI(), s);
+}
+
+void Graphics::DrawSpriteNonChroma(int x, int y, RectI srcRect, const RectI& clip, const Surface& s)
 {
 	assert(srcRect.Left >= 0);
 	assert(srcRect.Right <= s.GetWidth());
