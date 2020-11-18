@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Colors.h"
+#include "RectI.h"
 
 class Surface
 {
@@ -15,6 +16,7 @@ public:
 	void PutPixel(int x, int y, Color c);
 	Color GetPixel(int x, int y) const;
 
+	RectI GetRect() const;
 	int GetWidth() const;
 	int GetHeight() const;
 

@@ -378,21 +378,12 @@ void Graphics::PutPixel( int x,int y,Color c )
 
 void Graphics::DrawSprite(int x, int y, const Surface& s)
 {
-	for (int sy = 0; sy < s.GetHeight(); ++sy)
-		for (int sx = 0; sx < s.GetWidth(); ++sx)
-			PutPixel(x + sx, y + sy, s.GetPixel(sx, sy));
+	DrawSprite(x, y, s.GetRect(), s);
 }
 
 void Graphics::DrawSprite(int x, int y, const RectI& srcRect, const Surface& s)
 {
-	assert(srcRect.Left >= 0);
-	assert(srcRect.Right <= s.GetWidth());
-	assert(srcRect.Top >= 0);
-	assert(srcRect.Bottom <= s.GetHeight());
-
-	for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
-		for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
-			PutPixel(x + sx - srcRect.Left, y + sy - srcRect.Top, s.GetPixel(sx, sy));
+	DrawSprite(x, y, srcRect, GetScreenRectI(), s);
 }
 
 void Graphics::DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s)
