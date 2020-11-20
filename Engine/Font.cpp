@@ -15,6 +15,13 @@ void Font::DrawText(Graphics& gfx, const std::string& text, const Vec2I& pos, Co
 	Vec2I currPos = pos;
 	for (char c : text)
 	{
+		if (c == '\n')
+		{
+			currPos.X = pos.X;
+			currPos.Y += mGlyphHeight;
+			continue;
+		}
+
 		if (c >= mFirstChar + 1 && c <= mLastChar)
 			gfx.DrawSpriteSubstitude(currPos.X, currPos.Y, color, MapGlyphRect(c), mSurface, mChroma);
 		currPos.X += mGlyphWidth;
