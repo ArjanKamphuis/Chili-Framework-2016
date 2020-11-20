@@ -1,5 +1,6 @@
 #include "Font.h"
 #include <cassert>
+#include "SpriteEffect.h"
 
 Font::Font(const std::string& filename, Color chroma)
 	: mSurface(filename), mChroma(chroma)
@@ -12,6 +13,7 @@ Font::Font(const std::string& filename, Color chroma)
 
 void Font::DrawText(Graphics& gfx, const std::string& text, const Vec2I& pos, Color color) const
 {
+	SpriteEffect::Substitution e{ mChroma, color };
 	Vec2I currPos = pos;
 	for (char c : text)
 	{
@@ -23,7 +25,7 @@ void Font::DrawText(Graphics& gfx, const std::string& text, const Vec2I& pos, Co
 		}
 
 		if (c >= mFirstChar + 1 && c <= mLastChar)
-			gfx.DrawSpriteSubstitude(currPos.X, currPos.Y, color, MapGlyphRect(c), mSurface, mChroma);
+			gfx.DrawSprite(currPos.X, currPos.Y, MapGlyphRect(c), mSurface, e);
 		currPos.X += mGlyphWidth;
 	}
 }

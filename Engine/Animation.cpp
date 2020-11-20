@@ -1,4 +1,5 @@
 #include "Animation.h"
+#include "SpriteEffect.h"
 
 Animation::Animation(int x, int y, int width, int height, int count,const Surface& sprite, float holdTime, Color chroma)
 	: mSprite(sprite), mHoldTime(holdTime), mChroma(chroma)
@@ -9,17 +10,17 @@ Animation::Animation(int x, int y, int width, int height, int count,const Surfac
 
 void Animation::Draw(Graphics& gfx, const Vec2I& pos) const
 {
-	gfx.DrawSpriteGhost(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, mChroma);
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Ghost{ mChroma });
 }
 
 void Animation::Draw(Graphics& gfx, const Vec2I& pos, const RectI& clip) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], clip, mSprite, mChroma);
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], clip, mSprite, SpriteEffect::Chroma{ mChroma });
 }
 
 void Animation::DrawColor(Graphics& gfx, const Vec2I& pos, Color c) const
 {
-	gfx.DrawSpriteSubstitude(pos.X, pos.Y, c, mFrames[mCurrFrame], mSprite, mChroma);
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Substitution{ mChroma, c });
 }
 
 void Animation::Update(float dt)

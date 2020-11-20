@@ -22,6 +22,7 @@
 #include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include <cassert>
 #include "ChiliException.h"
 #include "Colors.h"
 #include "Rect.h"
@@ -60,18 +61,45 @@ public:
 	}
 	void PutPixel( int x,int y,Color c );
 	Color GetPixel(int x, int y) const;
-	void DrawSprite(int x, int y, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteSubstitude(int x, int y, Color substitude, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteSubstitude(int x, int y, Color substitude, const RectI& srcRect, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteSubstitude(int x, int y, Color substitude, RectI srcRect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteGhost(int x, int y, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteGhost(int x, int y, const RectI& srcRect, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteGhost(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
-	void DrawSpriteNonChroma(int x, int y, const Surface& s);
-	void DrawSpriteNonChroma(int x, int y, const RectI& srcRect, const Surface& s);
-	void DrawSpriteNonChroma(int x, int y, RectI srcRect, const RectI& clip, const Surface& s);
+
+	template<typename E>
+	void DrawSprite(int x, int y, const Surface& s, E effect)
+	{
+		DrawSprite(x, y, s.GetRect(), s, effect);
+	}
+	template<typename E>
+	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, E effect)
+	{
+		DrawSprite(x, y, srcRect, GetScreenRectI(), s, effect);
+	}
+	template<typename E>
+	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, E effect)
+	{
+		assert(srcRect.Left >= 0);
+		assert(srcRect.Right <= s.GetWidth());
+		assert(srcRect.Top >= 0);
+		assert(srcRect.Bottom <= s.GetHeight());
+
+		if (x < clip.Left)
+		{
+			srcRect.Left += clip.Left - x;
+			x = clip.Left;
+		}
+		if (y < clip.Top)
+		{
+			srcRect.Top += clip.Top - y;
+			y = clip.Top;
+		}
+		if (x + srcRect.GetWidth() > clip.Right)
+			srcRect.Right -= x + srcRect.GetWidth() - clip.Right;
+		if (y + srcRect.GetHeight() > clip.Bottom)
+			srcRect.Bottom -= y + srcRect.GetHeight() - clip.Bottom;
+
+		for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
+			for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
+				effect(*this, s.GetPixel(sx, sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
+	}
+
 	void DrawRect(int x0, int y0, int x1, int y1, Color c);
 	void DrawRectDim(int x, int y, int width, int height, Color c)
 	{
