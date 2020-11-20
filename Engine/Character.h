@@ -9,18 +9,18 @@ private:
 	enum class Sequence { WalkingLeft, WalkingRight, WalkingUp, WalkingDown, StandingLeft, StandingRight, StandingUp, StandingDown, Count };
 
 public:
-	Character(const Vec2& pos);
+	Character(const Vec2F& pos);
 
 	void Update(float dt);
 	void Draw(Graphics& gfx) const;
-	void SetDirection(const Vec2& dir);
+	void SetDirection(const Vec2F& dir);
 
 	void ActivateEffect();
 
 private:
 	Surface mSprite = "images/link90x90.bmp";
-	Vec2 mPosition;
-	Vec2 mVelocity = {};
+	Vec2F mPosition;
+	Vec2F mVelocity = {};
 	std::vector<Animation> mAnimations;
 	Sequence mCurrSequence = Sequence::StandingDown;
 	float mSpeed = 110.0f;

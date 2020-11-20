@@ -5,19 +5,19 @@ RectF::RectF(float left, float right, float top, float bottom)
 {
 }
 
-RectF::RectF(const Vec2& topLeft, const Vec2& bottomRight)
+RectF::RectF(const Vec2F& topLeft, const Vec2F& bottomRight)
 	: RectF(topLeft.X, bottomRight.X, topLeft.Y, bottomRight.Y)
 {
 }
 
-RectF::RectF(const Vec2& topLeft, float width, float height)
-	: RectF(topLeft, topLeft + Vec2(width, height))
+RectF::RectF(const Vec2F& topLeft, float width, float height)
+	: RectF(topLeft, topLeft + Vec2F(width, height))
 {
 }
 
-RectF RectF::FromCenter(const Vec2& center, float halfWidth, float halfHeight)
+RectF RectF::FromCenter(const Vec2F& center, float halfWidth, float halfHeight)
 {
-	const Vec2 half(halfWidth, halfHeight);
+	const Vec2F half(halfWidth, halfHeight);
 	return RectF(center - half, center + half);
 }
 
@@ -36,7 +36,7 @@ RectF RectF::GetExpanded(float offset) const
 	return RectF(Left - offset, Right + offset, Top - offset, Bottom + offset);
 }
 
-Vec2 RectF::GetCenter() const
+Vec2F RectF::GetCenter() const
 {
-	return Vec2(0.5f * (Left + Right), 0.5f * (Top + Bottom));
+	return Vec2F(0.5f * (Left + Right), 0.5f * (Top + Bottom));
 }

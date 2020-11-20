@@ -1,31 +1,66 @@
 #pragma once
 
-#include "Vec2I.h"
+#include <cmath>
 
+template<typename T>
 class Vec2
 {
 public:
 	Vec2() = default;
-	Vec2(float x, float y);
-
-	Vec2 operator+(const Vec2& rhs) const;
-	Vec2& operator+=(const Vec2& rhs);
-
-	Vec2 operator-(const Vec2& rhs) const;
-	Vec2& operator-=(const Vec2& rhs);
-
-	Vec2 operator*(float rhs) const;
-	Vec2& operator*=(float rhs);
-
-	float GetLength() const;
-	float GetLengthSq() const;
-
-	Vec2& Normalize();
-	Vec2 GetNormalized() const;
-
-	explicit operator Vec2I() const;
+	Vec2(T x, T y)
+		: X(x), Y(y)
+	{
+	}
+	Vec2(const Vec2<float>& rhs)
+		: X(static_cast<T>(rhs.X)), Y(static_cast<T>(rhs.Y))
+	{
+	}
+	Vec2 operator+(const Vec2& rhs) const
+	{
+		return Vec2(X + rhs.X, Y + rhs.Y);
+	}
+	Vec2& operator+=(const Vec2& rhs)
+	{
+		return *this = *this + rhs;
+	}
+	Vec2 operator-(const Vec2& rhs) const
+	{
+		return Vec2(X - rhs.X, Y - rhs.Y);
+	}
+	Vec2& operator-=(const Vec2& rhs)
+	{
+		return *this = *this - rhs;
+	}
+	Vec2 operator*(T rhs) const
+	{
+		return Vec2(X * rhs, Y * rhs);
+	}
+	Vec2& operator*=(T rhs)
+	{
+		return *this = *this * rhs;
+	}
+	T GetLength() const
+	{
+		return static_cast<T>(std::sqrt(GetLengthSq()));
+	}
+	T GetLengthSq() const
+	{
+		return static_cast<T>(X * X + Y * Y);
+	}
+	Vec2& Normalize()
+	{
+		return *this = GetNormalized();
+	}
+	Vec2 GetNormalized() const
+	{
+		const T len = GetLength();
+		return (len != static_cast<T>(0)) ? *this * (static_cast<T>(1) / len) : *this;
+	}
 
 public:
-	float X = 0.0f;
-	float Y = 0.0f;
+	T X = static_cast<T>(0);
+	T Y = static_cast<T>(0);
 };
+
+typedef Vec2<float> Vec2F;
+typedef Vec2<int> Vec2I;

@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(const Vec2& pos)
+Character::Character(const Vec2F& pos)
 	: mPosition(pos)
 {
 	const int walkingCount = static_cast<int>(Sequence::StandingLeft);
@@ -31,7 +31,7 @@ void Character::Draw(Graphics& gfx) const
 		mAnimations[static_cast<int>(mCurrSequence)].Draw(gfx, static_cast<Vec2I>(mPosition));
 }
 
-void Character::SetDirection(const Vec2& dir)
+void Character::SetDirection(const Vec2F& dir)
 {
 	if (dir.X > 0.0f)
 		mCurrSequence = Sequence::WalkingRight;

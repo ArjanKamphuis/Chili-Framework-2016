@@ -47,7 +47,7 @@ void Game::UpdateModel()
 		}
 	}
 
-	Vec2 dir = {};
+	Vec2F dir = {};
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 		dir.Y -= 1.0f;
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
