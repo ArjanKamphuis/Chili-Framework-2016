@@ -26,6 +26,7 @@
 #include "Graphics.h"
 #include "FrameTimer.h"
 #include "Surface.h"
+#include "Animation.h"
 
 class Game
 {
@@ -49,5 +50,6 @@ private:
 	FrameTimer mFt;
 
 	Surface mSurface = Surface("marle32x48.bmp");
+	Animation mMarleRight = Animation(0, 96, 32, 48, 4, mSurface, 0.25f);
 	/********************************/
 };
