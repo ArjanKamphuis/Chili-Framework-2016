@@ -19,6 +19,7 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
+#include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
 #include "ChiliException.h"
@@ -62,6 +63,9 @@ public:
 	void DrawSprite(int x, int y, const Surface& s, Color chroma = Colors::Magenta);
 	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, Color chroma = Colors::Magenta);
 	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSpriteSubstitude(int x, int y, Color substitude, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSpriteSubstitude(int x, int y, Color substitude, const RectI& srcRect, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSpriteSubstitude(int x, int y, Color substitude, RectI srcRect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
 	void DrawSpriteNonChroma(int x, int y, const Surface& s);
 	void DrawSpriteNonChroma(int x, int y, const RectI& srcRect, const Surface& s);
 	void DrawSpriteNonChroma(int x, int y, RectI srcRect, const RectI& clip, const Surface& s);

@@ -419,6 +419,44 @@ void Graphics::DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const 
 	}
 }
 
+void Graphics::DrawSpriteSubstitude(int x, int y, Color substitude, const Surface& s, Color chroma)
+{
+	DrawSpriteSubstitude(x, y, substitude, s.GetRect(), s, chroma);
+}
+
+void Graphics::DrawSpriteSubstitude(int x, int y, Color substitude, const RectI& srcRect, const Surface& s, Color chroma)
+{
+	DrawSpriteSubstitude(x, y, substitude, srcRect, GetScreenRectI(), s, chroma);
+}
+
+void Graphics::DrawSpriteSubstitude(int x, int y, Color substitude, RectI srcRect, const RectI& clip, const Surface& s, Color chroma)
+{
+	assert(srcRect.Left >= 0);
+	assert(srcRect.Right <= s.GetWidth());
+	assert(srcRect.Top >= 0);
+	assert(srcRect.Bottom <= s.GetHeight());
+
+	if (x < clip.Left)
+	{
+		srcRect.Left += clip.Left - x;
+		x = clip.Left;
+	}
+	if (y < clip.Top)
+	{
+		srcRect.Top += clip.Top - y;
+		y = clip.Top;
+	}
+	if (x + srcRect.GetWidth() > clip.Right)
+		srcRect.Right -= x + srcRect.GetWidth() - clip.Right;
+	if (y + srcRect.GetHeight() > clip.Bottom)
+		srcRect.Bottom -= y + srcRect.GetHeight() - clip.Bottom;
+
+	for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
+		for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
+			if (s.GetPixel(sx, sy) != chroma)
+				PutPixel(x + sx - srcRect.Left, y + sy - srcRect.Top, substitude);
+}
+
 void Graphics::DrawSpriteNonChroma(int x, int y, const Surface& s)
 {
 	DrawSpriteNonChroma(x, y, s.GetRect(), s);
