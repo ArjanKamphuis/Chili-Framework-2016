@@ -376,6 +376,15 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+Color Graphics::GetPixel(int x, int y) const
+{
+	assert(x >= 0);
+	assert(x < ScreenWidth);
+	assert(y >= 0);
+	assert(y < ScreenHeight);
+	return pSysBuffer[ScreenWidth * y + x];
+}
+
 void Graphics::DrawSprite(int x, int y, const Surface& s, Color chroma)
 {
 	DrawSprite(x, y, s.GetRect(), s, chroma);
@@ -455,6 +464,57 @@ void Graphics::DrawSpriteSubstitude(int x, int y, Color substitude, RectI srcRec
 		for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
 			if (s.GetPixel(sx, sy) != chroma)
 				PutPixel(x + sx - srcRect.Left, y + sy - srcRect.Top, substitude);
+}
+
+void Graphics::DrawSpriteGhost(int x, int y, const Surface& s, Color chroma)
+{
+	DrawSpriteGhost(x, y, s.GetRect(), s, chroma);
+}
+
+void Graphics::DrawSpriteGhost(int x, int y, const RectI& srcRect, const Surface& s, Color chroma)
+{
+	DrawSpriteGhost(x, y, srcRect, GetScreenRectI(), s, chroma);
+}
+
+void Graphics::DrawSpriteGhost(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, Color chroma)
+{
+	assert(srcRect.Left >= 0);
+	assert(srcRect.Right <= s.GetWidth());
+	assert(srcRect.Top >= 0);
+	assert(srcRect.Bottom <= s.GetHeight());
+
+	if (x < clip.Left)
+	{
+		srcRect.Left += clip.Left - x;
+		x = clip.Left;
+	}
+	if (y < clip.Top)
+	{
+		srcRect.Top += clip.Top - y;
+		y = clip.Top;
+	}
+	if (x + srcRect.GetWidth() > clip.Right)
+		srcRect.Right -= x + srcRect.GetWidth() - clip.Right;
+	if (y + srcRect.GetHeight() > clip.Bottom)
+		srcRect.Bottom -= y + srcRect.GetHeight() - clip.Bottom;
+
+	for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
+	{
+		for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
+		{
+			const Color srcPixel = s.GetPixel(sx, sy);
+			if (srcPixel != chroma)
+			{
+				const Color dstPixel = GetPixel(x + sx - srcRect.Left, y + sy - srcRect.Top);
+				const Color blendedPixel = {
+					static_cast<unsigned char>(((dstPixel.GetR() + srcPixel.GetR()) / 2)),
+					static_cast<unsigned char>(((dstPixel.GetG() + srcPixel.GetG()) / 2)),
+					static_cast<unsigned char>(((dstPixel.GetB() + srcPixel.GetB()) / 2))
+				};
+				PutPixel(x + sx - srcRect.Left, y + sy - srcRect.Top, blendedPixel);
+			}
+		}
+	}
 }
 
 void Graphics::DrawSpriteNonChroma(int x, int y, const Surface& s)

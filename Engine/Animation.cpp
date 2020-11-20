@@ -9,7 +9,7 @@ Animation::Animation(int x, int y, int width, int height, int count,const Surfac
 
 void Animation::Draw(Graphics& gfx, const Vec2I& pos) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, mChroma);
+	gfx.DrawSpriteGhost(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, mChroma);
 }
 
 void Animation::Draw(Graphics& gfx, const Vec2I& pos, const RectI& clip) const
