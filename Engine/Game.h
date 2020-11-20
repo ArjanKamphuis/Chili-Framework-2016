@@ -49,7 +49,7 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFt;
 
-	Surface mSurface = Surface("marle32x48.bmp");
-	Animation mMarleRight = Animation(0, 96, 32, 48, 4, mSurface, 0.25f);
+	Surface mSurface = Surface("images/pilgrim108x140.bmp");
+	Animation mPilgrim = Animation(0, 0, 108, 140, 8, mSurface, 0.1f);
 	/********************************/
 };
