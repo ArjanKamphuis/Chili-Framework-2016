@@ -16,7 +16,7 @@ public:
 	void SetDirection(const Vec2& dir);
 
 private:
-	Surface mSprite;
+	Surface mSprite = Surface("images/link90x90.bmp");
 	Vec2 mPosition;
 	Vec2 mVelocity = {};
 	std::vector<Animation> mAnimations;

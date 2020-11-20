@@ -1,7 +1,7 @@
 #include "Character.h"
 
 Character::Character(const Vec2& pos)
-	: mSprite("images/link90x90.bmp"), mPosition(pos)
+	: mPosition(pos)
 {
 	const int walkingCount = static_cast<int>(Sequence::StandingLeft);
 	for (int i = 0; i < walkingCount; ++i)
