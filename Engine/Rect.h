@@ -60,5 +60,5 @@ public:
 	T Bottom = static_cast<T>(0);
 };
 
-typedef Rect<float> RectF;
-typedef Rect<int> RectI;
+using RectF = Rect<float>;
+using RectI = Rect<int>;

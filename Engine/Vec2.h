@@ -63,5 +63,5 @@ public:
 	T Y = static_cast<T>(0);
 };
 
-typedef Vec2<float> Vec2F;
-typedef Vec2<int> Vec2I;
+using Vec2F = Vec2<float>;
+using Vec2I = Vec2<int>;
