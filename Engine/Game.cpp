@@ -48,13 +48,13 @@ void Game::UpdateModel()
 	}
 
 	Vec2 dir = {};
-	if (wnd.kbd.KeyIsDown(VK_UP))
+	if (wnd.kbd.KeyIsPressed(VK_UP))
 		dir.Y -= 1.0f;
-	if (wnd.kbd.KeyIsDown(VK_DOWN))
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 		dir.Y += 1.0f;
-	if (wnd.kbd.KeyIsDown(VK_LEFT))
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 		dir.X -= 1.0f;
-	if (wnd.kbd.KeyIsDown(VK_RIGHT))
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 		dir.X += 1.0f;
 
 	mLink.SetDirection(dir);

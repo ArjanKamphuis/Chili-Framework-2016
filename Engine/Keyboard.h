@@ -70,8 +70,7 @@ public:
 	Keyboard() = default;
 	Keyboard( const Keyboard& ) = delete;
 	Keyboard& operator=( const Keyboard& ) = delete;
-	bool KeyIsPressed( unsigned char keycode );
-	bool KeyIsDown( unsigned char keycode ) const;
+	bool KeyIsPressed( unsigned char keycode ) const;
 	Event ReadKey();
 	bool KeyIsEmpty() const;
 	char ReadChar();
@@ -95,6 +94,4 @@ private:
 	std::bitset<nKeys> keystates;
 	std::queue<Event> keybuffer;
 	std::queue<char> charbuffer;
-
-	bool mKeyDowns[nKeys] = {};
 };
