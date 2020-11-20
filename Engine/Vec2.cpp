@@ -57,3 +57,8 @@ Vec2 Vec2::GetNormalized() const
 	const float len = GetLength();
 	return (len != 0.0f) ? *this * (1.0f / len) : *this;
 }
+
+Vec2::operator Vec2I() const
+{
+	return{ static_cast<int>(X), static_cast<int>(Y) };
+}

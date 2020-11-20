@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Vec2I.h"
+
 class Vec2
 {
 public:
@@ -20,6 +22,8 @@ public:
 
 	Vec2& Normalize();
 	Vec2 GetNormalized() const;
+
+	explicit operator Vec2I() const;
 
 public:
 	float X = 0.0f;

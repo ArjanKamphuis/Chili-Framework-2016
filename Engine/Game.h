@@ -25,8 +25,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
-#include "Surface.h"
-#include "Animation.h"
+#include "Character.h"
 
 class Game
 {
@@ -49,7 +48,6 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFt;
 
-	Surface mSurface = Surface("images/pilgrim108x140.bmp");
-	Animation mPilgrim = Animation(0, 0, 108, 140, 8, mSurface, 0.1f);
+	Character mLink = Character({ 100, 100 });
 	/********************************/
 };
