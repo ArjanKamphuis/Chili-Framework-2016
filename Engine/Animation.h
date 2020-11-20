@@ -11,6 +11,7 @@ public:
 
 	void Draw(Graphics& gfx, const Vec2I& pos) const;
 	void Draw(Graphics& gfx, const Vec2I& pos, const RectI& clip) const;
+	void DrawColor(Graphics& gfx, const Vec2I& pos, Color c) const;
 	void Update(float dt);
 
 private:

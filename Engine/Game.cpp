@@ -37,6 +37,16 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	while (!wnd.kbd.KeyIsEmpty())
+	{
+		const Keyboard::Event e = wnd.kbd.ReadKey();
+		if (e.IsPress() && e.GetCode() == VK_SPACE)
+		{
+			mLink.ActivateEffect();
+			mSndHit.Play();
+		}
+	}
+
 	Vec2 dir = {};
 	if (wnd.kbd.KeyIsDown(VK_UP))
 		dir.Y -= 1.0f;

@@ -14,11 +14,21 @@ void Character::Update(float dt)
 {
 	mPosition += mVelocity * dt;
 	mAnimations[static_cast<int>(mCurrSequence)].Update(dt);
+
+	if (mEffectActive)
+	{
+		mEffectTime += dt;
+		if (mEffectTime >= mEffectDuration)
+			mEffectActive = false;
+	}
 }
 
 void Character::Draw(Graphics& gfx) const
 {
-	mAnimations[static_cast<int>(mCurrSequence)].Draw(gfx, static_cast<Vec2I>(mPosition));
+	if (mEffectActive)
+		mAnimations[static_cast<int>(mCurrSequence)].DrawColor(gfx, static_cast<Vec2I>(mPosition), Colors::Red);
+	else
+		mAnimations[static_cast<int>(mCurrSequence)].Draw(gfx, static_cast<Vec2I>(mPosition));
 }
 
 void Character::SetDirection(const Vec2& dir)
@@ -44,4 +54,10 @@ void Character::SetDirection(const Vec2& dir)
 	}
 
 	mVelocity = dir * mSpeed;
+}
+
+void Character::ActivateEffect()
+{
+	mEffectActive = true;
+	mEffectTime = 0.0f;
 }

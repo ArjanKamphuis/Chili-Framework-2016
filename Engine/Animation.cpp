@@ -17,6 +17,11 @@ void Animation::Draw(Graphics& gfx, const Vec2I& pos, const RectI& clip) const
 	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], clip, mSprite, mChroma);
 }
 
+void Animation::DrawColor(Graphics& gfx, const Vec2I& pos, Color c) const
+{
+	gfx.DrawSpriteSubstitude(pos.X, pos.Y, c, mFrames[mCurrFrame], mSprite, mChroma);
+}
+
 void Animation::Update(float dt)
 {
 	mCurrFrameTime += dt;

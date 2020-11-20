@@ -15,6 +15,8 @@ public:
 	void Draw(Graphics& gfx) const;
 	void SetDirection(const Vec2& dir);
 
+	void ActivateEffect();
+
 private:
 	Surface mSprite = "images/link90x90.bmp";
 	Vec2 mPosition;
@@ -22,5 +24,9 @@ private:
 	std::vector<Animation> mAnimations;
 	Sequence mCurrSequence = Sequence::StandingDown;
 	float mSpeed = 110.0f;
+
+	static constexpr float mEffectDuration = 0.045f;
+	float mEffectTime = 0.0f;
+	bool mEffectActive = false;
 };
 
