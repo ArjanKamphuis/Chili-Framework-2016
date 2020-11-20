@@ -11,7 +11,8 @@ public:
 		: X(x), Y(y)
 	{
 	}
-	Vec2(const Vec2<float>& rhs)
+	template<typename U>
+	explicit Vec2(const Vec2<U>& rhs)
 		: X(static_cast<T>(rhs.X)), Y(static_cast<T>(rhs.Y))
 	{
 	}

@@ -15,7 +15,7 @@ void Animation::Draw(Graphics& gfx, const Vec2I& pos) const
 
 void Animation::Draw(Graphics& gfx, const Vec2I& pos, const RectI& clip) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], clip, mSprite, SpriteEffect::Chroma{ mChroma });
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], clip, mSprite, SpriteEffect::Ghost{ mChroma });
 }
 
 void Animation::DrawColor(Graphics& gfx, const Vec2I& pos, Color c) const
