@@ -18,27 +18,47 @@ public:
 	}
 	Vec2 operator+(const Vec2& rhs) const
 	{
-		return Vec2(X + rhs.X, Y + rhs.Y);
+		return Vec2(*this) += rhs;
 	}
 	Vec2& operator+=(const Vec2& rhs)
 	{
-		return *this = *this + rhs;
+		X += rhs.X;
+		Y += rhs.Y;
+		return *this;
 	}
 	Vec2 operator-(const Vec2& rhs) const
 	{
-		return Vec2(X - rhs.X, Y - rhs.Y);
+		return Vec2(*this) -= rhs;
 	}
 	Vec2& operator-=(const Vec2& rhs)
 	{
-		return *this = *this - rhs;
+		X -= rhs.X;
+		Y -= rhs.Y;
+		return *this;
 	}
 	Vec2 operator*(T rhs) const
 	{
-		return Vec2(X * rhs, Y * rhs);
+		return Vec2(*this) *= rhs;
 	}
 	Vec2& operator*=(T rhs)
 	{
-		return *this = *this * rhs;
+		X *= rhs.X;
+		Y *= rhs.Y;
+		return *this;
+	}
+	Vec2 operator/(T rhs) const
+	{
+		return Vec2(*this) /= rhs;
+	}
+	Vec2& operator/=(T rhs)
+	{
+		X /= rhs;
+		Y /= rhs;
+		return *this;
+	}
+	Vec2 operator-() const
+	{
+		return Vec2(-X, -Y);
 	}
 	T GetLength() const
 	{
@@ -55,7 +75,7 @@ public:
 	Vec2 GetNormalized() const
 	{
 		const T len = GetLength();
-		return (len != static_cast<T>(0)) ? *this * (static_cast<T>(1) / len) : *this;
+		return (len != static_cast<T>(0)) ? *this / len : *this;
 	}
 
 public:
