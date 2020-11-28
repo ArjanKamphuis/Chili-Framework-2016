@@ -63,17 +63,17 @@ public:
 	Color GetPixel(int x, int y) const;
 
 	template<typename E>
-	void DrawSprite(int x, int y, const Surface& s, E effect)
+	void DrawSprite(int x, int y, const Surface& s, E effect, bool reversed = false)
 	{
-		DrawSprite(x, y, s.GetRect(), s, effect);
+		DrawSprite(x, y, s.GetRect(), s, effect, reversed);
 	}
 	template<typename E>
-	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, E effect)
+	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, E effect, bool reversed = false)
 	{
-		DrawSprite(x, y, srcRect, GetScreenRectI(), s, effect);
+		DrawSprite(x, y, srcRect, GetScreenRectI(), s, effect, reversed);
 	}
 	template<typename E>
-	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, E effect)
+	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, E effect, bool reversed = false)
 	{
 		assert(srcRect.Left >= 0);
 		assert(srcRect.Right <= s.GetWidth());
@@ -95,9 +95,14 @@ public:
 		if (y + srcRect.GetHeight() > clip.Bottom)
 			srcRect.Bottom -= y + srcRect.GetHeight() - clip.Bottom;
 
-		for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
-			for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
-				effect(*this, s.GetPixel(sx, sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
+		if (!reversed)
+			for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
+				for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
+					effect(*this, s.GetPixel(sx, sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
+		else
+			for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
+				for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
+					effect(*this, s.GetPixel(srcRect.Right - (sx + 1), sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
 	}
 
 	void DrawRect(int x0, int y0, int x1, int y1, Color c);

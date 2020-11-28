@@ -46,5 +46,7 @@ private:
 	/*  User Variables              */
 	std::mt19937 mRng;
 	FrameTimer mFt;
+
+	Surface s = "Images/chilihead.bmp";
 	/********************************/
 };

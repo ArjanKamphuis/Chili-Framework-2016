@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteEffect.h"
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
@@ -41,5 +42,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	
+	gfx.DrawSprite(wnd.mouse.GetPosX(), wnd.mouse.GetPosY(), s, SpriteEffect::Chroma{ Colors::Magenta }, wnd.kbd.KeyIsPressed(VK_SPACE));
 }
