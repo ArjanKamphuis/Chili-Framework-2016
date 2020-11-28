@@ -29,7 +29,7 @@ Game::Game( MainWindow& wnd )
 
 void Game::Go()
 {
-	gfx.BeginFrame();
+	gfx.BeginFrame({ 32, 32, 32 });
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
