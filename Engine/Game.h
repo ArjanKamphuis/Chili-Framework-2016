@@ -25,6 +25,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
+#include "Animation.h"
 
 class Game
 {
@@ -49,5 +50,6 @@ private:
 
 	Surface s = "Images/chilihead.bmp";
 	Surface l = "Images/legs.bmp";
+	Animation a = Animation(0, 0, 104, 60, 6, l, 0.14f);
 	/********************************/
 };
