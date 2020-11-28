@@ -42,5 +42,9 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	gfx.DrawSprite(wnd.mouse.GetPosX(), wnd.mouse.GetPosY(), s, SpriteEffect::Chroma{ Colors::Magenta }, wnd.kbd.KeyIsPressed(VK_SPACE));
+	const Vec2I facepos = wnd.mouse.GetPos();
+	const Vec2I legspos = facepos + Vec2I{ -15, 95 };
+
+	gfx.DrawSprite(legspos.X, legspos.Y, RectI({ 0, 0 }, { 104, 60 }), l, SpriteEffect::Chroma{ Colors::Magenta }, wnd.kbd.KeyIsPressed(VK_SPACE));
+	gfx.DrawSprite(facepos.X, facepos.Y, s, SpriteEffect::Chroma{ Colors::Magenta }, wnd.kbd.KeyIsPressed(VK_SPACE));
 }

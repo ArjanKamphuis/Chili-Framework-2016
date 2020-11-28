@@ -48,5 +48,6 @@ private:
 	FrameTimer mFt;
 
 	Surface s = "Images/chilihead.bmp";
+	Surface l = "Images/legs.bmp";
 	/********************************/
 };
