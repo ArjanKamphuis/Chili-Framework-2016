@@ -49,7 +49,7 @@ private:
 	FrameTimer mFt;
 
 	Surface s = "Images/chilihead.bmp";
-	Surface l = "Images/legs.bmp";
-	Animation a = Animation(0, 0, 104, 60, 6, l, 0.14f);
+	Surface l = "Images/legs-skinny.bmp";
+	Animation a = Animation(32, 0, 32, 33, 9, l, 0.12f);
 	/********************************/
 };
