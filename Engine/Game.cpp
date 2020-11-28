@@ -45,7 +45,8 @@ void Game::ComposeFrame()
 {
 	const Vec2I facepos = wnd.mouse.GetPos();
 	const Vec2I legspos = facepos + Vec2I{ 7, 40 };
+	const bool mirrored = wnd.kbd.KeyIsPressed(VK_SPACE);
 
-	a.Draw(gfx, legspos);
-	gfx.DrawSprite(facepos.X, facepos.Y, s, SpriteEffect::Chroma{ Colors::Magenta }, wnd.kbd.KeyIsPressed(VK_SPACE));
+	a.Draw(gfx, legspos, mirrored);
+	gfx.DrawSprite(facepos.X, facepos.Y, s, SpriteEffect::Chroma{ Colors::Magenta }, mirrored);
 }

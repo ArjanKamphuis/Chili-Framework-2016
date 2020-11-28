@@ -8,19 +8,14 @@ Animation::Animation(int x, int y, int width, int height, int count,const Surfac
 		mFrames.emplace_back(x + i * width, x + (i + 1) * width, y, y + height);
 }
 
-void Animation::Draw(Graphics& gfx, const Vec2I& pos) const
+void Animation::Draw(Graphics& gfx, const Vec2I& pos, bool mirrored) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Chroma{ mChroma });
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Chroma{ mChroma }, mirrored);
 }
 
-void Animation::Draw(Graphics& gfx, const Vec2I& pos, const RectI& clip) const
+void Animation::DrawColor(Graphics& gfx, const Vec2I& pos, Color c, bool mirrored) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], clip, mSprite, SpriteEffect::Chroma{ mChroma });
-}
-
-void Animation::DrawColor(Graphics& gfx, const Vec2I& pos, Color c) const
-{
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Substitution{ mChroma, c });
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Substitution{ mChroma, c }, mirrored);
 }
 
 void Animation::Update(float dt)

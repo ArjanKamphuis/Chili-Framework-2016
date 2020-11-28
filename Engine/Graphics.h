@@ -96,13 +96,18 @@ public:
 			srcRect.Bottom -= y + srcRect.GetHeight() - clip.Bottom;
 
 		if (!reversed)
+		{
 			for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
 				for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
 					effect(*this, s.GetPixel(sx, sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
+		}
 		else
+		{
+			const int xOffset = srcRect.Left + srcRect.Right - 1;
 			for (int sy = srcRect.Top; sy < srcRect.Bottom; ++sy)
 				for (int sx = srcRect.Left; sx < srcRect.Right; ++sx)
-					effect(*this, s.GetPixel(srcRect.Right - (sx + 1), sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
+					effect(*this, s.GetPixel(xOffset - sx, sy), x + sx - srcRect.Left, y + sy - srcRect.Top);
+		}
 	}
 
 	void DrawRect(int x0, int y0, int x1, int y1, Color c);
