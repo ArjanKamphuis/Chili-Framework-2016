@@ -26,7 +26,7 @@
 #include "Graphics.h"
 #include "FrameTimer.h"
 #include "Font.h"
-#include "Sound.h"
+#include "SoundEffect.h"
 #include "Chili.h"
 #include "Poo.h"
 
@@ -48,11 +48,11 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	std::mt19937 mRng;
+	std::mt19937 mRng = std::mt19937(std::random_device{}());
 	FrameTimer mFt;
 
 	Font mFont = "Images/Fixedsys16x28.bmp";
-	Sound mSndHit = L"Sounds/hit.wav";
+	SoundEffect mSfxHit = SoundEffect({ L"Sounds/Isaac_Hurt_Grunt0.mp3", L"Sounds/Isaac_Hurt_Grunt1.mp3", L"Sounds/Isaac_Hurt_Grunt2.mp3" }, true, 0.03f);
 
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;

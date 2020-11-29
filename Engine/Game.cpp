@@ -23,7 +23,7 @@
 #include "SpriteEffect.h"
 
 Game::Game( MainWindow& wnd )
-	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
+	: wnd(wnd), gfx(wnd)
 {
 	mPoos.emplace_back(Vec2F{ 10.0f, 10.0f });
 	mPoos.emplace_back(Vec2F{ 700.0f, 10.0f });
@@ -42,18 +42,6 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	const float dt = mFt.Mark();
-
-	while (!wnd.kbd.KeyIsEmpty())
-	{
-		const Keyboard::Event e = wnd.kbd.ReadKey();
-		if (e.IsPress() && e.GetCode() == VK_SPACE)
-		{
-			mChili.ActivateEffect();
-			for (Poo& poo : mPoos)
-				poo.ActivateEffect();
-			mSndHit.Play();
-		}
-	}
 
 	Vec2F dir = {};
 	if (wnd.kbd.KeyIsPressed(VK_UP))
@@ -76,6 +64,12 @@ void Game::UpdateModel()
 		else
 			poo.SetDirection({});
 		poo.Update(dt);
+
+		if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(poo.GetHitbox()))
+		{
+			mChili.ApplyDamage();
+			mSfxHit.Play(mRng);
+		}
 	}
 }
 

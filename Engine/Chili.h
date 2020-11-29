@@ -16,6 +16,8 @@ public:
 		void DrawChili(Graphics& gfx) const;
 		void Activate();
 
+		bool IsActive() const;
+
 	private:
 		const Chili& mParent;
 		static constexpr float mRedDuration = 0.045f;
@@ -34,7 +36,9 @@ public:
 	void Draw(Graphics& gfx) const;
 	void SetDirection(const Vec2F& dir);
 	void Update(float dt);
-	void ActivateEffect();
+
+	void ApplyDamage();
+	bool IsInvincible() const;
 
 	const Vec2F& GetPosition() const;
 	RectF GetHitbox() const;

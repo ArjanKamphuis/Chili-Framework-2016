@@ -52,6 +52,11 @@ void Chili::DamageEffectController::Activate()
 	}
 }
 
+bool Chili::DamageEffectController::IsActive() const
+{
+	return mActive;
+}
+
 Chili::Chili(const Vec2F& pos)
 	: mPosition(pos)
 {
@@ -91,9 +96,14 @@ void Chili::Update(float dt)
 	mDamageEffectController.Update(dt);
 }
 
-void Chili::ActivateEffect()
+void Chili::ApplyDamage()
 {
 	mDamageEffectController.Activate();
+}
+
+bool Chili::IsInvincible() const
+{
+	return mDamageEffectController.IsActive();
 }
 
 const Vec2F& Chili::GetPosition() const
