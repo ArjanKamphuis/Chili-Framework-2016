@@ -18,7 +18,7 @@ private:
 
 private:
 	Color mChroma;
-	const Surface& mSprite;
+	const Surface* mSprite;
 	std::vector<RectI> mFrames;
 	int mCurrFrame = 0;
 	float mHoldTime;

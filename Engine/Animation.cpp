@@ -2,7 +2,7 @@
 #include "SpriteEffect.h"
 
 Animation::Animation(int x, int y, int width, int height, int count,const Surface& sprite, float holdTime, Color chroma)
-	: mSprite(sprite), mHoldTime(holdTime), mChroma(chroma)
+	: mSprite(&sprite), mHoldTime(holdTime), mChroma(chroma)
 {
 	for (int i = 0; i < count; ++i)
 		mFrames.emplace_back(x + i * width, x + (i + 1) * width, y, y + height);
@@ -10,12 +10,12 @@ Animation::Animation(int x, int y, int width, int height, int count,const Surfac
 
 void Animation::Draw(Graphics& gfx, const Vec2I& pos, bool mirrored) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Chroma{ mChroma }, mirrored);
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], *mSprite, SpriteEffect::Chroma{ mChroma }, mirrored);
 }
 
 void Animation::DrawColor(Graphics& gfx, const Vec2I& pos, Color c, bool mirrored) const
 {
-	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], mSprite, SpriteEffect::Substitution{ mChroma, c }, mirrored);
+	gfx.DrawSprite(pos.X, pos.Y, mFrames[mCurrFrame], *mSprite, SpriteEffect::Substitution{ mChroma, c }, mirrored);
 }
 
 void Animation::Update(float dt)
