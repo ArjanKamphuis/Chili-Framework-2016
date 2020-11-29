@@ -119,8 +119,5 @@ void Game::ComposeFrame()
 	gfx.DrawRectThin(static_cast<RectI>(mChili.GetHitbox()), Colors::Green);
 
 	for (const Bullet& b : mBullets)
-	{
 		b.Draw(gfx);
-		gfx.DrawRectThin(static_cast<RectI>(b.GetHitbox()), Colors::Blue);
-	}
 }

@@ -19,7 +19,7 @@ public:
 
 private:
 	Surface mBullet = "Images/fireball.bmp";
-	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, mBullet, 0.15f);
+	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, mBullet, 0.1f);
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -4.0f, -4.0f };
 	float mSpeed = 150.0f;

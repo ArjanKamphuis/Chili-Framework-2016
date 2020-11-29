@@ -6,7 +6,7 @@ Bullet::Bullet(const Vec2F& pos, const Vec2F& dir)
 }
 
 Bullet::Bullet(const Bullet& rhs)
-	: mBullet(rhs.mBullet), mBulletAnimation(0, 0, 8, 8, 4, mBullet, 0.15f), mPosition(rhs.mPosition), mVelocity(rhs.mVelocity)
+	: mBullet(rhs.mBullet), mBulletAnimation(0, 0, 8, 8, 4, mBullet, 0.1f), mPosition(rhs.mPosition), mVelocity(rhs.mVelocity)
 {
 }
 
@@ -28,6 +28,7 @@ void Bullet::Draw(Graphics& gfx) const
 void Bullet::Update(float dt)
 {
 	mPosition += mVelocity * dt;
+	mBulletAnimation.Update(dt);
 }
 
 const Vec2F& Bullet::GetPosition() const
