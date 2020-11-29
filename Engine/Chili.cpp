@@ -7,7 +7,7 @@ Chili::Chili(const Vec2F& pos)
 	mAnimations.emplace_back(Animation(0, 0, 32, 33, 1, mLegs, 10000.0f));
 }
 
-void Chili::Draw(Graphics& gfx)
+void Chili::Draw(Graphics& gfx) const
 {
 	const Vec2I legspos = static_cast<Vec2I>(mPosition) + Vec2I{ 7, 40 };
 
@@ -40,7 +40,7 @@ void Chili::SetDirection(const Vec2F& dir)
 	else
 		mCurrSequence = Sequence::Standing;
 
-	mVelocity = dir.GetNormalized() * mSpeed;
+	mVelocity = dir * mSpeed;
 }
 
 void Chili::Update(float dt)
@@ -60,4 +60,9 @@ void Chili::ActivateEffect()
 {
 	mEffectActive = true;
 	mEffectTime = 0.0f;
+}
+
+const Vec2F& Chili::GetPosition() const
+{
+	return mPosition;
 }

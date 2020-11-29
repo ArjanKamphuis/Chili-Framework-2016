@@ -81,6 +81,9 @@
     <ClInclude Include="Chili.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Poo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -125,6 +128,9 @@
     <ClCompile Include="Chili.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Poo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">
@@ -143,5 +149,8 @@
     <Image Include="Chili.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

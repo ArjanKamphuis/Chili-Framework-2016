@@ -25,9 +25,10 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
-#include "Chili.h"
 #include "Font.h"
 #include "Sound.h"
+#include "Chili.h"
+#include "Poo.h"
 
 class Game
 {
@@ -53,6 +54,7 @@ private:
 	Font mFont = "Images/Fixedsys16x28.bmp";
 	Sound mSndHit = L"Sounds/hit.wav";
 
-	Chili mChili = Vec2F{};
+	Chili mChili = Vec2F{ 300.0f, 300.0f };
+	std::vector<Poo> mPoos;
 	/********************************/
 };

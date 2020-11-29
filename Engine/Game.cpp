@@ -25,6 +25,10 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mRng(std::random_device()())
 {
+	mPoos.emplace_back(Vec2F{ 10.0f, 10.0f });
+	mPoos.emplace_back(Vec2F{ 700.0f, 10.0f });
+	mPoos.emplace_back(Vec2F{ 600.0f, 500.0f });
+	mPoos.emplace_back(Vec2F{ 10.0f, 500.0f });
 }
 
 void Game::Go()
@@ -37,6 +41,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = mFt.Mark();
+
 	while (!wnd.kbd.KeyIsEmpty())
 	{
 		const Keyboard::Event e = wnd.kbd.ReadKey();
@@ -57,12 +63,24 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 		dir.X += 1.0f;
 
-	mChili.SetDirection(dir);
-	mChili.Update(mFt.Mark());
+	mChili.SetDirection(dir.GetNormalized());
+	mChili.Update(dt);
+
+	for (Poo& poo : mPoos)
+	{
+		const Vec2F delta = mChili.GetPosition() - poo.GetPosition();
+		if (delta.GetLengthSq() > 3.0f)
+			poo.SetDirection(delta.GetNormalized());
+		else
+			poo.SetDirection({});
+		poo.Update(dt);
+	}
 }
 
 void Game::ComposeFrame()
 {
 	mFont.DrawText(gfx, "Becky.\nLemme smash.", wnd.mouse.GetPos(), Colors::White);
+	for (const Poo& poo : mPoos)
+		poo.Draw(gfx);
 	mChili.Draw(gfx);
 }
