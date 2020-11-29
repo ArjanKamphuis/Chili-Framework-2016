@@ -249,13 +249,13 @@ void Graphics::DrawRectThin(const RectI& rect, Color c, const RectI& clip)
 	if (rect.Top >= clip.Top)
 		for (int x = clipped.Left; x < clipped.Right; ++x)
 			PutPixel(x, rect.Top, c);
-	if (rect.Bottom <= clip.Bottom)
+	if (rect.Bottom < clip.Bottom)
 		for (int x = clipped.Left; x < clipped.Right; ++x)
 			PutPixel(x, rect.Bottom, c);
 	if (rect.Left >= clip.Left)
 		for (int y = clipped.Top; y < clipped.Bottom; ++y)
 			PutPixel(rect.Left, y, c);
-	if (rect.Right <= clip.Right)
+	if (rect.Right < clip.Right)
 		for (int y = clipped.Top; y < clipped.Bottom; ++y)
 			PutPixel(rect.Right, y, c);
 }
