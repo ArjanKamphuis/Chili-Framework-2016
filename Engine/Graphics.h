@@ -115,6 +115,7 @@ public:
 	{
 		DrawRect(x, y, x + width, y + height, c);
 	}
+	void DrawRectThin(const RectI& rect, Color c, const RectI& clip = GetScreenRectI());
 	void DrawCircle(int xCenter, int yCenter, int radius, Color c, int innerRadius = 0);
 	void DrawIsoRightTriUL(int x, int y, int size, Color c);
 	void DrawIsoRightTriUR(int x, int y, int size, Color c);

@@ -240,6 +240,26 @@ Graphics::Graphics( HWNDKey& key )
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
 }
 
+void Graphics::DrawRectThin(const RectI& rect, Color c, const RectI& clip)
+{
+	const RectI clipped = rect.GetClippedTo(clip);
+	if (clipped.IsDegenerate())
+		return;
+
+	if (rect.Top >= clip.Top)
+		for (int x = clipped.Left; x < clipped.Right; ++x)
+			PutPixel(x, rect.Top, c);
+	if (rect.Bottom <= clip.Bottom)
+		for (int x = clipped.Left; x < clipped.Right; ++x)
+			PutPixel(x, rect.Bottom, c);
+	if (rect.Left >= clip.Left)
+		for (int y = clipped.Top; y < clipped.Bottom; ++y)
+			PutPixel(rect.Left, y, c);
+	if (rect.Right <= clip.Right)
+		for (int y = clipped.Top; y < clipped.Bottom; ++y)
+			PutPixel(rect.Right, y, c);
+}
+
 void Graphics::DrawCircle(int xCenter, int yCenter, int radius, Color c, int innerRadius)
 {
 	assert(xCenter - radius >= 0);

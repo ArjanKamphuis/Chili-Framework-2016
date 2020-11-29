@@ -19,7 +19,7 @@ public:
 		: Rect(topLeft, topLeft + Vec2<T>(width, height))
 	{
 	}
-	Rect FromCenter(const Vec2<T> & center, int halfWidth, int halfHeight)
+	static Rect FromCenter(const Vec2<T> & center, int halfWidth, int halfHeight)
 	{
 		const Vec2<T> half(halfWidth, halfHeight);
 		return Rect(center - half, center + half);
@@ -36,9 +36,25 @@ public:
 	{
 		return point.X >= Left && point.X < Right&& point.Y >= Top && point.Y < Bottom;
 	}
+	bool IsDegenerate() const
+	{
+		return Right <= Left || Bottom <= Top;
+	}
 	Rect GetExpanded(int offset) const
 	{
 		return Rect(Left - offset, Right + offset, Top - offset, Bottom + offset);
+	}
+	Rect& ClipTo(const Rect& clip)
+	{
+		Left = std::max(Left, clip.Left);
+		Right = std::min(Right, clip.Right);
+		Top = std::max(Top, clip.Top);
+		Bottom = std::min(Bottom, clip.Bottom);
+		return *this;
+	}
+	Rect GetClippedTo(const Rect& clip) const
+	{
+		return Rect(*this).ClipTo(clip);
 	}
 	Vec2<T> GetCenter() const
 	{
