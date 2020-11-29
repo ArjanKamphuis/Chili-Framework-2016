@@ -23,6 +23,7 @@ private:
 	Surface mHead = "Images/chilihead.bmp";
 	Surface mLegs = "Images/legs-skinny.bmp";
 	Vec2F mPosition;
+	Vec2F mDrawOffset = { -20.0f, -69.0f };
 	Vec2F mVelocity = {};
 	std::vector<Animation> mAnimations;
 	Sequence mCurrSequence = Sequence::Standing;

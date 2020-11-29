@@ -18,6 +18,7 @@ public:
 private:
 	Surface mPoo = "Images/poo.bmp";
 	Vec2F mPosition;
+	Vec2F mDrawOffset = { -11.0f, -19.0f };
 	Vec2F mVelocity = {};
 
 	float mSpeed = 90.0f;

@@ -9,17 +9,18 @@ Chili::Chili(const Vec2F& pos)
 
 void Chili::Draw(Graphics& gfx) const
 {
-	const Vec2I legspos = static_cast<Vec2I>(mPosition) + Vec2I{ 7, 40 };
+	const Vec2I drawpos = static_cast<Vec2I>(mPosition + mDrawOffset);
+	const Vec2I legspos = drawpos + Vec2I{ 7, 40 };
 
 	if (mEffectActive)
 	{
 		mAnimations[static_cast<int>(mCurrSequence)].DrawColor(gfx, legspos, Colors::Red, mFacingRight);
-		gfx.DrawSprite(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), mHead, SpriteEffect::Substitution{ Colors::Magenta, Colors::Red }, mFacingRight);
+		gfx.DrawSprite(drawpos.X, drawpos.Y, mHead, SpriteEffect::Substitution{ Colors::Magenta, Colors::Red }, mFacingRight);
 	}
 	else
 	{
 		mAnimations[static_cast<int>(mCurrSequence)].Draw(gfx, legspos, mFacingRight);
-		gfx.DrawSprite(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), mHead, SpriteEffect::Chroma{ Colors::Magenta }, mFacingRight);
+		gfx.DrawSprite(drawpos.X, drawpos.Y, mHead, SpriteEffect::Chroma{ Colors::Magenta }, mFacingRight);
 	}
 }
 

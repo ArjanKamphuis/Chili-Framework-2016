@@ -7,10 +7,11 @@ Poo::Poo(const Vec2F& pos)
 
 void Poo::Draw(Graphics& gfx) const
 {
+	const Vec2I pos = static_cast<Vec2I>(mPosition + mDrawOffset);
 	if (mEffectActive)
-		gfx.DrawSprite(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), mPoo, SpriteEffect::Substitution{ Colors::White, Colors::White });
+		gfx.DrawSprite(pos.X, pos.Y, mPoo, SpriteEffect::Substitution{ Colors::White, Colors::White });
 	else
-		gfx.DrawSprite(static_cast<int>(mPosition.X), static_cast<int>(mPosition.Y), mPoo, SpriteEffect::Chroma{ Colors::White });
+		gfx.DrawSprite(pos.X, pos.Y, mPoo, SpriteEffect::Chroma{ Colors::White });
 }
 
 void Poo::SetDirection(const Vec2F& dir)
