@@ -42,7 +42,11 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+#ifdef NDEBUG
 	const float dt = mFt.Mark();
+#else
+	const float dt = 1.0f / 60;
+#endif
 
 	while (!wnd.mouse.IsEmpty())
 	{

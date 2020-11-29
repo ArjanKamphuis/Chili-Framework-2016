@@ -8,6 +8,8 @@ class Bullet
 {
 public:
 	Bullet(const Vec2F& pos, const Vec2F& dir);
+	Bullet(const Bullet& rhs);
+	Bullet& operator=(const Bullet& rhs);
 
 	void Draw(Graphics& gfx) const;
 	void Update(float dt);
@@ -20,8 +22,8 @@ private:
 	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, mBullet, 0.15f);
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -4.0f, -4.0f };
-	Vec2F mVelocity;
 	float mSpeed = 150.0f;
+	Vec2F mVelocity;
 
 	float mHitboxHalfWidth = 4.0f;
 	float mHitboxHalfHeight = 4.0f;

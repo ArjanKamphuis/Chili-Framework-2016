@@ -5,6 +5,21 @@ Bullet::Bullet(const Vec2F& pos, const Vec2F& dir)
 {
 }
 
+Bullet::Bullet(const Bullet& rhs)
+	: mBullet(rhs.mBullet), mBulletAnimation(0, 0, 8, 8, 4, mBullet, 0.15f), mPosition(rhs.mPosition), mVelocity(rhs.mVelocity)
+{
+}
+
+Bullet& Bullet::operator=(const Bullet& rhs)
+{
+	if (this != &rhs)
+	{
+		mPosition = rhs.mPosition;
+		mVelocity = rhs.mVelocity;
+	}
+	return *this;
+}
+
 void Bullet::Draw(Graphics& gfx) const
 {
 	mBulletAnimation.Draw(gfx, static_cast<Vec2I>(mPosition + mDrawOffset));
