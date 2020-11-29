@@ -1,5 +1,57 @@
 #include "Chili.h"
 
+Chili::DamageEffectController::DamageEffectController(const Chili& parent)
+	: mParent(parent)
+{
+}
+
+void Chili::DamageEffectController::Update(float dt)
+{
+	if (mActive)
+	{
+		mTime += dt;
+		if (mTime >= mTotalDuration)
+			mActive = false;
+	}
+}
+
+void Chili::DamageEffectController::DrawChili(Graphics& gfx) const
+{
+	const Vec2I drawpos = static_cast<Vec2I>(mParent.mPosition + mParent.mDrawOffset);
+	const Vec2I legspos = drawpos + Vec2I{ 7, 40 };
+
+	if (mActive)
+	{
+		if (mTime <= mRedDuration)
+		{
+			mParent.mAnimations[static_cast<int>(mParent.mCurrSequence)].DrawColor(gfx, legspos, Colors::Red, mParent.mFacingRight);
+			gfx.DrawSprite(drawpos.X, drawpos.Y, mParent.mHead, SpriteEffect::Substitution{ Colors::Magenta, Colors::Red }, mParent.mFacingRight);
+		}
+		else
+		{
+			if (static_cast<int>(mTime / mBlinkHalfPeriod) % 2 != 0)
+			{
+				mParent.mAnimations[static_cast<int>(mParent.mCurrSequence)].Draw(gfx, legspos, mParent.mFacingRight);
+				gfx.DrawSprite(drawpos.X, drawpos.Y, mParent.mHead, SpriteEffect::Chroma{ Colors::Magenta }, mParent.mFacingRight);
+			}
+		}
+	}
+	else
+	{
+		mParent.mAnimations[static_cast<int>(mParent.mCurrSequence)].Draw(gfx, legspos, mParent.mFacingRight);
+		gfx.DrawSprite(drawpos.X, drawpos.Y, mParent.mHead, SpriteEffect::Chroma{ Colors::Magenta }, mParent.mFacingRight);
+	}
+}
+
+void Chili::DamageEffectController::Activate()
+{
+	if (!mActive)
+	{
+		mActive = true;
+		mTime = 0.0f;
+	}
+}
+
 Chili::Chili(const Vec2F& pos)
 	: mPosition(pos)
 {
@@ -9,37 +61,25 @@ Chili::Chili(const Vec2F& pos)
 
 void Chili::Draw(Graphics& gfx) const
 {
-	const Vec2I drawpos = static_cast<Vec2I>(mPosition + mDrawOffset);
-	const Vec2I legspos = drawpos + Vec2I{ 7, 40 };
-
-	if (mEffectActive)
-	{
-		mAnimations[static_cast<int>(mCurrSequence)].DrawColor(gfx, legspos, Colors::Red, mFacingRight);
-		gfx.DrawSprite(drawpos.X, drawpos.Y, mHead, SpriteEffect::Substitution{ Colors::Magenta, Colors::Red }, mFacingRight);
-	}
-	else
-	{
-		mAnimations[static_cast<int>(mCurrSequence)].Draw(gfx, legspos, mFacingRight);
-		gfx.DrawSprite(drawpos.X, drawpos.Y, mHead, SpriteEffect::Chroma{ Colors::Magenta }, mFacingRight);
-	}
+	mDamageEffectController.DrawChili(gfx);
 }
 
 void Chili::SetDirection(const Vec2F& dir)
 {
 	if (dir.X > 0.0f)
 	{
-		mCurrSequence = Sequence::Walking;
+		mCurrSequence = AnimationSequence::Walking;
 		mFacingRight = true;
 	}
 	else if (dir.X < 0.0f)
 	{
-		mCurrSequence = Sequence::Walking;
+		mCurrSequence = AnimationSequence::Walking;
 		mFacingRight = false;
 	}
 	else if (dir.Y != 0.0f)
-		mCurrSequence = Sequence::Walking;
+		mCurrSequence = AnimationSequence::Walking;
 	else
-		mCurrSequence = Sequence::Standing;
+		mCurrSequence = AnimationSequence::Standing;
 
 	mVelocity = dir * mSpeed;
 }
@@ -48,19 +88,12 @@ void Chili::Update(float dt)
 {
 	mPosition += mVelocity * dt;
 	mAnimations[static_cast<int>(mCurrSequence)].Update(dt);
-
-	if (mEffectActive)
-	{
-		mEffectTime += dt;
-		if (mEffectTime >= mEffectDuration)
-			mEffectActive = false;
-	}
+	mDamageEffectController.Update(dt);
 }
 
 void Chili::ActivateEffect()
 {
-	mEffectActive = true;
-	mEffectTime = 0.0f;
+	mDamageEffectController.Activate();
 }
 
 const Vec2F& Chili::GetPosition() const
