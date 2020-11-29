@@ -18,15 +18,19 @@ public:
 	void ActivateEffect();
 
 	const Vec2F& GetPosition() const;
+	RectF GetHitbox() const;
 
 private:
 	Surface mHead = "Images/chilihead.bmp";
 	Surface mLegs = "Images/legs-skinny.bmp";
 	Vec2F mPosition;
-	Vec2F mDrawOffset = { -20.0f, -69.0f };
+	Vec2F mDrawOffset = { -20.0f, -67.0f };
 	Vec2F mVelocity = {};
 	std::vector<Animation> mAnimations;
 	Sequence mCurrSequence = Sequence::Standing;
+
+	float mHitboxHalfWidth = 10.0f;
+	float mHitboxHalfHeight = 9.0f;
 
 	bool mFacingRight = true;
 	float mSpeed = 110.0f;

@@ -11,28 +11,33 @@ public:
 		: Left(left), Right(right), Top(top), Bottom(bottom)
 	{
 	}
-	Rect(const Vec2<T> & topLeft, const Vec2<T> & bottomRight)
+	Rect(const Vec2<T>& topLeft, const Vec2<T>& bottomRight)
 		: Rect(topLeft.X, bottomRight.X, topLeft.Y, bottomRight.Y)
 	{
 	}
-	Rect(const Vec2<T> & topLeft, int width, int height)
+	Rect(const Vec2<T>& topLeft, int width, int height)
 		: Rect(topLeft, topLeft + Vec2<T>(width, height))
 	{
 	}
-	static Rect FromCenter(const Vec2<T> & center, int halfWidth, int halfHeight)
+	template<typename U>
+	explicit Rect(const Rect<U>& rhs)
+		: Left(static_cast<T>(rhs.Left)), Right(static_cast<T>(rhs.Right)), Top(static_cast<T>(rhs.Top)), Bottom(static_cast<T>(rhs.Bottom))
+	{
+	}
+	static Rect FromCenter(const Vec2<T>& center, T halfWidth, T halfHeight)
 	{
 		const Vec2<T> half(halfWidth, halfHeight);
 		return Rect(center - half, center + half);
 	}
-	bool IsOverlappingWith(const Rect & other) const
+	bool IsOverlappingWith(const Rect& other) const
 	{
 		return Right > other.Left && Left < other.Right&& Bottom > other.Top && Top < other.Bottom;
 	}
-	bool IsContainedBy(const Rect & other) const
+	bool IsContainedBy(const Rect& other) const
 	{
 		return Left >= other.Left && Right <= other.Right && Top >= other.Top && Bottom <= other.Bottom;
 	}
-	bool Contains(const Vec2<T> & point) const
+	bool Contains(const Vec2<T>& point) const
 	{
 		return point.X >= Left && point.X < Right&& point.Y >= Top && point.Y < Bottom;
 	}

@@ -85,6 +85,5 @@ void Game::ComposeFrame()
 	for (const Poo& poo : mPoos)
 		poo.Draw(gfx);
 	mChili.Draw(gfx);
-
-	gfx.DrawRectThin(RectI::FromCenter(wnd.mouse.GetPos(), 20, 20), Colors::Blue);
+	gfx.DrawRectThin(static_cast<RectI>(mChili.GetHitbox()), Colors::Green);
 }

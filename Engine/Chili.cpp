@@ -67,3 +67,8 @@ const Vec2F& Chili::GetPosition() const
 {
 	return mPosition;
 }
+
+RectF Chili::GetHitbox() const
+{
+	return RectF::FromCenter(mPosition, mHitboxHalfWidth, mHitboxHalfHeight);
+}
