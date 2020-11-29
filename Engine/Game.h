@@ -25,7 +25,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
-#include "Animation.h"
+#include "Chili.h"
+#include "Font.h"
+#include "Sound.h"
 
 class Game
 {
@@ -48,8 +50,9 @@ private:
 	std::mt19937 mRng;
 	FrameTimer mFt;
 
-	Surface s = "Images/chilihead.bmp";
-	Surface l = "Images/legs-skinny.bmp";
-	Animation a = Animation(32, 0, 32, 33, 9, l, 0.12f);
+	Font mFont = "Images/Fixedsys16x28.bmp";
+	Sound mSndHit = L"Sounds/hit.wav";
+
+	Chili mChili = Vec2F{};
 	/********************************/
 };

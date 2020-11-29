@@ -29,7 +29,7 @@ Game::Game( MainWindow& wnd )
 
 void Game::Go()
 {
-	gfx.BeginFrame({ 32, 32, 32 });
+	gfx.BeginFrame({ 64, 64, 64 });
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
@@ -37,16 +37,32 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dt = mFt.Mark();
-	a.Update(dt);
+	while (!wnd.kbd.KeyIsEmpty())
+	{
+		const Keyboard::Event e = wnd.kbd.ReadKey();
+		if (e.IsPress() && e.GetCode() == VK_SPACE)
+		{
+			mChili.ActivateEffect();
+			mSndHit.Play();
+		}
+	}
+
+	Vec2F dir = {};
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+		dir.Y -= 1.0f;
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+		dir.Y += 1.0f;
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+		dir.X -= 1.0f;
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+		dir.X += 1.0f;
+
+	mChili.SetDirection(dir);
+	mChili.Update(mFt.Mark());
 }
 
 void Game::ComposeFrame()
 {
-	const Vec2I facepos = wnd.mouse.GetPos();
-	const Vec2I legspos = facepos + Vec2I{ 7, 40 };
-	const bool mirrored = wnd.kbd.KeyIsPressed(VK_SPACE);
-
-	a.Draw(gfx, legspos, mirrored);
-	gfx.DrawSprite(facepos.X, facepos.Y, s, SpriteEffect::Chroma{ Colors::Magenta }, mirrored);
+	mFont.DrawText(gfx, "Becky.\nLemme smash.", wnd.mouse.GetPos(), Colors::White);
+	mChili.Draw(gfx);
 }
