@@ -49,6 +49,8 @@ void Game::UpdateModel()
 		if (e.IsPress() && e.GetCode() == VK_SPACE)
 		{
 			mChili.ActivateEffect();
+			for (Poo& poo : mPoos)
+				poo.ActivateEffect();
 			mSndHit.Play();
 		}
 	}
