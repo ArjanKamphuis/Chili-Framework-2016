@@ -29,6 +29,7 @@
 #include "SoundEffect.h"
 #include "Chili.h"
 #include "Poo.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -56,5 +57,6 @@ private:
 
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;
+	std::vector<Bullet> mBullets;
 	/********************************/
 };

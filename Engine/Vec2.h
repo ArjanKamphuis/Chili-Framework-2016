@@ -60,6 +60,14 @@ public:
 	{
 		return Vec2(-X, -Y);
 	}
+	bool operator==(const Vec2& rhs) const
+	{
+		return X == rhs.X && Y == rhs.Y;
+	}
+	bool operator!=(const Vec2& rhs) const
+	{
+		return !(*this == rhs);
+	}
 	T GetLength() const
 	{
 		return static_cast<T>(std::sqrt(GetLengthSq()));

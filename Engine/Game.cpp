@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "SpriteEffect.h"
+#include "ChiliUtil.h"
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd)
@@ -43,6 +44,20 @@ void Game::UpdateModel()
 {
 	const float dt = mFt.Mark();
 
+	while (!wnd.mouse.IsEmpty())
+	{
+		const Mouse::Event e = wnd.mouse.Read();
+		if (e.GetType() == Mouse::Event::Type::LPress)
+		{
+			Vec2F delta = static_cast<Vec2F>(e.GetPos()) - mChili.GetPosition();
+			if (delta == Vec2F{})
+				delta = { 0.0f, 1.0f };
+			else
+				delta.Normalize();
+			mBullets.emplace_back(mChili.GetPosition(), delta);
+		}
+	}
+
 	Vec2F dir = {};
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 		dir.Y -= 1.0f;
@@ -56,6 +71,9 @@ void Game::UpdateModel()
 	mChili.SetDirection(dir.GetNormalized());
 	mChili.Update(dt);
 
+	for (Bullet& b : mBullets)
+		b.Update(dt);
+
 	for (Poo& poo : mPoos)
 	{
 		const Vec2F delta = mChili.GetPosition() - poo.GetPosition();
@@ -65,10 +83,22 @@ void Game::UpdateModel()
 			poo.SetDirection({});
 		poo.Update(dt);
 
-		if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(poo.GetHitbox()))
+		const RectF pooHitbox = poo.GetHitbox();
+		if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(pooHitbox))
 		{
 			mChili.ApplyDamage();
 			mSfxHit.Play(mRng);
+		}
+
+		for (size_t i = 0; i < mBullets.size();)
+		{
+			if (mBullets[i].GetHitbox().IsOverlappingWith(pooHitbox))
+			{
+				remove_element(mBullets, i);
+				poo.ActivateEffect();
+				continue;
+			}
+			++i;
 		}
 	}
 }
@@ -83,4 +113,10 @@ void Game::ComposeFrame()
 	}
 	mChili.Draw(gfx);
 	gfx.DrawRectThin(static_cast<RectI>(mChili.GetHitbox()), Colors::Green);
+
+	for (const Bullet& b : mBullets)
+	{
+		b.Draw(gfx);
+		gfx.DrawRectThin(static_cast<RectI>(b.GetHitbox()), Colors::Blue);
+	}
 }
