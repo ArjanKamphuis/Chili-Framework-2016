@@ -83,7 +83,10 @@ void Game::ComposeFrame()
 {
 	mFont.DrawText(gfx, "Becky.\nLemme smash.", wnd.mouse.GetPos(), Colors::White);
 	for (const Poo& poo : mPoos)
+	{
 		poo.Draw(gfx);
+		gfx.DrawRectThin(static_cast<RectI>(poo.GetHitbox()), Colors::Red);
+	}
 	mChili.Draw(gfx);
 	gfx.DrawRectThin(static_cast<RectI>(mChili.GetHitbox()), Colors::Green);
 }

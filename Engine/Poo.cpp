@@ -40,3 +40,8 @@ const Vec2F& Poo::GetPosition() const
 {
 	return mPosition;
 }
+
+RectF Poo::GetHitbox() const
+{
+	return RectF::FromCenter(mPosition, mHitboxHalfWidth, mHitboxHalfHeight);
+}
