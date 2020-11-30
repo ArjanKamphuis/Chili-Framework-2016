@@ -90,11 +90,34 @@ void Game::UpdateModel()
 
 	for (Poo& poo : mPoos)
 	{
-		const Vec2F delta = mChili.GetPosition() - poo.GetPosition();
-		if (delta.GetLengthSq() > 3.0f)
-			poo.SetDirection(delta.GetNormalized());
-		else
-			poo.SetDirection({});
+		bool avoiding = false;
+		for (const Poo& other : mPoos)
+		{
+			if (&poo == &other)
+				continue;
+
+			const Vec2F delta = poo.GetPosition() - other.GetPosition();
+			const float lensq = delta.GetLengthSq();
+			if (lensq < 400.0f)
+			{
+				avoiding = true;
+				if (lensq == 0.0f)
+					poo.SetDirection({ -1.0f, 1.0f });
+				else
+					poo.SetDirection(delta / lensq);
+				break;
+			}
+		}
+
+		if (!avoiding)
+		{
+			const Vec2F delta = mChili.GetPosition() - poo.GetPosition();
+			if (delta.GetLengthSq() > 3.0f)
+				poo.SetDirection(delta.GetNormalized());
+			else
+				poo.SetDirection({});
+		}
+
 		poo.Update(dt);
 
 		const RectF pooHitbox = poo.GetHitbox();
