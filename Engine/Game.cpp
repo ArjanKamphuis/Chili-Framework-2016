@@ -75,8 +75,17 @@ void Game::UpdateModel()
 	mChili.SetDirection(dir.GetNormalized());
 	mChili.Update(dt);
 
-	for (Bullet& b : mBullets)
-		b.Update(dt);
+	const RectF screenRect = gfx.GetScreenRectF();
+	for (size_t i = 0; i < mBullets.size();)
+	{
+		mBullets[i].Update(dt);
+		if (!mBullets[i].GetHitbox().IsOverlappingWith(screenRect))
+		{
+			remove_element(mBullets, i);
+			continue;
+		}
+		++i;
+	}
 
 	for (Poo& poo : mPoos)
 	{
