@@ -28,7 +28,7 @@ Game::Game( MainWindow& wnd )
 {
 	std::uniform_real_distribution<float> xd(0, 800);
 	std::uniform_real_distribution<float> yd(0, 600);
-	for (int i = 0; i < 100; ++i)
+	for (int i = 0; i < 12; ++i)
 		mPoos.emplace_back(Vec2F{ xd(mRng), yd(mRng) });
 }
 
@@ -105,7 +105,7 @@ void Game::UpdateModel()
 				if (lensq == 0.0f)
 					poo.SetDirection({ -1.0f, 1.0f });
 				else
-					poo.SetDirection(delta / lensq);
+					poo.SetDirection(delta / std::sqrt(lensq));
 				break;
 			}
 		}
