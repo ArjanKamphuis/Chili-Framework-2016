@@ -26,10 +26,10 @@
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd)
 {
-	mPoos.emplace_back(Vec2F{ 10.0f, 10.0f });
-	mPoos.emplace_back(Vec2F{ 700.0f, 10.0f });
-	mPoos.emplace_back(Vec2F{ 600.0f, 500.0f });
-	mPoos.emplace_back(Vec2F{ 10.0f, 500.0f });
+	std::uniform_real_distribution<float> xd(0, 800);
+	std::uniform_real_distribution<float> yd(0, 600);
+	for (int i = 0; i < 100; ++i)
+		mPoos.emplace_back(Vec2F{ xd(mRng), yd(mRng) });
 }
 
 void Game::Go()
@@ -42,6 +42,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	FrameTimer benchTimer;
 #ifdef NDEBUG
 	const float dt = mFt.Mark();
 #else
@@ -138,6 +139,8 @@ void Game::UpdateModel()
 			++i;
 		}
 	}
+
+	OutputDebugString((std::to_wstring(benchTimer.Mark()) + L'\n').c_str());
 }
 
 void Game::ComposeFrame()
