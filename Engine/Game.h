@@ -54,6 +54,8 @@ private:
 
 	Font mFont = "Images/Fixedsys16x28.bmp";
 	SoundEffect mSfxHit = SoundEffect({ L"Sounds/Isaac_Hurt_Grunt0.mp3", L"Sounds/Isaac_Hurt_Grunt1.mp3", L"Sounds/Isaac_Hurt_Grunt2.mp3" }, true, 0.03f);
+	Sound mSndBallHit = L"Sounds/fhit.wav";
+	Sound mSndBallLaunch = L"Sounds/fball.wav";
 
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;

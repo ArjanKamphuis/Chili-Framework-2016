@@ -59,8 +59,10 @@ void Game::UpdateModel()
 				delta = { 0.0f, 1.0f };
 			else
 				delta.Normalize();
+
 			const Vec2F bSpawn = { 0.0f, -15.0f };
 			mBullets.emplace_back(mChili.GetPosition() + bSpawn, delta);
+			mSndBallLaunch.Play(0.75f, 0.4f);
 		}
 	}
 
@@ -77,7 +79,7 @@ void Game::UpdateModel()
 	mChili.SetDirection(dir.GetNormalized());
 	mChili.Update(dt);
 
-	const RectF screenRect = gfx.GetScreenRectF();
+	const RectF screenRect = gfx.GetScreenRectF().GetExpanded(10);
 	for (size_t i = 0; i < mBullets.size();)
 	{
 		mBullets[i].Update(dt);
@@ -134,6 +136,7 @@ void Game::UpdateModel()
 			{
 				remove_element(mBullets, i);
 				poo.ActivateEffect();
+				mSndBallHit.Play(0.9f, 0.3f);
 				continue;
 			}
 			++i;
