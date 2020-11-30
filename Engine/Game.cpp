@@ -58,7 +58,8 @@ void Game::UpdateModel()
 				delta = { 0.0f, 1.0f };
 			else
 				delta.Normalize();
-			mBullets.emplace_back(mChili.GetPosition(), delta);
+			const Vec2F bSpawn = { 0.0f, -15.0f };
+			mBullets.emplace_back(mChili.GetPosition() + bSpawn, delta);
 		}
 	}
 
