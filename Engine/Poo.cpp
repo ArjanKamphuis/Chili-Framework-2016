@@ -30,10 +30,16 @@ void Poo::Update(float dt)
 	}
 }
 
-void Poo::ActivateEffect()
+void Poo::ApplyDamage(float damage)
 {
+	mHp -= static_cast<int>(damage);
 	mEffectActive = true;
 	mEffectTime = 0.0f;
+}
+
+bool Poo::IsDead() const
+{
+	return mHp <= 0;
 }
 
 const Vec2F& Poo::GetPosition() const

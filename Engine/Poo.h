@@ -11,7 +11,9 @@ public:
 	void Draw(Graphics& gfx) const;
 	void SetDirection(const Vec2F& dir);
 	void Update(float dt);
-	void ActivateEffect();
+
+	void ApplyDamage(float damage);
+	bool IsDead() const;
 
 	const Vec2F& GetPosition() const;
 	RectF GetHitbox() const;
@@ -29,5 +31,7 @@ private:
 	static constexpr float mEffectDuration = 0.045f;
 	float mEffectTime = 0.0f;
 	bool mEffectActive = false;
+
+	int mHp = 100;
 };
 

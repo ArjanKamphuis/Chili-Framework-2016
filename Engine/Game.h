@@ -44,6 +44,7 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void RemoveDeadObjects();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -56,6 +57,7 @@ private:
 	SoundEffect mSfxHit = SoundEffect({ L"Sounds/Isaac_Hurt_Grunt0.mp3", L"Sounds/Isaac_Hurt_Grunt1.mp3", L"Sounds/Isaac_Hurt_Grunt2.mp3" }, true, 0.03f);
 	Sound mSndBallHit = L"Sounds/fhit.wav";
 	Sound mSndBallLaunch = L"Sounds/fball.wav";
+	Sound mSndDeath = L"Sounds/monster_death.wav";
 
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;

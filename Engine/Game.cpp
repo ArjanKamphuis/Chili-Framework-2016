@@ -23,9 +23,17 @@
 #include "SpriteEffect.h"
 #include "ChiliUtil.h"
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#endif
+
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd)
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	std::uniform_real_distribution<float> xd(0, 800);
 	std::uniform_real_distribution<float> yd(0, 600);
 	for (int i = 0; i < 12; ++i)
@@ -42,12 +50,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	FrameTimer benchTimer;
-#ifdef NDEBUG
-	const float dt = mFt.Mark();
-#else
+#ifdef _DEBUG
 	const float dt = 1.0f / 60;
+#else
+	const float dt = mFt.Mark();
 #endif
+
+	FrameTimer benchTimer;
 
 	while (!wnd.mouse.IsEmpty())
 	{
@@ -79,17 +88,8 @@ void Game::UpdateModel()
 	mChili.SetDirection(dir.GetNormalized());
 	mChili.Update(dt);
 
-	const RectF screenRect = gfx.GetScreenRectF().GetExpanded(10);
-	for (size_t i = 0; i < mBullets.size();)
-	{
-		mBullets[i].Update(dt);
-		if (!mBullets[i].GetHitbox().IsOverlappingWith(screenRect))
-		{
-			remove_element(mBullets, i);
-			continue;
-		}
-		++i;
-	}
+	for (Bullet& b : mBullets)
+		b.Update(dt);
 
 	for (Poo& poo : mPoos)
 	{
@@ -130,33 +130,58 @@ void Game::UpdateModel()
 			mSfxHit.Play(mRng);
 		}
 
-		for (size_t i = 0; i < mBullets.size();)
+		for (size_t j = 0; j < mBullets.size();)
 		{
-			if (mBullets[i].GetHitbox().IsOverlappingWith(pooHitbox))
+			if (mBullets[j].GetHitbox().IsOverlappingWith(pooHitbox))
 			{
-				remove_element(mBullets, i);
-				poo.ActivateEffect();
-				mSndBallHit.Play(0.9f, 0.3f);
+				remove_element(mBullets, j);
+				poo.ApplyDamage(35.0f);
+
+				if (poo.IsDead())
+					mSndDeath.Play(1.0f, 0.8f);
+				else
+					mSndBallHit.Play(0.9f, 0.3f);
+
 				continue;
 			}
-			++i;
+			++j;
 		}
 	}
+
+	RemoveDeadObjects();
 
 	OutputDebugString((std::to_wstring(benchTimer.Mark()) + L'\n').c_str());
 }
 
 void Game::ComposeFrame()
 {
-	mFont.DrawText(gfx, "Becky.\nLemme smash.", wnd.mouse.GetPos(), Colors::White);
 	for (const Poo& poo : mPoos)
-	{
 		poo.Draw(gfx);
-		gfx.DrawRectThin(static_cast<RectI>(poo.GetHitbox()), Colors::Red);
-	}
 	mChili.Draw(gfx);
-	gfx.DrawRectThin(static_cast<RectI>(mChili.GetHitbox()), Colors::Green);
-
 	for (const Bullet& b : mBullets)
 		b.Draw(gfx);
+}
+
+void Game::RemoveDeadObjects()
+{
+	for (size_t i = 0; i < mPoos.size();)
+	{
+		if (mPoos[i].IsDead())
+		{
+			remove_element(mPoos, i);
+			continue;
+		}
+		++i;
+	}
+
+	const RectF screenRect = gfx.GetScreenRectF().GetExpanded(10);
+	for (size_t i = 0; i < mBullets.size();)
+	{
+		if (!mBullets[i].GetHitbox().IsOverlappingWith(screenRect))
+		{
+			remove_element(mBullets, i);
+			continue;
+		}
+		++i;
+	}
 }
