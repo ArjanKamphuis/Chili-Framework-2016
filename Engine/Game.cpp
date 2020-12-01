@@ -34,6 +34,7 @@ Game::Game( MainWindow& wnd )
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
+	mSndBackground.Play(1.0f, 0.6f);
 	std::uniform_real_distribution<float> xd(0, 800);
 	std::uniform_real_distribution<float> yd(0, 600);
 	for (int i = 0; i < 12; ++i)
@@ -123,28 +124,31 @@ void Game::UpdateModel()
 
 		poo.Update(dt);
 
-		const RectF pooHitbox = poo.GetHitbox();
-		if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(pooHitbox))
+		if (!poo.IsDead())
 		{
-			mChili.ApplyDamage();
-			mSfxHit.Play(mRng);
-		}
-
-		for (size_t j = 0; j < mBullets.size();)
-		{
-			if (mBullets[j].GetHitbox().IsOverlappingWith(pooHitbox))
+			const RectF pooHitbox = poo.GetHitbox();
+			if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(pooHitbox))
 			{
-				remove_element(mBullets, j);
-				poo.ApplyDamage(35.0f);
-
-				if (poo.IsDead())
-					mSndDeath.Play(1.0f, 0.8f);
-				else
-					mSndBallHit.Play(0.9f, 0.3f);
-
-				continue;
+				mChili.ApplyDamage();
+				mSfxHit.Play(mRng);
 			}
-			++j;
+
+			for (size_t j = 0; j < mBullets.size();)
+			{
+				if (mBullets[j].GetHitbox().IsOverlappingWith(pooHitbox))
+				{
+					remove_element(mBullets, j);
+					poo.ApplyDamage(35.0f);
+
+					if (poo.IsDead())
+						mSndDeath.Play(1.0f, 0.8f);
+					else
+						mSndBallHit.Play(0.9f, 0.3f);
+
+					continue;
+				}
+				++j;
+			}
 		}
 	}
 
@@ -167,7 +171,7 @@ void Game::RemoveDeadObjects()
 {
 	for (size_t i = 0; i < mPoos.size();)
 	{
-		if (mPoos[i].IsDead())
+		if (mPoos[i].IsReadyForRemoval())
 		{
 			remove_element(mPoos, i);
 			continue;

@@ -5,6 +5,9 @@
 
 class Poo
 {
+private:
+	enum class EffectState { Normal, Hit, Dying };
+
 public:
 	Poo(const Vec2F& pos);
 	
@@ -14,6 +17,7 @@ public:
 
 	void ApplyDamage(float damage);
 	bool IsDead() const;
+	bool IsReadyForRemoval() const;
 
 	const Vec2F& GetPosition() const;
 	RectF GetHitbox() const;
@@ -28,9 +32,11 @@ private:
 	float mHitboxHalfHeight = 4.0f;
 
 	float mSpeed = 90.0f;
-	static constexpr float mEffectDuration = 0.045f;
+	static constexpr float mDissolveDuration = 0.6f;
+	static constexpr float mHitFlashDuration = 0.045f;
 	float mEffectTime = 0.0f;
-	bool mEffectActive = false;
+	EffectState mEffectState = EffectState::Normal;
+	bool mIsReadyForRemoval = false;
 
 	int mHp = 100;
 };

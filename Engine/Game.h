@@ -59,6 +59,7 @@ private:
 	Sound mSndBallHit = L"Sounds/fhit.wav";
 	Sound mSndBallLaunch = L"Sounds/fball.wav";
 	Sound mSndDeath = L"Sounds/monster_death.wav";
+	Sound mSndBackground = Sound(L"Sounds/come.mp3", Sound::LoopType::AutoFullSound);
 
 	Background mBackground;
 	Chili mChili = Vec2F{ 300.0f, 300.0f };

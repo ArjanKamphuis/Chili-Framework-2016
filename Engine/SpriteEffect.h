@@ -69,4 +69,29 @@ namespace SpriteEffect
 	private:
 		Color mChroma;
 	};
+
+	class DissolveHalfTint
+	{
+	public:
+		DissolveHalfTint(Color chroma, Color tint, float percent)
+			: mChroma(chroma)
+			, mTintPre((tint.dword >> 1u) & 0b01111111011111110111111101111111u)
+			, mFilled(static_cast<int>(static_cast<float>(mHeight) * percent))
+		{}
+		void operator()(Graphics& gfx, Color src, int xDest, int yDest) const
+		{
+			if (src != mChroma && (yDest & mHeightMask) < mFilled)
+			{
+				const Color blend = mTintPre.dword + ((src.dword >> 1u) & 0b01111111011111110111111101111111u);
+				gfx.PutPixel(xDest, yDest, blend);
+			}
+		}
+
+	private:
+		Color mChroma;
+		Color mTintPre;
+		static constexpr int mHeight = 4;
+		static constexpr int mHeightMask = mHeight - 1;
+		int mFilled;
+	};
 }
