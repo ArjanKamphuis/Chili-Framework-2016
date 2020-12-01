@@ -28,7 +28,7 @@
 #endif
 
 Game::Game( MainWindow& wnd )
-	: wnd(wnd), gfx(wnd)
+	: wnd(wnd), gfx(wnd), mBackground(gfx.GetScreenRectI())
 {
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -42,7 +42,7 @@ Game::Game( MainWindow& wnd )
 
 void Game::Go()
 {
-	gfx.BeginFrame({ 64, 64, 64 });
+	//gfx.BeginFrame({ 64, 64, 64 });
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
@@ -155,6 +155,7 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	mBackground.Draw(gfx);
 	for (const Poo& poo : mPoos)
 		poo.Draw(gfx);
 	mChili.Draw(gfx);

@@ -30,6 +30,7 @@
 #include "Chili.h"
 #include "Poo.h"
 #include "Bullet.h"
+#include "Background.h"
 
 class Game
 {
@@ -59,6 +60,7 @@ private:
 	Sound mSndBallLaunch = L"Sounds/fball.wav";
 	Sound mSndDeath = L"Sounds/monster_death.wav";
 
+	Background mBackground;
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;
 	std::vector<Bullet> mBullets;

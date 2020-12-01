@@ -73,6 +73,14 @@ public:
 	{
 		return Bottom - Top;
 	}
+	Vec2<T> TopLeft() const
+	{
+		return { Left, Top };
+	}
+	Vec2<T> BottomRight() const
+	{
+		return { Right, Bottom };
+	}
 
 public:
 	T Left = static_cast<T>(0);
