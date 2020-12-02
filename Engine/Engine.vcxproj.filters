@@ -114,6 +114,9 @@
     <ClInclude Include="Animation.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chili.cpp">

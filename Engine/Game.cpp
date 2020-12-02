@@ -130,6 +130,7 @@ void Game::UpdateModel()
 
 	mChili.SetDirection(dir.GetNormalized());
 	mChili.Update(dt);
+	mBoundary.Adjust(mChili);
 
 	for (Bullet& b : mBullets)
 		b.Update(dt);
@@ -165,6 +166,7 @@ void Game::UpdateModel()
 		}
 
 		poo.Update(dt);
+		mBoundary.Adjust(poo);
 
 		if (!poo.IsDead())
 		{
@@ -222,10 +224,9 @@ void Game::RemoveDeadObjects()
 		++i;
 	}
 
-	const RectF screenRect = gfx.GetScreenRectF().GetExpanded(10);
 	for (size_t i = 0; i < mBullets.size();)
 	{
-		if (!mBullets[i].GetHitbox().IsOverlappingWith(screenRect))
+		if (!mBullets[i].GetHitbox().IsOverlappingWith(mBoundary.GetRect()))
 		{
 			remove_element(mBullets, i);
 			continue;

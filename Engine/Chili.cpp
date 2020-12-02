@@ -96,6 +96,11 @@ void Chili::Update(float dt)
 	mDamageEffectController.Update(dt);
 }
 
+void Chili::DisplaceBy(const Vec2F& d)
+{
+	mPosition += d;
+}
+
 void Chili::ApplyDamage()
 {
 	mDamageEffectController.Activate();

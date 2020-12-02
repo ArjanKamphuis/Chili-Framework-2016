@@ -55,6 +55,11 @@ void Poo::Update(float dt)
 	}
 }
 
+void Poo::DisplaceBy(const Vec2F& d)
+{
+	mPosition += d;
+}
+
 void Poo::ApplyDamage(float damage)
 {
 	mHp -= static_cast<int>(damage);

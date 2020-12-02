@@ -31,6 +31,7 @@
 #include "Poo.h"
 #include "Bullet.h"
 #include "Background.h"
+#include "Boundary.h"
 
 class Game
 {
@@ -66,5 +67,7 @@ private:
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;
 	std::vector<Bullet> mBullets;
+
+	BoundaryF mBoundary = RectF{ 32.0f, 768.0f, 96.0f, 576.0f + 64.0f };
 	/********************************/
 };

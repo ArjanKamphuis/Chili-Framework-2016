@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Boundary.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Chili.h" />
     <ClInclude Include="ChiliException.h" />

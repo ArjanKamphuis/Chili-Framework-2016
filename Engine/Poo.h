@@ -14,6 +14,7 @@ public:
 	void Draw(Graphics& gfx) const;
 	void SetDirection(const Vec2F& dir);
 	void Update(float dt);
+	void DisplaceBy(const Vec2F& d);
 
 	void ApplyDamage(float damage);
 	bool IsDead() const;
