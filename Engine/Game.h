@@ -61,7 +61,8 @@ private:
 	Sound mSndDeath = L"Sounds/monster_death.wav";
 	Sound mSndBackground = Sound(L"Sounds/come.mp3", Sound::LoopType::AutoFullSound);
 
-	Background mBackground;
+	Background mBackground1;
+	Background mBackground2;
 	Chili mChili = Vec2F{ 300.0f, 300.0f };
 	std::vector<Poo> mPoos;
 	std::vector<Bullet> mBullets;
