@@ -11,7 +11,7 @@ Background::Background(const RectI& bgRegion)
 	for (int i = 0; i < mNumTiles; ++i)
 		mTileRects.emplace_back(Vec2I{ mTileSize, 0 } * i, mTileSize, mTileSize);
 
-	mTiles.reserve(static_cast<size_t>(mGridWidth * mGridHeight));
+	mTiles.reserve(static_cast<size_t>(mGridWidth) * mGridHeight);
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> dist(0, mNumTiles - 1);
 	for (int i = 0; i < mGridWidth * mGridHeight; ++i)
@@ -27,5 +27,5 @@ void Background::Draw(Graphics& gfx) const
 
 int Background::GetTileAt(int x, int y) const
 {
-	return mTiles[static_cast<size_t>(y * mGridWidth + x)];
+	return mTiles[static_cast<size_t>(y) * mGridWidth + x];
 }
