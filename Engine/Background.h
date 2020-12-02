@@ -17,7 +17,7 @@ private:
 	Vec2I mOrigin;
 	std::vector<RectI> mTileRects;
 	std::vector<int> mTiles;
-	int mNumTiles = 6;
+	int mNumTiles = 11;
 	int mTileSize = 32;
 	int mGridWidth;
 	int mGridHeight;
