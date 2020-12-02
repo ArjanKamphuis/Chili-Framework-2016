@@ -9,10 +9,10 @@ Surface::Surface(const std::string& filename)
 	std::ifstream fin(filename, std::ios::binary);
 	assert(fin);
 
-	BITMAPFILEHEADER bmFileHeader;
+	BITMAPFILEHEADER bmFileHeader = {};
 	fin.read(reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader));
 
-	BITMAPINFOHEADER bmInfoHeader;
+	BITMAPINFOHEADER bmInfoHeader = {};
 	fin.read(reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader));
 
 	assert(bmInfoHeader.biBitCount == 24 || bmInfoHeader.biBitCount == 32);
@@ -36,7 +36,7 @@ Surface::Surface(const std::string& filename)
 		dy = -1;
 	}
 
-	mPixels = new Color[mWidth * mHeight];
+	mPixels = new Color[static_cast<size_t>(mWidth) * mHeight];
 
 	fin.seekg(bmFileHeader.bfOffBits, std::ios_base::beg);
 	const bool is32b = bmInfoHeader.biBitCount == 32;
@@ -60,7 +60,7 @@ Surface::Surface(const std::string& filename)
 }
 
 Surface::Surface(int width, int height)
-	: mWidth(width), mHeight(height), mPixels(new Color[width * height])
+	: mWidth(width), mHeight(height), mPixels(new Color[static_cast<size_t>(width) * height])
 {
 }
 
