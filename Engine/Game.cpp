@@ -28,7 +28,7 @@
 #endif
 
 Game::Game( MainWindow& wnd )
-	: wnd(wnd), gfx(wnd), mBackground(gfx.GetScreenRectI())
+	: wnd(wnd), gfx(wnd), mBackground(gfx.GetScreenRectI(), 3, 3, "BBBCACDDD")
 {
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);

@@ -6,7 +6,7 @@
 class Background
 {
 public:
-	Background(const RectI& bgRegion);
+	Background(const RectI& bgRegion, int gridWidth, int gridHeight, const std::string& map);
 	void Draw(Graphics& gfx) const;
 
 private:

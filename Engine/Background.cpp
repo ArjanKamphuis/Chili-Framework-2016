@@ -1,28 +1,30 @@
 #include "Background.h"
 
-#include <random>
 #include "SpriteEffect.h"
 
-Background::Background(const RectI& bgRegion)
-	: mOrigin(bgRegion.TopLeft())
-	, mGridWidth(div_int_ceil(bgRegion.GetWidth(), mTileSize))
-	, mGridHeight(div_int_ceil(bgRegion.GetHeight(), mTileSize))
+Background::Background(const RectI& bgRegion, int gridWidth, int gridHeight, const std::string& map)
+	: mOrigin(bgRegion.TopLeft()), mGridWidth(gridWidth), mGridHeight(gridHeight)
 {
 	for (int i = 0; i < mNumTiles; ++i)
 		mTileRects.emplace_back(Vec2I{ mTileSize, 0 } * i, mTileSize, mTileSize);
 
 	mTiles.reserve(static_cast<size_t>(mGridWidth) * mGridHeight);
-	std::mt19937 rng(std::random_device{}());
-	std::uniform_int_distribution<int> dist(0, mNumTiles - 1);
-	for (int i = 0; i < mGridWidth * mGridHeight; ++i)
-		mTiles.push_back(dist(rng));
+	auto mi = map.cbegin();
+	for (int i = 0; i < mGridWidth * mGridHeight; ++i, ++mi)
+		mTiles.push_back(*mi - 'B');
 }
 
 void Background::Draw(Graphics& gfx) const
 {
 	for (int y = 0; y < mGridHeight; ++y)
+	{
 		for (int x = 0; x < mGridWidth; ++x)
-			gfx.DrawSprite(x * mTileSize + mOrigin.X, y * mTileSize + mOrigin.Y, mTileRects[GetTileAt(x, y)], mTileset, SpriteEffect::Copy{});
+		{
+			const int index = GetTileAt(x, y);
+			if (index >= 0)
+				gfx.DrawSprite(x * mTileSize + mOrigin.X, y * mTileSize + mOrigin.Y, mTileRects[index], mTileset, SpriteEffect::Copy{});
+		}
+	}
 }
 
 int Background::GetTileAt(int x, int y) const
