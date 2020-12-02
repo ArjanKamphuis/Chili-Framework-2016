@@ -188,10 +188,9 @@ void Game::UpdateModel()
 						mSndDeath.Play(1.0f, 0.8f);
 					else
 						mSndBallHit.Play(0.9f, 0.3f);
-
-					continue;
 				}
-				++j;
+				else
+					++j;
 			}
 		}
 	}
@@ -217,20 +216,16 @@ void Game::RemoveDeadObjects()
 	for (size_t i = 0; i < mPoos.size();)
 	{
 		if (mPoos[i].IsReadyForRemoval())
-		{
 			remove_element(mPoos, i);
-			continue;
-		}
-		++i;
+		else
+			++i;
 	}
 
 	for (size_t i = 0; i < mBullets.size();)
 	{
 		if (!mBullets[i].GetHitbox().IsOverlappingWith(mBoundary.GetRect()))
-		{
 			remove_element(mBullets, i);
-			continue;
-		}
-		++i;
+		else
+			++i;
 	}
 }
