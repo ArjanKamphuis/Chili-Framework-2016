@@ -9,10 +9,10 @@ Surface::Surface(const std::string& filename)
 	std::ifstream fin(filename, std::ios::binary);
 	assert(fin);
 
-	BITMAPFILEHEADER bmFileHeader;
+	BITMAPFILEHEADER bmFileHeader = {};
 	fin.read(reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader));
 
-	BITMAPINFOHEADER bmInfoHeader;
+	BITMAPINFOHEADER bmInfoHeader = {};
 	fin.read(reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader));
 
 	assert(bmInfoHeader.biBitCount == 24 || bmInfoHeader.biBitCount == 32);
@@ -36,7 +36,7 @@ Surface::Surface(const std::string& filename)
 		dy = -1;
 	}
 
-	mPixels = new Color[mWidth * mHeight];
+	mPixels = new Color[static_cast<size_t>(mWidth) * mHeight];
 
 	fin.seekg(bmFileHeader.bfOffBits, std::ios_base::beg);
 	const bool is32b = bmInfoHeader.biBitCount == 32;
@@ -60,7 +60,7 @@ Surface::Surface(const std::string& filename)
 }
 
 Surface::Surface(int width, int height)
-	: mWidth(width), mHeight(height), mPixels(new Color[width * height])
+	: mWidth(width), mHeight(height), mPixels(new Color[static_cast<size_t>(width) * height])
 {
 }
 
@@ -69,6 +69,13 @@ Surface::Surface(const Surface& rhs)
 {
 	for (int i = 0; i < mWidth * mHeight; ++i)
 		mPixels[i] = rhs.mPixels[i];
+}
+
+Surface::Surface(Surface&& rhs) noexcept
+	: mWidth(rhs.mWidth), mHeight(rhs.mHeight), mPixels(rhs.mPixels)
+{
+	rhs.mWidth = rhs.mHeight = 0;
+	rhs.mPixels = nullptr;
 }
 
 Surface& Surface::operator=(const Surface& rhs)
@@ -89,7 +96,23 @@ Surface& Surface::operator=(const Surface& rhs)
 	return *this;
 }
 
-Surface::~Surface()
+Surface& Surface::operator=(Surface&& rhs) noexcept
+{
+	if (this != &rhs)
+	{
+		mWidth = rhs.mWidth;
+		mHeight = rhs.mHeight;
+
+		delete mPixels;
+		mPixels = rhs.mPixels;
+
+		rhs.mWidth = rhs.mHeight = 0;
+		rhs.mPixels = nullptr;
+	}
+	return *this;
+}
+
+Surface::~Surface() noexcept
 {
 	delete[] mPixels;
 	mPixels = nullptr;
