@@ -36,7 +36,7 @@ Surface::Surface(const std::string& filename)
 		dy = -1;
 	}
 
-	mPixels = new Color[static_cast<size_t>(mWidth) * mHeight];
+	mPixels = std::make_unique<Color[]>(static_cast<size_t>(mWidth) * mHeight);
 
 	fin.seekg(bmFileHeader.bfOffBits, std::ios_base::beg);
 	const bool is32b = bmInfoHeader.biBitCount == 32;
@@ -60,7 +60,7 @@ Surface::Surface(const std::string& filename)
 }
 
 Surface::Surface(int width, int height)
-	: mWidth(width), mHeight(height), mPixels(new Color[static_cast<size_t>(width) * height])
+	: mWidth(width), mHeight(height), mPixels(std::make_unique<Color[]>(static_cast<size_t>(width) * height))
 {
 }
 
@@ -72,10 +72,9 @@ Surface::Surface(const Surface& rhs)
 }
 
 Surface::Surface(Surface&& rhs) noexcept
-	: mWidth(rhs.mWidth), mHeight(rhs.mHeight), mPixels(rhs.mPixels)
+	: mWidth(rhs.mWidth), mHeight(rhs.mHeight), mPixels(std::move(rhs.mPixels))
 {
 	rhs.mWidth = rhs.mHeight = 0;
-	rhs.mPixels = nullptr;
 }
 
 Surface& Surface::operator=(const Surface& rhs)
@@ -87,8 +86,7 @@ Surface& Surface::operator=(const Surface& rhs)
 
 		const int nPixels = mWidth * mHeight;
 
-		delete[] mPixels;
-		mPixels = new Color[nPixels];
+		mPixels = std::make_unique<Color[]>(nPixels);
 
 		for (int i = 0; i < nPixels; ++i)
 			mPixels[i] = rhs.mPixels[i];
@@ -103,19 +101,12 @@ Surface& Surface::operator=(Surface&& rhs) noexcept
 		mWidth = rhs.mWidth;
 		mHeight = rhs.mHeight;
 
-		delete mPixels;
-		mPixels = rhs.mPixels;
+		mPixels = std::move(rhs.mPixels);
 
 		rhs.mWidth = rhs.mHeight = 0;
 		rhs.mPixels = nullptr;
 	}
 	return *this;
-}
-
-Surface::~Surface() noexcept
-{
-	delete[] mPixels;
-	mPixels = nullptr;
 }
 
 void Surface::PutPixel(int x, int y, Color c)
@@ -124,7 +115,7 @@ void Surface::PutPixel(int x, int y, Color c)
 	assert(x < mWidth);
 	assert(y >= 0);
 	assert(y < mHeight);
-	mPixels[y * mWidth + x] = c;
+	mPixels[static_cast<size_t>(y) * mWidth + x] = c;
 }
 
 Color Surface::GetPixel(int x, int y) const
