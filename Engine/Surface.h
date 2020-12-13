@@ -17,7 +17,7 @@ public:
 		virtual std::wstring GetExceptionType() const override;
 
 	private:
-		const std::string& mFilename;
+		const std::string mFilename;
 	};
 
 public:
