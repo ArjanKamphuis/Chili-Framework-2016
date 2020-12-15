@@ -221,9 +221,10 @@ void Game::RemoveDeadObjects()
 			++i;
 	}
 
+	const RectF boundRect = mBoundary.GetRect().GetDisplacedBy({ 0.0f, -10.0f });
 	for (size_t i = 0; i < mBullets.size();)
 	{
-		if (!mBullets[i].GetHitbox().IsOverlappingWith(mBoundary.GetRect()))
+		if (!mBullets[i].GetHitbox().IsOverlappingWith(boundRect))
 			remove_element(mBullets, i);
 		else
 			++i;

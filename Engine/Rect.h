@@ -81,6 +81,18 @@ public:
 	{
 		return { Right, Bottom };
 	}
+	Rect& DisplaceBy(const Vec2<T>& d)
+	{
+		Left += d.X;
+		Right += d.X;
+		Top += d.Y;
+		Bottom += d.Y;
+		return *this;
+	}
+	Rect GetDisplacedBy(const Vec2<T>& d) const
+	{
+		return static_cast<Rect>(*this).DisplaceBy(d);
+	}
 
 public:
 	T Left = static_cast<T>(0);
