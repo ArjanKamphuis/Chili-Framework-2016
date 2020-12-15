@@ -7,6 +7,11 @@ SurfaceCodex::Entry::Entry(const std::string& key, const Surface* pSurface)
 {
 }
 
+bool SurfaceCodex::Entry::operator<(const Entry& rhs) const
+{
+	return mKey < rhs.mKey;
+}
+
 const std::string& SurfaceCodex::Entry::GetKey() const
 {
 	return mKey;
@@ -40,12 +45,13 @@ SurfaceCodex::~SurfaceCodex()
 
 const Surface* SurfaceCodex::_Retreive(const std::string& key)
 {
-	const auto it = std::find_if(mEntries.begin(), mEntries.end(), [&key](const Entry& e) { return key == e.GetKey(); });
+	const auto it = binary_find(mEntries.begin(), mEntries.end(), key,
+		[](const Entry& e) { return e.GetKey(); });
 	if (it == mEntries.end())
 	{
-		Surface* pSurface = new Surface(key);
-		mEntries.emplace_back(key, pSurface);
-		return pSurface;
+		const Entry e(key, new Surface(key));
+		mEntries.insert(std::lower_bound(mEntries.begin(), mEntries.end(), e), e);
+		return e.GetSurface();
 	}
 	else
 		return it->GetSurface();

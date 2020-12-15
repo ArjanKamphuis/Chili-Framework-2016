@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "ChiliUtil.h"
 #include "Surface.h"
 
 class SurfaceCodex
@@ -11,6 +12,7 @@ private:
 	{
 	public:
 		Entry(const std::string& key, const Surface* pSurface);
+		bool operator<(const Entry& rhs) const;
 
 		const std::string& GetKey() const;
 		const Surface* GetSurface() const;
