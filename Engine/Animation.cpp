@@ -1,8 +1,8 @@
 #include "Animation.h"
 #include "SpriteEffect.h"
 
-Animation::Animation(int x, int y, int width, int height, int count,const Surface& sprite, float holdTime, Color chroma)
-	: mSprite(&sprite), mHoldTime(holdTime), mChroma(chroma)
+Animation::Animation(int x, int y, int width, int height, int count,const Surface* sprite, float holdTime, Color chroma)
+	: mSprite(sprite), mHoldTime(holdTime), mChroma(chroma)
 {
 	for (int i = 0; i < count; ++i)
 		mFrames.emplace_back(x + i * width, x + (i + 1) * width, y, y + height);

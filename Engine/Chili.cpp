@@ -25,21 +25,21 @@ void Chili::DamageEffectController::DrawChili(Graphics& gfx) const
 		if (mTime <= mRedDuration)
 		{
 			mParent.mAnimations[static_cast<int>(mParent.mCurrSequence)].DrawColor(gfx, legspos, Colors::Red, mParent.mFacingRight);
-			gfx.DrawSprite(drawpos.X, drawpos.Y, mParent.mHead, SpriteEffect::Substitution{ Colors::Magenta, Colors::Red }, mParent.mFacingRight);
+			gfx.DrawSprite(drawpos.X, drawpos.Y, *mParent.mHeadSurface, SpriteEffect::Substitution{ Colors::Magenta, Colors::Red }, mParent.mFacingRight);
 		}
 		else
 		{
 			if (static_cast<int>(mTime / mBlinkHalfPeriod) % 2 != 0)
 			{
 				mParent.mAnimations[static_cast<int>(mParent.mCurrSequence)].Draw(gfx, legspos, mParent.mFacingRight);
-				gfx.DrawSprite(drawpos.X, drawpos.Y, mParent.mHead, SpriteEffect::Chroma{ Colors::Magenta }, mParent.mFacingRight);
+				gfx.DrawSprite(drawpos.X, drawpos.Y, *mParent.mHeadSurface, SpriteEffect::Chroma{ Colors::Magenta }, mParent.mFacingRight);
 			}
 		}
 	}
 	else
 	{
 		mParent.mAnimations[static_cast<int>(mParent.mCurrSequence)].Draw(gfx, legspos, mParent.mFacingRight);
-		gfx.DrawSprite(drawpos.X, drawpos.Y, mParent.mHead, SpriteEffect::Chroma{ Colors::Magenta }, mParent.mFacingRight);
+		gfx.DrawSprite(drawpos.X, drawpos.Y, *mParent.mHeadSurface, SpriteEffect::Chroma{ Colors::Magenta }, mParent.mFacingRight);
 	}
 }
 
@@ -60,8 +60,10 @@ bool Chili::DamageEffectController::IsActive() const
 Chili::Chili(const Vec2F& pos)
 	: mPosition(pos)
 {
-	mAnimations.emplace_back(Animation(32, 0, 32, 33, 9, mLegs, 0.12f));
-	mAnimations.emplace_back(Animation(0, 0, 32, 33, 1, mLegs, 10000.0f));
+	const Surface* pLegsSurface = SurfaceCodex::Retreive("Images/legs-skinny.bmp");
+
+	mAnimations.emplace_back(Animation(32, 0, 32, 33, 9, pLegsSurface, 0.12f));
+	mAnimations.emplace_back(Animation(0, 0, 32, 33, 1, pLegsSurface, 10000.0f));
 }
 
 void Chili::Draw(Graphics& gfx) const

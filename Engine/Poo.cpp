@@ -11,13 +11,13 @@ void Poo::Draw(Graphics& gfx) const
 	switch (mEffectState)
 	{
 	case EffectState::Hit:
-		gfx.DrawSprite(pos.X, pos.Y, mPoo, SpriteEffect::Substitution{ Colors::White, Colors::White });
+		gfx.DrawSprite(pos.X, pos.Y, *mPooSurface, SpriteEffect::Substitution{ Colors::White, Colors::White });
 		break;
 	case EffectState::Dying:
-		gfx.DrawSprite(pos.X, pos.Y, mPoo, SpriteEffect::DissolveHalfTint{ Colors::White, Colors::Red, 1.0f - mEffectTime / mDissolveDuration });
+		gfx.DrawSprite(pos.X, pos.Y, *mPooSurface, SpriteEffect::DissolveHalfTint{ Colors::White, Colors::Red, 1.0f - mEffectTime / mDissolveDuration });
 		break;
 	case EffectState::Normal:
-		gfx.DrawSprite(pos.X, pos.Y, mPoo, SpriteEffect::Chroma{ Colors::White });
+		gfx.DrawSprite(pos.X, pos.Y, *mPooSurface, SpriteEffect::Chroma{ Colors::White });
 		break;
 	}
 }

@@ -2,6 +2,7 @@
 
 #include "Animation.h"
 #include "SpriteEffect.h"
+#include "SurfaceCodex.h"
 #include "Vec2.h"
 
 class Chili
@@ -45,8 +46,7 @@ public:
 	RectF GetHitbox() const;
 
 private:
-	Surface mHead = "Images/chilihead.bmp";
-	Surface mLegs = "Images/legs-skinny.bmp";
+	const Surface* mHeadSurface = SurfaceCodex::Retreive("Images/chilihead.bmp");
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -21.0f, -67.0f };
 	Vec2F mVelocity = {};

@@ -22,7 +22,7 @@ void Background::Draw(Graphics& gfx) const
 		{
 			const int index = GetTileAt(x, y);
 			if (index >= 0)
-				gfx.DrawSprite(x * mTileSize + mOrigin.X, y * mTileSize + mOrigin.Y, mTileRects[index], mTileset, SpriteEffect::Copy{});
+				gfx.DrawSprite(x * mTileSize + mOrigin.X, y * mTileSize + mOrigin.Y, mTileRects[index], *mTilesetSurface, SpriteEffect::Copy{});
 		}
 	}
 }

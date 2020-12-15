@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Graphics.h"
+#include "SurfaceCodex.h"
 
 class Background
 {
@@ -13,7 +14,7 @@ private:
 	int GetTileAt(int x, int y) const;
 
 private:
-	Surface mTileset = "Images/floor5.bmp";
+	const Surface* mTilesetSurface = SurfaceCodex::Retreive("Images/floor5.bmp");
 	Vec2I mOrigin;
 	std::vector<RectI> mTileRects;
 	std::vector<int> mTiles;

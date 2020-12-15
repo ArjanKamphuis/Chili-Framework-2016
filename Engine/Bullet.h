@@ -2,14 +2,13 @@
 
 #include "Animation.h"
 #include "SpriteEffect.h"
+#include "SurfaceCodex.h"
 #include "Vec2.h"
 
 class Bullet
 {
 public:
 	Bullet(const Vec2F& pos, const Vec2F& dir);
-	Bullet(const Bullet& rhs);
-	Bullet& operator=(const Bullet& rhs);
 
 	void Draw(Graphics& gfx) const;
 	void Update(float dt);
@@ -18,8 +17,7 @@ public:
 	RectF GetHitbox() const;
 
 private:
-	Surface mBullet = "Images/fireball.bmp";
-	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, mBullet, 0.1f);
+	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, SurfaceCodex::Retreive("Images/fireball.bmp"), 0.1f);
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -4.0f, -4.0f };
 	float mSpeed = 300.0f;
