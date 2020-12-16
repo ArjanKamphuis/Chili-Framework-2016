@@ -117,7 +117,7 @@
     <ClInclude Include="Boundary.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="SurfaceCodex.h">
+    <ClInclude Include="Codex.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
   </ItemGroup>
@@ -171,9 +171,6 @@
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="SurfaceCodex.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>
