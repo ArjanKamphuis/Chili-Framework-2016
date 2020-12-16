@@ -27,6 +27,7 @@
 #include <crtdbg.h>
 #endif
 
+#pragma region overlays
 const std::string layer1 =
 "AAAAAAAAAADEEAAAAAAAAAAAA"
 "AIHIHIHIHICDBIHIHIHIHIHIA"
@@ -68,6 +69,7 @@ const std::string layer2 =
 "LAAAAAAAAAAAAAAAAAAAAAAAL"
 "LAAAAAAAAAAAAAAAAAAAAAAAL"
 "LLLLLLLLLLLLLLLLLLLLLLLLL";
+#pragma endregion
 
 Game::Game( MainWindow& wnd )
 	: wnd(wnd), gfx(wnd), mBackground1(gfx.GetScreenRectI(), 25, 19, layer1), mBackground2(gfx.GetScreenRectI(), 25, 19, layer2)
@@ -174,20 +176,28 @@ void Game::UpdateModel()
 			if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(pooHitbox))
 				mChili.ApplyDamage();
 
-			for (size_t j = 0; j < mBullets.size();)
-			{
-				if (mBullets[j].GetHitbox().IsOverlappingWith(pooHitbox))
+			remove_erase_if(mBullets,
+				[&poo, &pooHitbox](const Bullet& b)
 				{
-					remove_element(mBullets, j);
-					poo.ApplyDamage(35.0f);
+					if (b.GetHitbox().IsOverlappingWith(pooHitbox))
+					{
+						poo.ApplyDamage(35.0f);
+						return true;
+					}
+					return false;
 				}
-				else
-					++j;
-			}
+			);
 		}
 	}
 
-	RemoveDeadObjects();
+	remove_erase_if(mPoos, [](const Poo& p) { return p.IsReadyForRemoval(); });
+	remove_erase_if(mBullets,
+		[boundRect = mBoundary.GetRect().GetDisplacedBy({ 0.0f, -10.0f })]
+		(const Bullet& b)
+		{
+			return !b.GetHitbox().IsOverlappingWith(boundRect);
+		}
+	);
 
 	OutputDebugString((std::to_wstring(benchTimer.Mark()) + L'\n').c_str());
 }
@@ -201,24 +211,4 @@ void Game::ComposeFrame()
 	for (const Bullet& b : mBullets)
 		b.Draw(gfx);
 	mBackground2.Draw(gfx);
-}
-
-void Game::RemoveDeadObjects()
-{
-	for (size_t i = 0; i < mPoos.size();)
-	{
-		if (mPoos[i].IsReadyForRemoval())
-			remove_element(mPoos, i);
-		else
-			++i;
-	}
-
-	const RectF boundRect = mBoundary.GetRect().GetDisplacedBy({ 0.0f, -10.0f });
-	for (size_t i = 0; i < mBullets.size();)
-	{
-		if (!mBullets[i].GetHitbox().IsOverlappingWith(boundRect))
-			remove_element(mBullets, i);
-		else
-			++i;
-	}
 }

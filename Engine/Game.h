@@ -46,7 +46,6 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
-	void RemoveDeadObjects();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
