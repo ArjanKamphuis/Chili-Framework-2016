@@ -214,7 +214,7 @@ void Game::ComposeFrame()
 	if (numTests < 50)
 	{
 		FrameTimer benchTimer;
-		gfx.DrawSprite(0, 50, mDice, SpriteEffect::AlphaBlendBaked{});
+		gfx.DrawSprite(0, 50, *mDice, SpriteEffect::AlphaBlendBaked{});
 		const float mark = benchTimer.Mark();
 		OutputDebugString((std::to_wstring(mark) + L'\n').c_str());
 

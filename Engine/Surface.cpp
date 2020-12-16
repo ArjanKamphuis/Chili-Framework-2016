@@ -18,8 +18,11 @@ namespace Gdiplus
 
 namespace gdi = Gdiplus;
 
-Surface::Surface(const std::wstring& filename, bool bakeAlpha)
+Surface::Surface(const std::wstring& filename)
 {
+	if (filename.length() < 4)
+		throw CHILI_SURFACE_EXCEPTION(filename, L"Surface::Surface bad file name.");
+
 	gdi::Bitmap bitmap(filename.c_str());
 	if (bitmap.GetLastStatus() != gdi::Ok)
 		throw CHILI_SURFACE_EXCEPTION(filename, L"Surface::Surface failed to load file.");
@@ -44,7 +47,7 @@ Surface::Surface(const std::wstring& filename, bool bakeAlpha)
 		}
 	}
 
-	if (bakeAlpha)
+	if (filename.find(L"pm_") != std::wstring::npos)
 		BakeAlpha();
 }
 

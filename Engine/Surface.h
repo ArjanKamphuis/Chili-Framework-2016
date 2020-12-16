@@ -22,7 +22,7 @@ public:
 
 public:
 	Surface() = default;
-	Surface(const std::wstring& filename, bool bakeAlpha = false);
+	Surface(const std::wstring& filename);
 	Surface(int width, int height);
 	Surface(const Surface& rhs) = default;
 	Surface& operator=(const Surface& rhs) = default;
