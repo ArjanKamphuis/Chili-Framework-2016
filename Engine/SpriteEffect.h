@@ -103,11 +103,11 @@ namespace SpriteEffect
 			const Color dst = gfx.GetPixel(xDest, yDest);
 			const int cAlpha = 255 - src.GetA();
 
-			const unsigned char r = (dst.GetR() * cAlpha) / 256;
-			const unsigned char g = (dst.GetG() * cAlpha) / 256;
-			const unsigned char b = (dst.GetB() * cAlpha) / 256;
+			const int r = (dst.GetR() * cAlpha) / 256;
+			const int g = (dst.GetG() * cAlpha) / 256;
+			const int b = (dst.GetB() * cAlpha) / 256;
 
-			gfx.PutPixel(xDest, yDest, Color(r, g, b).dword + src.dword);
+			gfx.PutPixel(xDest, yDest, (r << 16) + (g << 8) + b + src.dword);
 		}
 	};
 }

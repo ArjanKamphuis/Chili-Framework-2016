@@ -5,3 +5,7 @@ pre optimize
 BakeAlpha src at front
 - 0.105033 debug
 - 0.001485 release
+
+int + bitshift instead of uchar
+- 0.099980 debug
+- 0.001201 release
