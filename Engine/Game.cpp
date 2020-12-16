@@ -212,4 +212,6 @@ void Game::ComposeFrame()
 	for (const Bullet& b : mBullets)
 		b.Draw(gfx);
 	mBackground2.Draw(gfx);
+
+	gfx.DrawSprite(0, 50, mDice, SpriteEffect::AlphaBlend{});
 }

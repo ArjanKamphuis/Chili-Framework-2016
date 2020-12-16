@@ -94,4 +94,21 @@ namespace SpriteEffect
 		static constexpr int mHeightMask = mHeight - 1;
 		int mFilled;
 	};
+
+	class AlphaBlend
+	{
+	public:
+		void operator()(Graphics& gfx, Color src, int xDest, int yDest) const
+		{
+			const Color dst = gfx.GetPixel(xDest, yDest);
+			const int alpha = src.GetA();
+			const int cAlpha = 255 - alpha;
+
+			const unsigned char r = (src.GetR() * alpha + dst.GetR() * cAlpha) / 256;
+			const unsigned char g = (src.GetG() * alpha + dst.GetG() * cAlpha) / 256;
+			const unsigned char b = (src.GetB() * alpha + dst.GetB() * cAlpha) / 256;
+
+			gfx.PutPixel(xDest, yDest, { r, g, b });
+		}
+	};
 }
