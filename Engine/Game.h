@@ -56,9 +56,7 @@ private:
 	FrameTimer mFt;
 
 	Font mFont = L"Images/Fixedsys16x28.bmp";
-	Sound mSndBallHit = L"Sounds/fhit.wav";
 	Sound mSndBallLaunch = L"Sounds/fball.wav";
-	Sound mSndDeath = L"Sounds/monster_death.wav";
 	Sound mSndBackground = Sound(L"Sounds/come.mp3", Sound::LoopType::AutoFullSound);
 
 	Background mBackground1;

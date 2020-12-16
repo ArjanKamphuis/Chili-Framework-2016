@@ -1,7 +1,8 @@
 #pragma once
 
-#include "SpriteEffect.h"
 #include "Codex.h"
+#include "Sound.h"
+#include "SpriteEffect.h"
 #include "Vec2.h"
 
 class Poo
@@ -26,6 +27,9 @@ public:
 
 private:
 	const Surface* mPooSurface = Codex<Surface>::Retreive(L"Images/poo.bmp");
+	const Sound* mSndHit = Codex<Sound>::Retreive(L"Sounds/fhit.wav");
+	const Sound* mSndDeath = Codex<Sound>::Retreive(L"Sounds/monster_death.wav");
+
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -11.0f, -19.0f };
 	Vec2F mVelocity = {};

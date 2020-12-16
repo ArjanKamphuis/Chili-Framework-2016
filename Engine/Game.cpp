@@ -180,11 +180,6 @@ void Game::UpdateModel()
 				{
 					remove_element(mBullets, j);
 					poo.ApplyDamage(35.0f);
-
-					if (poo.IsDead())
-						mSndDeath.Play(1.0f, 0.8f);
-					else
-						mSndBallHit.Play(0.9f, 0.3f);
 				}
 				else
 					++j;

@@ -65,6 +65,10 @@ void Poo::ApplyDamage(float damage)
 	mHp -= static_cast<int>(damage);
 	mEffectState = EffectState::Hit;
 	mEffectTime = 0.0f;
+
+	mSndHit->Play(0.9f, 0.3f);
+	if (IsDead())
+		mSndDeath->Play(1.0f, 0.8f);
 }
 
 bool Poo::IsDead() const
