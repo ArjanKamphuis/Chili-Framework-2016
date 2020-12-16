@@ -22,6 +22,7 @@
 #include "Game.h"
 #include "SpriteEffect.h"
 #include "ChiliUtil.h"
+#include <functional>
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -190,7 +191,7 @@ void Game::UpdateModel()
 		}
 	}
 
-	remove_erase_if(mPoos, [](const Poo& p) { return p.IsReadyForRemoval(); });
+	remove_erase_if(mPoos, std::bind(&Poo::IsReadyForRemoval, std::placeholders::_1));
 	remove_erase_if(mBullets,
 		[boundRect = mBoundary.GetRect().GetDisplacedBy({ 0.0f, -10.0f })]
 		(const Bullet& b)
