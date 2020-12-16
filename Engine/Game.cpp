@@ -189,7 +189,7 @@ void Game::UpdateModel()
 		}
 	}
 
-	remove_erase_if(mPoos, std::bind(&Poo::IsReadyForRemoval, std::placeholders::_1));
+	remove_erase_if(mPoos, std::mem_fn(&Poo::IsReadyForRemoval));
 	remove_erase_if(mBullets,
 		[boundRect = mBoundary.GetRect().GetDisplacedBy({ 0.0f, -10.0f })]
 		(const Bullet& b)
@@ -208,23 +208,4 @@ void Game::ComposeFrame()
 	for (const Bullet& b : mBullets)
 		b.Draw(gfx);
 	mBackground2.Draw(gfx);
-
-	static int numTests = 0;
-	static float median = 0.0f;
-	if (numTests < 50)
-	{
-		FrameTimer benchTimer;
-		gfx.DrawSprite(0, 50, *mDice, SpriteEffect::AlphaBlendBaked{});
-		const float mark = benchTimer.Mark();
-		OutputDebugString((std::to_wstring(mark) + L'\n').c_str());
-
-		median += mark;
-		numTests++;
-	}
-	else if (numTests == 50)
-	{
-		median /= 50;
-		OutputDebugString((L"Median: " + std::to_wstring(median) + L'\n').c_str());
-		numTests++;
-	}
 }

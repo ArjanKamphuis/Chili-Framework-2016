@@ -64,7 +64,5 @@ private:
 	std::vector<Bullet> mBullets;
 
 	BoundaryF mBoundary = RectF{ 32.0f, 768.0f, 96.0f, 576.0f + 64.0f };
-
-	const Surface* mDice = Codex<Surface>::Retreive(L"Images/pm_alphadice.png");
 	/********************************/
 };
