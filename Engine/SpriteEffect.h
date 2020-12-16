@@ -100,13 +100,16 @@ namespace SpriteEffect
 	public:
 		void operator()(Graphics& gfx, Color src, int xDest, int yDest) const
 		{
-			const Color dst = gfx.GetPixel(xDest, yDest);
 			const int cAlpha = 255 - src.GetA();
+			if (cAlpha != 255)
+			{
+				const Color dst = gfx.GetPixel(xDest, yDest);
 
-			const int rb = (((dst.dword & 0xFF00FFu) * cAlpha) >> 8) & 0xFF00FFu;
-			const int g = (((dst.dword & 0x00FF00u) * cAlpha) >> 8) & 0x00FF00u;
+				const int rb = (((dst.dword & 0xFF00FFu) * cAlpha) >> 8) & 0xFF00FFu;
+				const int g = (((dst.dword & 0x00FF00u) * cAlpha) >> 8) & 0x00FF00u;
 
-			gfx.PutPixel(xDest, yDest, rb + g + src.dword);
+				gfx.PutPixel(xDest, yDest, rb + g + src.dword);
+			}
 		}
 	};
 }

@@ -10,6 +10,10 @@ int + bitshift instead of uchar
 - 0.099980 debug
 - 0.001201 release
 
-
+multiplying two channels in one operation
 - 0.080758 debug
 - 0.000799 release
+
+early rejection of drawing by zero alpha (full transparency)
+- 0.057119 debug
+- 0.000728 release
