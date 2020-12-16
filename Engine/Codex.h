@@ -11,7 +11,7 @@ private:
 	class Entry
 	{
 	public:
-		Entry(const std::string& key, const T* pResource)
+		Entry(const std::wstring& key, const T* pResource)
 			: mKey(key), mResource(pResource)
 		{
 		}
@@ -20,7 +20,7 @@ private:
 			return mKey < rhs.mKey;
 		}
 
-		const std::string& GetKey() const
+		const std::wstring& GetKey() const
 		{
 			return mKey;
 		}
@@ -34,12 +34,12 @@ private:
 		}
 
 	private:
-		std::string mKey;
+		std::wstring mKey;
 		const T* mResource;
 	};
 
 public:
-	static const T* Retreive(const std::string& key)
+	static const T* Retreive(const std::wstring& key)
 	{
 		return Get()._Retreive(key);
 	}
@@ -56,7 +56,7 @@ private:
 			e.DeleteResource();
 	}
 
-	const T* _Retreive(const std::string& key)
+	const T* _Retreive(const std::wstring& key)
 	{
 		const auto it = binary_find(mEntries.begin(), mEntries.end(), key,
 			[](const Entry& e) { return e.GetKey(); });

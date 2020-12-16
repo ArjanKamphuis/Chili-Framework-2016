@@ -60,7 +60,7 @@ bool Chili::DamageEffectController::IsActive() const
 Chili::Chili(const Vec2F& pos)
 	: mPosition(pos)
 {
-	const Surface* pLegsSurface = Codex<Surface>::Retreive("Images/legs-skinny.bmp");
+	const Surface* pLegsSurface = Codex<Surface>::Retreive(L"Images/legs-skinny.bmp");
 
 	mAnimations.emplace_back(Animation(32, 0, 32, 33, 9, pLegsSurface, 0.12f));
 	mAnimations.emplace_back(Animation(0, 0, 32, 33, 1, pLegsSurface, 10000.0f));

@@ -2,7 +2,7 @@
 #include <cassert>
 #include "SpriteEffect.h"
 
-Font::Font(const std::string& filename, Color chroma)
+Font::Font(const std::wstring& filename, Color chroma)
 	: mSurface(filename), mChroma(chroma)
 	, mGlyphWidth(mSurface.GetWidth() / mNumColums)
 	, mGlyphHeight(mSurface.GetHeight() / mNumRows)

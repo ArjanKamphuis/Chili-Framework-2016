@@ -46,7 +46,7 @@ public:
 	RectF GetHitbox() const;
 
 private:
-	const Surface* mHeadSurface = Codex<Surface>::Retreive("Images/chilihead.bmp");
+	const Surface* mHeadSurface = Codex<Surface>::Retreive(L"Images/chilihead.bmp");
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -21.0f, -67.0f };
 	Vec2F mVelocity = {};

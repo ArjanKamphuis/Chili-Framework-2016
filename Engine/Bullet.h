@@ -17,7 +17,7 @@ public:
 	RectF GetHitbox() const;
 
 private:
-	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, Codex<Surface>::Retreive("Images/fireball.bmp"), 0.1f);
+	Animation mBulletAnimation = Animation(0, 0, 8, 8, 4, Codex<Surface>::Retreive(L"Images/fireball.bmp"), 0.1f);
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -4.0f, -4.0f };
 	float mSpeed = 300.0f;

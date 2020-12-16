@@ -6,7 +6,7 @@
 
 #define CHILI_SURFACE_EXCEPTION(filename, note) Surface::Exception(filename, note,_CRT_WIDE(__FILE__),__LINE__ )
 
-Surface::Surface(const std::string& filename)
+Surface::Surface(const std::wstring& filename)
 {
 	try
 	{
@@ -138,7 +138,7 @@ void Surface::Fill(Color c)
 	std::fill(mPixels.begin(), mPixels.end(), c);
 }
 
-Surface::Exception::Exception(const std::string& filename, const std::wstring& note, const wchar_t* file, unsigned int line)
+Surface::Exception::Exception(const std::wstring& filename, const std::wstring& note, const wchar_t* file, unsigned int line)
 	: ChiliException(file, line, note), mFilename(filename)
 {
 }

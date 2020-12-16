@@ -14,7 +14,7 @@ private:
 	int GetTileAt(int x, int y) const;
 
 private:
-	const Surface* mTilesetSurface = Codex<Surface>::Retreive("Images/floor5.bmp");
+	const Surface* mTilesetSurface = Codex<Surface>::Retreive(L"Images/floor5.bmp");
 	Vec2I mOrigin;
 	std::vector<RectI> mTileRects;
 	std::vector<int> mTiles;

@@ -25,7 +25,7 @@ public:
 	RectF GetHitbox() const;
 
 private:
-	const Surface* mPooSurface = Codex<Surface>::Retreive("Images/poo.bmp");
+	const Surface* mPooSurface = Codex<Surface>::Retreive(L"Images/poo.bmp");
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -11.0f, -19.0f };
 	Vec2F mVelocity = {};
