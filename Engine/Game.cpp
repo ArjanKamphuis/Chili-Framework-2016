@@ -102,8 +102,6 @@ void Game::UpdateModel()
 	const float dt = mFt.Mark();
 #endif
 
-	FrameTimer benchTimer;
-
 	while (!wnd.mouse.IsEmpty())
 	{
 		const Mouse::Event e = wnd.mouse.Read();
@@ -199,8 +197,6 @@ void Game::UpdateModel()
 			return !b.GetHitbox().IsOverlappingWith(boundRect);
 		}
 	);
-
-	OutputDebugString((std::to_wstring(benchTimer.Mark()) + L'\n').c_str());
 }
 
 void Game::ComposeFrame()
@@ -213,5 +209,22 @@ void Game::ComposeFrame()
 		b.Draw(gfx);
 	mBackground2.Draw(gfx);
 
-	gfx.DrawSprite(0, 50, mDice, SpriteEffect::AlphaBlend{});
+	static int numTests = 0;
+	static float median = 0.0f;
+	if (numTests < 50)
+	{
+		FrameTimer benchTimer;
+		gfx.DrawSprite(0, 50, mDice, SpriteEffect::AlphaBlendBaked{});
+		const float mark = benchTimer.Mark();
+		OutputDebugString((std::to_wstring(mark) + L'\n').c_str());
+
+		median += mark;
+		numTests++;
+	}
+	else if (numTests == 50)
+	{
+		median /= 50;
+		OutputDebugString((L"Median: " + std::to_wstring(median) + L'\n').c_str());
+		numTests++;
+	}
 }

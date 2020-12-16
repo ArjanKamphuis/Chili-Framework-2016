@@ -18,7 +18,7 @@ namespace Gdiplus
 
 namespace gdi = Gdiplus;
 
-Surface::Surface(const std::wstring& filename)
+Surface::Surface(const std::wstring& filename, bool bakeAlpha)
 {
 	gdi::Bitmap bitmap(filename.c_str());
 	if (bitmap.GetLastStatus() != gdi::Ok)
@@ -43,6 +43,9 @@ Surface::Surface(const std::wstring& filename)
 				PutPixel(x, y, { pixel.GetR(), pixel.GetG(), pixel.GetB() });
 		}
 	}
+
+	if (bakeAlpha)
+		BakeAlpha();
 }
 
 Surface::Surface(int width, int height)
@@ -104,6 +107,17 @@ int Surface::GetHeight() const
 const Color* Surface::Data() const
 {
 	return mPixels.data();
+}
+
+void Surface::BakeAlpha()
+{
+	for (Color& p : mPixels)
+	{
+		const int alpha = p.GetA();
+		p.SetR(p.GetR() * alpha / 256);
+		p.SetG(p.GetG() * alpha / 256);
+		p.SetB(p.GetB() * alpha / 256);
+	}
 }
 
 void Surface::Fill(Color c)

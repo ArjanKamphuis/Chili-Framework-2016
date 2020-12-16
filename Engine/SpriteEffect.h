@@ -95,20 +95,19 @@ namespace SpriteEffect
 		int mFilled;
 	};
 
-	class AlphaBlend
+	class AlphaBlendBaked
 	{
 	public:
 		void operator()(Graphics& gfx, Color src, int xDest, int yDest) const
 		{
 			const Color dst = gfx.GetPixel(xDest, yDest);
-			const int alpha = src.GetA();
-			const int cAlpha = 255 - alpha;
+			const int cAlpha = 255 - src.GetA();
 
-			const unsigned char r = (src.GetR() * alpha + dst.GetR() * cAlpha) / 256;
-			const unsigned char g = (src.GetG() * alpha + dst.GetG() * cAlpha) / 256;
-			const unsigned char b = (src.GetB() * alpha + dst.GetB() * cAlpha) / 256;
+			const unsigned char r = (dst.GetR() * cAlpha) / 256;
+			const unsigned char g = (dst.GetG() * cAlpha) / 256;
+			const unsigned char b = (dst.GetB() * cAlpha) / 256;
 
-			gfx.PutPixel(xDest, yDest, { r, g, b });
+			gfx.PutPixel(xDest, yDest, Color(r, g, b).dword + src.dword);
 		}
 	};
 }

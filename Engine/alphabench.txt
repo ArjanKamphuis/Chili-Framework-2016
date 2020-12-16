@@ -1,0 +1,7 @@
+pre optimize
+- 0.116439 debug
+- 0.001937 release
+
+BakeAlpha src at front
+- 0.105033 debug
+- 0.001485 release
