@@ -1,8 +1,10 @@
 #include "Bullet.h"
+#include "Sound.h"
 
 Bullet::Bullet(const Vec2F& pos, const Vec2F& dir)
 	: mPosition(pos), mVelocity(dir * mSpeed)
 {
+	Codex<Sound>::Retreive(L"Sounds/fball.wav")->Play(0.75f, 0.4f);
 }
 
 void Bullet::Draw(Graphics& gfx) const

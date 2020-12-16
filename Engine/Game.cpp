@@ -114,7 +114,6 @@ void Game::UpdateModel()
 
 			const Vec2F bSpawn = { 0.0f, -15.0f };
 			mBullets.emplace_back(mChili.GetPosition() + bSpawn, delta);
-			mSndBallLaunch.Play(0.75f, 0.4f);
 		}
 	}
 

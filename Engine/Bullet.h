@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Animation.h"
-#include "SpriteEffect.h"
 #include "Codex.h"
+#include "SpriteEffect.h"
 #include "Vec2.h"
 
 class Bullet
