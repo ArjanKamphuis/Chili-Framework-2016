@@ -1,74 +1,47 @@
 #include "Surface.h"
 
+#define FULL_WINTARD
+#include "ChiliWin.h"
+#include <algorithm>
+
+namespace Gdiplus
+{
+	using std::min;
+	using std::max;
+}
+
+#include <gdiplus.h>
 #include <cassert>
 #include <fstream>
-#include "ChiliWin.h"
 
 #define CHILI_SURFACE_EXCEPTION(filename, note) Surface::Exception(filename, note,_CRT_WIDE(__FILE__),__LINE__ )
 
+namespace gdi = Gdiplus;
+
 Surface::Surface(const std::wstring& filename)
 {
-	try
+	gdi::Bitmap bitmap(filename.c_str());
+	if (bitmap.GetLastStatus() != gdi::Ok)
+		throw CHILI_SURFACE_EXCEPTION(filename, L"Surface::Surface failed to load file.");
+
+	mWidth = bitmap.GetWidth();
+	mHeight = bitmap.GetHeight();
+	mPixels.resize(static_cast<size_t>(mWidth) * mHeight);
+
+	const bool isAlpha = gdi::IsAlphaPixelFormat(bitmap.GetPixelFormat()) == TRUE;
+
+	for (int y = 0; y < mHeight; ++y)
 	{
-		std::ifstream fin;
-		fin.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		fin.open(filename, std::ios::binary);
-
-		BITMAPFILEHEADER bmFileHeader = {};
-		fin.read(reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader));
-
-		BITMAPINFOHEADER bmInfoHeader = {};
-		fin.read(reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader));
-
-		if (bmInfoHeader.biBitCount != 24 && bmInfoHeader.biBitCount != 32)
-			throw CHILI_SURFACE_EXCEPTION(filename, L"Only 24 or 32 bit images are supported.");
-		if (bmInfoHeader.biCompression != BI_RGB)
-			throw CHILI_SURFACE_EXCEPTION(filename, L"Only uncompressed rgb bitmaps are supported.");
-
-		mWidth = bmInfoHeader.biWidth;
-
-		int yStart, yEnd, dy;
-		if (bmInfoHeader.biHeight < 0)
+		for (int x = 0; x < mWidth; ++x)
 		{
-			mHeight = -bmInfoHeader.biHeight;
-			yStart = 0;
-			yEnd = mHeight;
-			dy = 1;
+			gdi::Color pixel;
+			bitmap.GetPixel(x, y, &pixel);
+
+			if (isAlpha)
+				PutPixel(x, y, { pixel.GetA(), pixel.GetR(), pixel.GetG(), pixel.GetB() });
+			else
+				PutPixel(x, y, { pixel.GetR(), pixel.GetG(), pixel.GetB() });
 		}
-		else
-		{
-			mHeight = bmInfoHeader.biHeight;
-			yStart = mHeight - 1;
-			yEnd = -1;
-			dy = -1;
-		}
-
-		mPixels.resize(static_cast<size_t>(mWidth) * mHeight);
-
-		fin.seekg(bmFileHeader.bfOffBits, std::ios_base::beg);
-		const bool is32b = bmInfoHeader.biBitCount == 32;
-		const int padding = (4 - (mWidth * 3) % 4) % 4;
-
-		for (int y = yStart; y != yEnd; y += dy)
-		{
-			for (int x = 0; x < mWidth; ++x)
-			{
-				const unsigned char b = fin.get();
-				const unsigned char g = fin.get();
-				const unsigned char r = fin.get();
-				PutPixel(x, y, { r, g, b });
-
-				if (is32b)
-					fin.seekg(1, std::ios_base::cur);
-			}
-			if (!is32b)
-				fin.seekg(padding, std::ios_base::cur);
-		}
-	}
-	catch (const std::exception& e)
-	{
-		const std::string message(e.what());
-		throw CHILI_SURFACE_EXCEPTION(filename, std::wstring(message.begin(), message.end()));
 	}
 }
 

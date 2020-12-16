@@ -120,6 +120,9 @@
     <ClInclude Include="Codex.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
+    <ClInclude Include="GDIPlusManager.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chili.cpp">
@@ -176,6 +179,9 @@
     <ClCompile Include="SoundEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GDIPlusManager.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">
@@ -194,8 +200,5 @@
     <Image Include="Chili.ico">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Sounds\chili_hurt.sfx" />
   </ItemGroup>
 </Project>
