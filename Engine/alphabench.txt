@@ -9,3 +9,7 @@ BakeAlpha src at front
 int + bitshift instead of uchar
 - 0.099980 debug
 - 0.001201 release
+
+
+- 0.080758 debug
+- 0.000799 release
