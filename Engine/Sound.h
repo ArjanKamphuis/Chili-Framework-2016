@@ -162,8 +162,8 @@ public:
 	Sound( Sound&& donor ) noexcept;
 	Sound& operator=( Sound&& donor ) noexcept;
 	void Play( float freqMod = 1.0f,float vol = 1.0f ) const;
-	void StopOne();
-	void StopAll();
+	void StopOne() const;
+	void StopAll() const;
 	~Sound();
 private:
 	static Sound LoadNonWav( const std::wstring& fileName,LoopType loopType,
