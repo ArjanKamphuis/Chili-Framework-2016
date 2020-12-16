@@ -106,14 +106,15 @@ void Game::UpdateModel()
 		const Mouse::Event e = wnd.mouse.Read();
 		if (e.GetType() == Mouse::Event::Type::LPress)
 		{
-			Vec2F delta = static_cast<Vec2F>(e.GetPos()) - mChili.GetPosition();
+			const Vec2F bSpawn = mChili.GetPosition() + Vec2F{ 0.0f, -15.0f };
+			Vec2F delta = static_cast<Vec2F>(e.GetPos()) - bSpawn;
+
 			if (delta == Vec2F{})
 				delta = { 0.0f, 1.0f };
 			else
 				delta.Normalize();
-
-			const Vec2F bSpawn = { 0.0f, -15.0f };
-			mBullets.emplace_back(mChili.GetPosition() + bSpawn, delta);
+						
+			mBullets.emplace_back(bSpawn, delta);
 		}
 	}
 
