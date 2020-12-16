@@ -172,10 +172,7 @@ void Game::UpdateModel()
 		{
 			const RectF pooHitbox = poo.GetHitbox();
 			if (!mChili.IsInvincible() && mChili.GetHitbox().IsOverlappingWith(pooHitbox))
-			{
 				mChili.ApplyDamage();
-				mSfxHit.Play(mRng);
-			}
 
 			for (size_t j = 0; j < mBullets.size();)
 			{

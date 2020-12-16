@@ -60,7 +60,7 @@ const WAVEFORMATEX& SoundSystem::GetFormat()
 	return *Get().format;
 }
 
-void SoundSystem::PlaySoundBuffer( Sound & s,float freqMod,float vol )
+void SoundSystem::PlaySoundBuffer( const Sound& s,float freqMod,float vol )
 {
 	std::lock_guard<std::mutex> lock( mutex );
 	if( idleChannelPtrs.size() > 0 )
@@ -273,7 +273,7 @@ SoundSystem::Channel::~Channel()
 	}
 }
 
-void SoundSystem::Channel::PlaySoundBuffer( Sound& s,float freqMod,float vol )
+void SoundSystem::Channel::PlaySoundBuffer( const Sound& s,float freqMod,float vol )
 {
 	assert( pSource && !pSound );
 	{
@@ -713,7 +713,7 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 			file.open( fileName,std::ios::binary );
 
 			{
-				BYTE fourcc[4];
+				BYTE fourcc[4] = {};
 				file.read( reinterpret_cast<char*>(fourcc),4u );
 				if( !IsFourCC( fourcc,"RIFF" ) )
 				{
@@ -752,7 +752,7 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 			// chunk size + size entry size + chunk id entry size + word padding
 			unsigned int chunkSize;
 			memcpy( &chunkSize,&pFileIn[i + 4u],sizeof( chunkSize ) );
-			i += (chunkSize + 9u) & 0xFFFFFFFEu;
+			i += (static_cast<size_t>(chunkSize) + 9u) & 0xFFFFFFFEu;
 		}
 		if( !bFilledFormat )
 		{
@@ -927,7 +927,7 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 	}
 }
 
-Sound::Sound( Sound&& donor )
+Sound::Sound( Sound&& donor ) noexcept
 {
 	std::lock_guard<std::mutex> lock( donor.mutex );
 	nBytes = donor.nBytes;
@@ -944,7 +944,7 @@ Sound::Sound( Sound&& donor )
 	donor.cvDeath.notify_all();
 }
 
-Sound& Sound::operator=( Sound && donor )
+Sound& Sound::operator=( Sound && donor ) noexcept
 {	
 	// make sure nobody messes with our shit (also needed for cv.wait())
 	std::unique_lock<std::mutex> lock( mutex );
@@ -976,7 +976,7 @@ Sound& Sound::operator=( Sound && donor )
 	return *this;
 }
 
-void Sound::Play( float freqMod,float vol )
+void Sound::Play( float freqMod,float vol ) const
 {
 	SoundSystem::Get().PlaySoundBuffer( *this,freqMod,vol );
 }
@@ -1046,7 +1046,7 @@ std::wstring SoundSystem::APIException::GetErrorName() const
 
 std::wstring SoundSystem::APIException::GetErrorDescription() const
 {
-	std::array<wchar_t,512> wideDescription;
+	std::array<wchar_t, 512> wideDescription = {};
 	DXGetErrorDescription( hr,wideDescription.data(),wideDescription.size() );
 	return wideDescription.data();
 }

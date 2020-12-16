@@ -56,7 +56,6 @@ private:
 	FrameTimer mFt;
 
 	Font mFont = L"Images/Fixedsys16x28.bmp";
-	SoundEffect mSfxHit = SoundEffect({ L"Sounds/Isaac_Hurt_Grunt0.mp3", L"Sounds/Isaac_Hurt_Grunt1.mp3", L"Sounds/Isaac_Hurt_Grunt2.mp3" }, true, 0.03f);
 	Sound mSndBallHit = L"Sounds/fhit.wav";
 	Sound mSndBallLaunch = L"Sounds/fball.wav";
 	Sound mSndDeath = L"Sounds/monster_death.wav";

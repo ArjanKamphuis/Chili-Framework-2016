@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Animation.h"
-#include "SpriteEffect.h"
 #include "Codex.h"
+#include "SoundEffect.h"
+#include "SpriteEffect.h"
 #include "Vec2.h"
 
 class Chili
@@ -47,6 +48,8 @@ public:
 
 private:
 	const Surface* mHeadSurface = Codex<Surface>::Retreive(L"Images/chilihead.bmp");
+	const SoundEffect* mSfxHurt = Codex<SoundEffect>::Retreive(L"Sounds/chili_hurt.sfx");
+
 	Vec2F mPosition;
 	Vec2F mDrawOffset = { -21.0f, -67.0f };
 	Vec2F mVelocity = {};

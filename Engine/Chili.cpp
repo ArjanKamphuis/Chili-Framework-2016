@@ -49,6 +49,7 @@ void Chili::DamageEffectController::Activate()
 	{
 		mActive = true;
 		mTime = 0.0f;
+		mParent.mSfxHurt->Play();
 	}
 }
 

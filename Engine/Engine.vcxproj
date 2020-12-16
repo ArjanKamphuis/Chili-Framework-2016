@@ -182,6 +182,7 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Poo.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +252,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Chili.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sounds\chili_hurt.sfx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
