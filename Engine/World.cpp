@@ -85,6 +85,9 @@ void World::HandleInput(Keyboard& kbd, Mouse& mouse)
 	if (kbd.KeyIsPressed(VK_RIGHT))
 		dir.X += 1.0f;
 	mChili.SetDirection(dir.GetNormalized());
+
+	for (Poo& p : mPoos)
+		p.ProcessLogic(*this);
 }
 
 void World::Update(float dt)
@@ -97,36 +100,7 @@ void World::Update(float dt)
 
 	for (Poo& poo : mPoos)
 	{
-		bool avoiding = false;
-		for (const Poo& other : mPoos)
-		{
-			if (&poo == &other)
-				continue;
-
-			const Vec2F delta = poo.GetPosition() - other.GetPosition();
-			const float lensq = delta.GetLengthSq();
-			if (lensq < 400.0f)
-			{
-				avoiding = true;
-				if (lensq == 0.0f)
-					poo.SetDirection({ -1.0f, 1.0f });
-				else
-					poo.SetDirection(delta / std::sqrt(lensq));
-				break;
-			}
-		}
-
-		if (!avoiding)
-		{
-			const Vec2F delta = mChili.GetPosition() - poo.GetPosition();
-			if (delta.GetLengthSq() > 3.0f)
-				poo.SetDirection(delta.GetNormalized());
-			else
-				poo.SetDirection({});
-		}
-
-		poo.Update(dt);
-		mBoundary.Adjust(poo);
+		poo.Update(*this, dt);
 
 		if (!poo.IsDead())
 		{
@@ -151,10 +125,10 @@ void World::Update(float dt)
 	remove_erase_if(mPoos, std::mem_fn(&Poo::IsReadyForRemoval));
 	remove_erase_if(mBullets,
 		[boundRect = mBoundary.GetRect().GetDisplacedBy({ 0.0f, -10.0f })]
-	(const Bullet& b)
-	{
-		return !b.GetHitbox().IsOverlappingWith(boundRect);
-	}
+		(const Bullet& b)
+		{
+			return !b.GetHitbox().IsOverlappingWith(boundRect);
+		}
 	);
 }
 
@@ -172,4 +146,24 @@ void World::Draw(Graphics& gfx) const
 void World::SpawnBullet(Bullet bullet)
 {
 	mBullets.emplace_back(bullet);
+}
+
+const std::vector<Poo>& World::GetPoos() const
+{
+	return mPoos;
+}
+
+const Chili& World::GetChili() const
+{
+	return mChili;
+}
+
+const std::vector<Bullet>& World::GetBullets() const
+{
+	return mBullets;
+}
+
+const BoundaryF& World::GetBoundary() const
+{
+	return mBoundary;
 }

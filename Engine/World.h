@@ -22,6 +22,11 @@ public:
 	
 	void SpawnBullet(Bullet bullet);
 
+	const std::vector<Poo>& GetPoos() const;
+	const Chili& GetChili() const;
+	const std::vector<Bullet>& GetBullets() const;
+	const BoundaryF& GetBoundary() const;
+
 private:
 	std::mt19937 mRng = std::mt19937(std::random_device{}());
 

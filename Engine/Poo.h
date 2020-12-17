@@ -14,8 +14,8 @@ public:
 	Poo(const Vec2F& pos);
 	
 	void Draw(Graphics& gfx) const;
-	void SetDirection(const Vec2F& dir);
-	void Update(float dt);
+	void ProcessLogic(const class World& world);
+	void Update(const class World& world, float dt);
 	void DisplaceBy(const Vec2F& d);
 
 	void ApplyDamage(float damage);
@@ -24,6 +24,9 @@ public:
 
 	const Vec2F& GetPosition() const;
 	RectF GetHitbox() const;
+
+private:
+	void SetDirection(const Vec2F& dir);
 
 private:
 	const Surface* mPooSurface = Codex<Surface>::Retreive(L"Images/poo.bmp");

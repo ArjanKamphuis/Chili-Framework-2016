@@ -1,4 +1,5 @@
 #include "Poo.h"
+#include "World.h"
 
 Poo::Poo(const Vec2F& pos)
 	: mPosition(pos)
@@ -22,12 +23,38 @@ void Poo::Draw(Graphics& gfx) const
 	}
 }
 
-void Poo::SetDirection(const Vec2F& dir)
+void Poo::ProcessLogic(const World& world)
 {
-	mVelocity = dir * mSpeed;
+	bool avoiding = false;
+	for (const Poo& other : world.GetPoos())
+	{
+		if (this == &other)
+			continue;
+
+		const Vec2F delta = GetPosition() - other.GetPosition();
+		const float lensq = delta.GetLengthSq();
+		if (lensq < 400.0f)
+		{
+			avoiding = true;
+			if (lensq == 0.0f)
+				SetDirection({ -1.0f, 1.0f });
+			else
+				SetDirection(delta / std::sqrt(lensq));
+			break;
+		}
+	}
+
+	if (!avoiding)
+	{
+		const Vec2F delta = world.GetChili().GetPosition() - GetPosition();
+		if (delta.GetLengthSq() > 3.0f)
+			SetDirection(delta.GetNormalized());
+		else
+			SetDirection({});
+	}
 }
 
-void Poo::Update(float dt)
+void Poo::Update(const World& world, float dt)
 {
 	if (!IsDead())
 		mPosition += mVelocity * dt;
@@ -53,6 +80,8 @@ void Poo::Update(float dt)
 			mIsReadyForRemoval = true;
 		break;
 	}
+
+	world.GetBoundary().Adjust(*this);
 }
 
 void Poo::DisplaceBy(const Vec2F& d)
@@ -89,4 +118,9 @@ const Vec2F& Poo::GetPosition() const
 RectF Poo::GetHitbox() const
 {
 	return RectF::FromCenter(mPosition, mHitboxHalfWidth, mHitboxHalfHeight);
+}
+
+void Poo::SetDirection(const Vec2F& dir)
+{
+	mVelocity = dir * mSpeed;
 }
