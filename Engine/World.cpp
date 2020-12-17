@@ -58,42 +58,14 @@ World::World(const RectI& screenRect)
 
 void World::HandleInput(Keyboard& kbd, Mouse& mouse)
 {
-	while (!mouse.IsEmpty())
-	{
-		const Mouse::Event e = mouse.Read();
-		if (e.GetType() == Mouse::Event::Type::LPress)
-		{
-			const Vec2F bSpawn = mChili.GetPosition() + Vec2F{ 0.0f, -15.0f };
-			Vec2F delta = static_cast<Vec2F>(e.GetPos()) - bSpawn;
-
-			if (delta == Vec2F{})
-				delta = { 0.0f, 1.0f };
-			else
-				delta.Normalize();
-
-			SpawnBullet({ bSpawn, delta });
-		}
-	}
-
-	Vec2F dir = {};
-	if (kbd.KeyIsPressed(VK_UP))
-		dir.Y -= 1.0f;
-	if (kbd.KeyIsPressed(VK_DOWN))
-		dir.Y += 1.0f;
-	if (kbd.KeyIsPressed(VK_LEFT))
-		dir.X -= 1.0f;
-	if (kbd.KeyIsPressed(VK_RIGHT))
-		dir.X += 1.0f;
-	mChili.SetDirection(dir.GetNormalized());
-
+	mChili.HandleInput(kbd, mouse, *this);
 	for (Poo& p : mPoos)
 		p.ProcessLogic(*this);
 }
 
 void World::Update(float dt)
 {
-	mChili.Update(dt);
-	mBoundary.Adjust(mChili);
+	mChili.Update(*this, dt);
 
 	for (Bullet& b : mBullets)
 		b.Update(dt);

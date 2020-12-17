@@ -36,8 +36,8 @@ public:
 	Chili(const Vec2F& pos);
 
 	void Draw(Graphics& gfx) const;
-	void SetDirection(const Vec2F& dir);
-	void Update(float dt);
+	void HandleInput(class Keyboard& kbd, class Mouse& mouse, class World& world);
+	void Update(World& world, float dt);
 	void DisplaceBy(const Vec2F& d);
 
 	void ApplyDamage();
@@ -45,6 +45,10 @@ public:
 
 	const Vec2F& GetPosition() const;
 	RectF GetHitbox() const;
+
+private:
+	void SetDirection(const Vec2F& dir);
+	void ProcessBullet(World& world);
 
 private:
 	const Surface* mHeadSurface = Codex<Surface>::Retreive(L"Images/chilihead.bmp");
@@ -61,6 +65,10 @@ private:
 
 	bool mFacingRight = true;
 	float mSpeed = 110.0f;
+
+	bool mIsFiring = false;
+	Vec2F mBulletDir = {};
+	Vec2F mBulletSpawnPos = {};
 
 	DamageEffectController mDamageEffectController = { *this };
 };

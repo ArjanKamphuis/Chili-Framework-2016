@@ -1,5 +1,7 @@
 #include "Chili.h"
 
+#include "World.h"
+
 Chili::DamageEffectController::DamageEffectController(const Chili& parent)
 	: mParent(parent)
 {
@@ -72,29 +74,42 @@ void Chili::Draw(Graphics& gfx) const
 	mDamageEffectController.DrawChili(gfx);
 }
 
-void Chili::SetDirection(const Vec2F& dir)
+void Chili::HandleInput(Keyboard& kbd, Mouse& mouse, World& world)
 {
-	if (dir.X > 0.0f)
+	while (!mouse.IsEmpty())
 	{
-		mCurrSequence = AnimationSequence::Walking;
-		mFacingRight = true;
-	}
-	else if (dir.X < 0.0f)
-	{
-		mCurrSequence = AnimationSequence::Walking;
-		mFacingRight = false;
-	}
-	else if (dir.Y != 0.0f)
-		mCurrSequence = AnimationSequence::Walking;
-	else
-		mCurrSequence = AnimationSequence::Standing;
+		const Mouse::Event e = mouse.Read();
+		if (e.GetType() == Mouse::Event::Type::LPress)
+		{
+			mBulletSpawnPos = GetPosition() + Vec2F{ 0.0f, -15.0f };
+			mBulletDir = static_cast<Vec2F>(e.GetPos()) - mBulletSpawnPos;
 
-	mVelocity = dir * mSpeed;
+			if (mBulletDir == Vec2F{})
+				mBulletDir = { 0.0f, 1.0f };
+			else
+				mBulletDir.Normalize();
+
+			mIsFiring = true;
+		}
+	}
+
+	Vec2F dir = {};
+	if (kbd.KeyIsPressed(VK_UP))
+		dir.Y -= 1.0f;
+	if (kbd.KeyIsPressed(VK_DOWN))
+		dir.Y += 1.0f;
+	if (kbd.KeyIsPressed(VK_LEFT))
+		dir.X -= 1.0f;
+	if (kbd.KeyIsPressed(VK_RIGHT))
+		dir.X += 1.0f;
+	SetDirection(dir.GetNormalized());
 }
 
-void Chili::Update(float dt)
+void Chili::Update(World& world, float dt)
 {
 	mPosition += mVelocity * dt;
+	world.GetBoundary().Adjust(*this);
+	ProcessBullet(world);
 	mAnimations[static_cast<int>(mCurrSequence)].Update(dt);
 	mDamageEffectController.Update(dt);
 }
@@ -122,4 +137,33 @@ const Vec2F& Chili::GetPosition() const
 RectF Chili::GetHitbox() const
 {
 	return RectF::FromCenter(mPosition, mHitboxHalfWidth, mHitboxHalfHeight);
+}
+
+void Chili::SetDirection(const Vec2F& dir)
+{
+	if (dir.X > 0.0f)
+	{
+		mCurrSequence = AnimationSequence::Walking;
+		mFacingRight = true;
+	}
+	else if (dir.X < 0.0f)
+	{
+		mCurrSequence = AnimationSequence::Walking;
+		mFacingRight = false;
+	}
+	else if (dir.Y != 0.0f)
+		mCurrSequence = AnimationSequence::Walking;
+	else
+		mCurrSequence = AnimationSequence::Standing;
+
+	mVelocity = dir * mSpeed;
+}
+
+void Chili::ProcessBullet(World& world)
+{
+	if (mIsFiring)
+	{
+		mIsFiring = false;
+		world.SpawnBullet({ mBulletSpawnPos, mBulletDir });
+	}
 }
