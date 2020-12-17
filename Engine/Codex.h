@@ -58,16 +58,16 @@ private:
 
 	const T* _Retreive(const std::wstring& key)
 	{
-		const auto it = binary_find(mEntries.begin(), mEntries.end(), key,
-			[](const Entry& e) { return e.GetKey(); });
-		if (it == mEntries.end())
-		{
-			const Entry e(key, new T(key));
-			mEntries.insert(std::lower_bound(mEntries.begin(), mEntries.end(), e), e);
-			return e.GetResource();
-		}
-		else
-			return it->GetResource();
+		const auto it = std::lower_bound(mEntries.begin(), mEntries.end(), key,
+			[](const Entry& e, const std::wstring& key)
+			{ 
+				return e.GetKey() < key; 
+			}
+		);
+
+		if (it == mEntries.end() || it->GetKey() != key)
+			return mEntries.emplace(it, key, new T(key))->GetResource();
+		return it->GetResource();
 	}
 	void _Purge()
 	{
