@@ -25,13 +25,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "FrameTimer.h"
-#include "Font.h"
-#include "SoundEffect.h"
-#include "Chili.h"
-#include "Poo.h"
-#include "Bullet.h"
-#include "Background.h"
-#include "Boundary.h"
+#include "World.h"
 
 class Game
 {
@@ -51,18 +45,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	std::mt19937 mRng = std::mt19937(std::random_device{}());
 	FrameTimer mFt;
-
-	Font mFont = L"Images/Fixedsys16x28.bmp";
-	Sound mSndBackground = Sound(L"Sounds/come.mp3", Sound::LoopType::AutoFullSound);
-
-	Background mBackground1;
-	Background mBackground2;
-	Chili mChili = Vec2F{ 300.0f, 300.0f };
-	std::vector<Poo> mPoos;
-	std::vector<Bullet> mBullets;
-
-	BoundaryF mBoundary = RectF{ 32.0f, 768.0f, 96.0f, 576.0f + 64.0f };
+	World mWorld;
 	/********************************/
 };
