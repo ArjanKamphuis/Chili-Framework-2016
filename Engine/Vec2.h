@@ -42,8 +42,8 @@ public:
 	}
 	Vec2& operator*=(T rhs)
 	{
-		X *= rhs.X;
-		Y *= rhs.Y;
+		X *= rhs;
+		Y *= rhs;
 		return *this;
 	}
 	Vec2 operator/(T rhs) const

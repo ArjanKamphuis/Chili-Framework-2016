@@ -9,6 +9,7 @@ class Font
 public:
 	Font(const std::string& filename, Color chroma = Colors::White);
 	void DrawText(Graphics& gfx, const std::string& text, const Vec2I& pos, Color color) const;
+	int GetGlyphWidth() const;
 
 private:
 	RectI MapGlyphRect(char c) const;
